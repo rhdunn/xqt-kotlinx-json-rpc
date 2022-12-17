@@ -24,3 +24,10 @@ val JsonElement.kindType: String
         is JsonArray -> "array"
         is JsonPrimitive -> kindType
     }
+
+/**
+ * A helper function for reporting unsupported JSON types during deserialization.
+ */
+fun unsupportedKindType(json: JsonElement): Nothing {
+    throw IllegalArgumentException("Unsupported kind type '${json.kindType}'")
+}
