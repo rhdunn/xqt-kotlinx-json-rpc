@@ -47,6 +47,16 @@ fun <T> JsonObject.deserialize(key: String, serializer: JsonSerialization<T>): T
 }
 
 /**
+ * Deserialize the data type or object from the `json` element.
+ *
+ * @param key the name of the required key to deserialize.
+ * @param serializer how to deserialize the JSON element value.
+ */
+fun <T> JsonObject.deserializeOptional(key: String, serializer: JsonSerialization<T>): T? {
+    return get(key)?.let { serializer.deserialize(it) }
+}
+
+/**
  * A helper function for reporting unsupported JSON types during deserialization.
  */
 fun unsupportedKindType(json: JsonElement): Nothing {
