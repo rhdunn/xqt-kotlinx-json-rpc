@@ -45,3 +45,10 @@ fun <T> valueOutOfRange(value: T): Nothing {
 fun valueOutOfRange(json: JsonPrimitive): Nothing {
     throw IllegalArgumentException("The value '${json.content}' is out of range")
 }
+
+/**
+ * A helper function for reporting a missing key in a JSON object.
+ */
+fun missingKey(key: String): Nothing {
+    throw IllegalArgumentException("Missing '$key' key")
+}
