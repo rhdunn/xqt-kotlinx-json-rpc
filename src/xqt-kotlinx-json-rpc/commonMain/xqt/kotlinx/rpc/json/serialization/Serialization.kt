@@ -26,6 +26,17 @@ val JsonElement.kindType: String
     }
 
 /**
+ * Returns a new read-only JSON object with the specified contents, given as a
+ * list of pairs where the first value is the key and the second is the value.
+ *
+ * If multiple pairs have the same key, the resulting map will contain the value
+ * from the last of those pairs.
+ *
+ * Entries of the map are iterated in the order they were specified.
+ */
+fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObject(mapOf(*pairs))
+
+/**
  * A helper function for reporting unsupported JSON types during deserialization.
  */
 fun unsupportedKindType(json: JsonElement): Nothing {
