@@ -4,10 +4,7 @@ package xqt.kotlinx.rpc.json.serialization.types
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.kindType
-import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
-import xqt.kotlinx.rpc.json.serialization.valueOutOfRange
+import xqt.kotlinx.rpc.json.serialization.*
 
 /**
  * Defines an integer number in the range of -2^31 to 2^31 - 1.
@@ -18,7 +15,7 @@ object JsonInt : JsonSerialization<Int> {
     override fun deserialize(json: JsonElement): Int = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)
         else -> when (json.kindType) {
-            "integer" -> json.content.toIntOrNull() ?: valueOutOfRange(json)
+            KindType.Integer -> json.content.toIntOrNull() ?: valueOutOfRange(json)
             else -> unsupportedKindType(json)
         }
     }
@@ -36,8 +33,8 @@ object JsonIntOrNull : JsonSerialization<Int?> {
     override fun deserialize(json: JsonElement): Int? = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)
         else -> when (json.kindType) {
-            "null" -> null
-            "integer" -> json.content.toIntOrNull() ?: valueOutOfRange(json)
+            KindType.Null -> null
+            KindType.Integer -> json.content.toIntOrNull() ?: valueOutOfRange(json)
             else -> unsupportedKindType(json)
         }
     }

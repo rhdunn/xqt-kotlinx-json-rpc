@@ -4,28 +4,6 @@ package xqt.kotlinx.rpc.json.serialization
 import kotlinx.serialization.json.*
 
 /**
- * Returns the type of the JSON primitive.
- */
-val JsonPrimitive.kindType: String
-    get() = when {
-        this === JsonNull -> "null"
-        isString -> "string"
-        content == "true" || content == "false" -> "boolean"
-        '.' in content -> "decimal"
-        else -> "integer"
-    }
-
-/**
- * Returns the type of the JSON element.
- */
-val JsonElement.kindType: String
-    get() = when (this) {
-        is JsonObject -> "object"
-        is JsonArray -> "array"
-        is JsonPrimitive -> kindType
-    }
-
-/**
  * Returns a new read-only JSON object with the specified contents, given as a
  * list of pairs where the first value is the key and the second is the value.
  *
@@ -60,7 +38,7 @@ fun <T> JsonObject.deserializeOptional(key: String, serializer: JsonSerializatio
  * A helper function for reporting unsupported JSON types during deserialization.
  */
 fun unsupportedKindType(json: JsonElement): Nothing {
-    throw IllegalArgumentException("Unsupported kind type '${json.kindType}'")
+    throw IllegalArgumentException("Unsupported kind type '${json.kindType.kindName}'")
 }
 
 /**
