@@ -58,6 +58,16 @@ fun valueOutOfRange(json: JsonPrimitive): Nothing {
 /**
  * A helper function for reporting a missing key in a JSON object.
  */
+fun missingKey(vararg key: String): Nothing {
+    val keyNames = key.withIndex().joinToString(", ") { (index, name) ->
+        if (index == key.size - 1) "or '$name'" else "'$name'"
+    }
+    throw IllegalArgumentException("Missing $keyNames key")
+}
+
+/**
+ * A helper function for reporting a missing key in a JSON object.
+ */
 fun missingKey(key: String): Nothing {
     throw IllegalArgumentException("Missing '$key' key")
 }
