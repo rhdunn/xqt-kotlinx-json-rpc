@@ -6,6 +6,11 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonArray
 
 /**
+ * Returns a new read-only list of given elements.
+ */
+fun jsonArrayOf(vararg elements: JsonElement): JsonArray = JsonArray(listOf(*elements))
+
+/**
  * Serialization helpers for typed arrays.
  */
 object JsonTypedArray {
