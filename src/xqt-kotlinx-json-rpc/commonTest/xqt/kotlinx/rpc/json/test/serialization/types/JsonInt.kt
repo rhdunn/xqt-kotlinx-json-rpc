@@ -1,9 +1,9 @@
 // Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.test.serialization.types
 
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.test.DisplayName
@@ -50,7 +50,7 @@ class TheJsonIntType {
         assertEquals(IllegalArgumentException::class, e1::class)
         assertEquals("Unsupported kind type 'object'", e1.message)
 
-        val e2 = assertFails { JsonInt.deserialize(JsonArray(arrayListOf())) }
+        val e2 = assertFails { JsonInt.deserialize(jsonArrayOf()) }
         assertEquals(IllegalArgumentException::class, e2::class)
         assertEquals("Unsupported kind type 'array'", e2.message)
 
