@@ -6,22 +6,8 @@ import kotlinx.serialization.json.*
 /**
  * A helper function for reporting unsupported JSON types during deserialization.
  */
-fun unsupportedKindType(json: JsonElement): Nothing {
-    throw IllegalArgumentException("Unsupported kind type '${json.kindType.kindName}'")
-}
-
-/**
- * A helper function for reporting numeric values outside supported bounds.
- */
-fun <T> valueOutOfRange(value: T): Nothing {
-    throw IllegalArgumentException("The value '$value' is out of range")
-}
-
-/**
- * A helper function for reporting numeric values outside supported bounds.
- */
-fun valueOutOfRange(json: JsonPrimitive): Nothing {
-    throw IllegalArgumentException("The value '${json.content}' is out of range")
+fun emptyArray(): Nothing {
+    throw IllegalArgumentException("The array is empty")
 }
 
 /**
@@ -39,4 +25,25 @@ fun missingKey(vararg key: String): Nothing {
  */
 fun missingKey(key: String): Nothing {
     throw IllegalArgumentException("Missing '$key' key")
+}
+
+/**
+ * A helper function for reporting unsupported JSON types during deserialization.
+ */
+fun unsupportedKindType(json: JsonElement): Nothing {
+    throw IllegalArgumentException("Unsupported kind type '${json.kindType.kindName}'")
+}
+
+/**
+ * A helper function for reporting numeric values outside supported bounds.
+ */
+fun <T> valueOutOfRange(value: T): Nothing {
+    throw IllegalArgumentException("The value '$value' is out of range")
+}
+
+/**
+ * A helper function for reporting numeric values outside supported bounds.
+ */
+fun valueOutOfRange(json: JsonPrimitive): Nothing {
+    throw IllegalArgumentException("The value '${json.content}' is out of range")
 }
