@@ -3,8 +3,8 @@ package xqt.kotlinx.rpc.json.test.serialization.types
 
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
@@ -30,7 +30,7 @@ class TheJsonStringType {
     @Test
     @DisplayName("throws an error if the kind type is not supported")
     fun throws_an_error_if_the_kind_type_is_not_supported() {
-        val e1 = assertFails { JsonString.deserialize(JsonObject(mapOf())) }
+        val e1 = assertFails { JsonString.deserialize(jsonObjectOf()) }
         assertEquals(IllegalArgumentException::class, e1::class)
         assertEquals("Unsupported kind type 'object'", e1.message)
 
