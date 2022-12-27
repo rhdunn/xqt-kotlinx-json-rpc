@@ -25,6 +25,17 @@ fun <T> JsonObject.deserialize(key: String, serializer: JsonSerialization<T>): T
 }
 
 /**
+ * Deserialize the array of data types or objects from the `json` element.
+ *
+ * @param key the name of the required key to deserialize.
+ * @param serializer how to deserialize the JSON elements in the array.
+ */
+fun <T> JsonObject.deserializeArray(key: String, serializer: JsonSerialization<T>): List<T> {
+    val data = get(key) ?: missingKey(key)
+    return JsonTypedArray.deserialize(data, serializer)
+}
+
+/**
  * Deserialize the data type or object from the `json` element.
  *
  * @param key the name of the required key to deserialize.
