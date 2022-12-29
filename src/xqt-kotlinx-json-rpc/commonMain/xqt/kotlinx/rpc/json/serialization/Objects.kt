@@ -44,3 +44,14 @@ fun <T> JsonObject.deserializeArray(key: String, serializer: JsonSerialization<T
 fun <T> JsonObject.deserializeOptional(key: String, serializer: JsonSerialization<T>): T? {
     return get(key)?.let { serializer.deserialize(it) }
 }
+
+/**
+ * Deserialize the array of data types or objects from the `json` element.
+ *
+ * @param key the name of the optional key to deserialize.
+ * @param serializer how to deserialize the JSON elements in the array.
+ */
+fun <T> JsonObject.deserializeOptionalArray(key: String, serializer: JsonSerialization<T>): List<T> {
+    val data = get(key) ?: return listOf()
+    return JsonTypedArray.deserialize(data, serializer)
+}
