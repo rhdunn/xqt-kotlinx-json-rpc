@@ -30,8 +30,13 @@ fun missingKey(key: String): Nothing {
 /**
  * A helper function for reporting unsupported JSON types during deserialization.
  */
-fun unsupportedKindType(json: JsonElement): Nothing {
-    throw IllegalArgumentException("Unsupported kind type '${json.kindType.kindName}'")
+fun unsupportedKindType(json: JsonElement): Nothing = unsupportedKindType(json.kindType)
+
+/**
+ * A helper function for reporting unsupported JSON types during deserialization.
+ */
+fun unsupportedKindType(kindType: KindType): Nothing {
+    throw IllegalArgumentException("Unsupported kind type '${kindType.kindName}'")
 }
 
 /**
