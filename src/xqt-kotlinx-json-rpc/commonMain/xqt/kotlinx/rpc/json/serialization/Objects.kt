@@ -55,3 +55,17 @@ fun <T> JsonObject.deserializeOptionalArray(key: String, serializer: JsonSeriali
     val data = get(key) ?: return listOf()
     return JsonTypedArray.deserialize(data, serializer)
 }
+
+/**
+ * Serialize the array of data types to the JSON element.
+ *
+ * If the list is empty, this will add the empty array in the specified key of
+ * the JSON element.
+ *
+ * @param key the name of the key to serialize to.
+ * @param value the content of the array to serialize to.
+ * @param serializer how to serialize the JSON element value.
+ */
+fun <T> JsonObjectBuilder.putArray(key: String, value: List<T>, serializer: JsonSerialization<T>) {
+    put(key, JsonTypedArray.serialize(value, serializer))
+}
