@@ -30,7 +30,7 @@ fun <T> JsonObject.get(key: String, serializer: JsonSerialization<T>): T {
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON elements in the array.
  */
-fun <T> JsonObject.deserializeArray(key: String, serializer: JsonSerialization<T>): List<T> {
+fun <T> JsonObject.getArray(key: String, serializer: JsonSerialization<T>): List<T> {
     val data = get(key) ?: missingKey(key)
     return JsonTypedArray.deserialize(data, serializer)
 }
