@@ -41,7 +41,7 @@ fun <T> JsonObject.getArray(key: String, serializer: JsonSerialization<T>): List
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
  */
-fun <T> JsonObject.deserializeOptional(key: String, serializer: JsonSerialization<T>): T? {
+fun <T> JsonObject.getOptional(key: String, serializer: JsonSerialization<T>): T? {
     return get(key)?.let { serializer.deserialize(it) }
 }
 
