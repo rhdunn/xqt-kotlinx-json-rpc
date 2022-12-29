@@ -20,7 +20,7 @@ fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObje
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
  */
-fun <T> JsonObject.deserialize(key: String, serializer: JsonSerialization<T>): T {
+fun <T> JsonObject.get(key: String, serializer: JsonSerialization<T>): T {
     return serializer.deserialize(get(key) ?: missingKey(key))
 }
 
