@@ -51,7 +51,7 @@ fun <T> JsonObject.getOptional(key: String, serializer: JsonSerialization<T>): T
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON elements in the array.
  */
-fun <T> JsonObject.deserializeOptionalArray(key: String, serializer: JsonSerialization<T>): List<T> {
+fun <T> JsonObject.getOptionalArray(key: String, serializer: JsonSerialization<T>): List<T> {
     val data = get(key) ?: return listOf()
     return JsonTypedArray.deserialize(data, serializer)
 }
