@@ -57,6 +57,19 @@ fun <T> JsonObject.deserializeOptionalArray(key: String, serializer: JsonSeriali
 }
 
 /**
+ * Serialize the data type or object to the JSON element.
+ *
+ * If the value is null, this will add it to the JSON element as a null.
+ *
+ * @param key the name of the key to serialize to.
+ * @param value the content of the array to serialize to.
+ * @param serializer how to serialize the JSON element value.
+ */
+fun <T> JsonObjectBuilder.put(key: String, value: T?, serializer: JsonSerialization<T>) {
+    put(key, value?.let { serializer.serialize(it) } ?: JsonNull)
+}
+
+/**
  * Serialize the array of data types to the JSON element.
  *
  * If the list is empty, this will add the empty array in the specified key of
