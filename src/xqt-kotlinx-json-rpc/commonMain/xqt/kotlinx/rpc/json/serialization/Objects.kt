@@ -90,18 +90,6 @@ fun <T> JsonObjectBuilder.putArray(key: String, value: List<T>, serializer: Json
  *
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
- */
-fun JsonObjectBuilder.putOptional(key: String, value: JsonElement?) {
-    value?.let { put(key, it) }
-}
-
-/**
- * Serialize the data type or object to the JSON element.
- *
- * If the value is null, this will not add it to the JSON element.
- *
- * @param key the name of the key to serialize to.
- * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON element value.
  */
 fun <T> JsonObjectBuilder.putOptional(key: String, value: T?, serializer: JsonSerialization<T>) {
