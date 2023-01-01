@@ -1,7 +1,8 @@
-// Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.serialization
 
 import kotlinx.serialization.json.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
  * A helper function for reporting unsupported JSON types during deserialization.
@@ -37,6 +38,20 @@ fun unsupportedKindType(json: JsonElement): Nothing = unsupportedKindType(json.k
  */
 fun unsupportedKindType(kindType: KindType): Nothing {
     throw IllegalArgumentException("Unsupported kind type '${kindType.kindName}'")
+}
+
+/**
+ * A helper function for reporting unsupported JSON types during deserialization.
+ */
+fun unsupportedKindValue(kind: String): Nothing {
+    throw IllegalArgumentException("Unsupported kind property value '$kind'")
+}
+
+/**
+ * A helper function for reporting unsupported JSON types during deserialization.
+ */
+fun unsupportedKindValue(json: JsonObject): Nothing {
+    unsupportedKindValue(json.get("kind", JsonString))
 }
 
 /**

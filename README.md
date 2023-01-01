@@ -4,6 +4,6 @@ protocol. It supports:
 1. [JSON-RPC 2.0](https://www.jsonrpc.org/specification)
 
 ## License
-Copyright (C) 2022 Reece H. Dunn
+Copyright (C) 2022-2023 Reece H. Dunn
 
 SPDX-License-Identifier: [Apache-2.0](LICENSE)
