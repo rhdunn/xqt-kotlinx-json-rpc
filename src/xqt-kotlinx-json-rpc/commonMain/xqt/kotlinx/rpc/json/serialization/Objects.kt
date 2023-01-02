@@ -99,6 +99,24 @@ fun <T> JsonObject.getOptionalArray(key: String, serializer: JsonSerialization<T
 }
 
 /**
+ * Serialize the map of data types to the JSON element.
+ *
+ * If the map is empty, this will not add the map to the JSON element.
+ *
+ * @param key the name of the key to serialize to.
+ * @param keySerializer how to deserialize the keys in the map.
+ * @param valueSerializer how to deserialize the values in the map.
+ */
+fun <K, V> JsonObject.getOptionalMap(
+    key: String,
+    keySerializer: StringSerialization<K>,
+    valueSerializer: JsonSerialization<V>
+): Map<K, V> {
+    val data = get(key) ?: return mapOf()
+    return JsonTypedMap.deserialize(data, keySerializer, valueSerializer)
+}
+
+/**
  * Serialize the data type or object to the JSON element.
  *
  * If the value is null, this will add it to the JSON element as a null.
