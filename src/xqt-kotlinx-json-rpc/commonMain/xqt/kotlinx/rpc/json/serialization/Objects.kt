@@ -170,3 +170,24 @@ fun <T> JsonObjectBuilder.putOptionalArray(key: String, value: List<T>, serializ
         put(key, JsonTypedArray.serialize(value, serializer))
     }
 }
+
+/**
+ * Serialize the map of data types to the JSON element.
+ *
+ * If the map is empty, this will not add the map to the JSON element.
+ *
+ * @param key the name of the key to serialize to.
+ * @param value the content of the array to serialize to.
+ * @param keySerializer how to serialize the keys in the map.
+ * @param valueSerializer how to serialize the values in the map.
+ */
+fun <K, V> JsonObjectBuilder.putOptionalMap(
+    key: String,
+    value: Map<K, V>,
+    keySerializer: StringSerialization<K>,
+    valueSerializer: JsonSerialization<V>
+) {
+    if (value.isNotEmpty()) {
+        put(key, JsonTypedMap.serialize(value, keySerializer, valueSerializer))
+    }
+}
