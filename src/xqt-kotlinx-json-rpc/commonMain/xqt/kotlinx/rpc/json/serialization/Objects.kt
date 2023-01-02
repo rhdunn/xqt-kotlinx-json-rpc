@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.serialization
 
 import kotlinx.serialization.json.*
@@ -13,6 +13,48 @@ import kotlinx.serialization.json.*
  * Entries of the map are iterated in the order they were specified.
  */
 fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObject(mapOf(*pairs))
+
+/**
+ * Serialization helpers for typed maps.
+ */
+object JsonTypedMap {
+    /**
+     * Serialize the map of values to JSON.
+     *
+     * @param keySerializer how to serialize the keys in the map.
+     * @param valueSerializer how to serialize the values in the map.
+     */
+    fun <K, V> serialize(
+        value: Map<K, V>,
+        keySerializer: StringSerialization<K>,
+        valueSerializer: JsonSerialization<V>
+    ): JsonElement = buildJsonObject {
+        value.forEach { (key, value) ->
+            val k = keySerializer.serializeToString(key)
+            val v = valueSerializer.serializeToJson(value)
+            put(k, v)
+        }
+    }
+
+    /**
+     * Deserialize the map of values from the `json` object.
+     *
+     * @param keySerializer how to deserialize the keys in the map.
+     * @param valueSerializer how to deserialize the values in the map.
+     */
+    fun <K, V> deserialize(
+        json: JsonElement,
+        keySerializer: StringSerialization<K>,
+        valueSerializer: JsonSerialization<V>
+    ): Map<K, V> = when (json) {
+        !is JsonObject -> unsupportedKindType(json)
+        else -> json.entries.associate { (key, value) ->
+            val k = keySerializer.deserialize(key)
+            val v = valueSerializer.deserialize(value)
+            k to v
+        }
+    }
+}
 
 /**
  * Deserialize the data type or object from the `json` element.
