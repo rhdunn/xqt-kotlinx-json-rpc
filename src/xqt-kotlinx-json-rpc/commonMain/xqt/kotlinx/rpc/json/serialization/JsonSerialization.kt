@@ -4,7 +4,7 @@ package xqt.kotlinx.rpc.json.serialization
 import kotlinx.serialization.json.JsonElement
 
 /**
- * Defines serialization for a data type or object.
+ * Defines serialization for a data type or object to/from JSON elements.
  */
 interface JsonSerialization<T> {
     /**
