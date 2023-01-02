@@ -16,10 +16,10 @@ class TheJsonArrayType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals(jsonArrayOf(), JsonArray.serialize(jsonArrayOf()))
+        assertEquals(jsonArrayOf(), JsonArray.serializeToJson(jsonArrayOf()))
 
         val array = jsonArrayOf(JsonPrimitive(1234))
-        assertEquals(array, JsonArray.serialize(array))
+        assertEquals(array, JsonArray.serializeToJson(array))
     }
 
     @Test

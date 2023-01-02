@@ -10,7 +10,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Defines a JSON object.
  */
 object JsonObject : JsonSerialization<JsonObject> {
-    override fun serialize(value: JsonObject): JsonElement = value
+    override fun serializeToJson(value: JsonObject): JsonElement = value
 
     override fun deserialize(json: JsonElement): JsonObject = when (json) {
         is JsonObject -> json

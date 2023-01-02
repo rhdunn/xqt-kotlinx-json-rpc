@@ -17,13 +17,13 @@ class TheJsonDoubleType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals("1.2", JsonDouble.serialize(1.2).toString())
+        assertEquals("1.2", JsonDouble.serializeToJson(1.2).toString())
 
         // ISSUE: https://github.com/Kotlin/kotlinx.serialization/issues/2128
         //        Returns `0` on JS, `0.0` on JVM and Native
-        assertContains(arrayOf("0", "0.0"), JsonDouble.serialize(0.0).toString())
+        assertContains(arrayOf("0", "0.0"), JsonDouble.serializeToJson(0.0).toString())
 
-        assertEquals("-7.5", JsonDouble.serialize(-7.5).toString())
+        assertEquals("-7.5", JsonDouble.serializeToJson(-7.5).toString())
     }
 
     @Test

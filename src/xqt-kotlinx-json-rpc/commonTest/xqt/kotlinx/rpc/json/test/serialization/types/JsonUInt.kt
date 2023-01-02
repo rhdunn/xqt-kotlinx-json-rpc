@@ -16,10 +16,10 @@ class TheJsonUIntType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals("1234", JsonUInt.serialize(1234u).toString())
+        assertEquals("1234", JsonUInt.serializeToJson(1234u).toString())
 
-        assertEquals("0", JsonUInt.serialize(UInt.MIN_VALUE).toString())
-        assertEquals("4294967295", JsonUInt.serialize(UInt.MAX_VALUE).toString())
+        assertEquals("0", JsonUInt.serializeToJson(UInt.MIN_VALUE).toString())
+        assertEquals("4294967295", JsonUInt.serializeToJson(UInt.MAX_VALUE).toString())
     }
 
     @Test

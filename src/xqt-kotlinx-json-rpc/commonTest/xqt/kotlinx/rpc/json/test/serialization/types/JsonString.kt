@@ -16,8 +16,8 @@ class TheJsonStringType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals("\"lorem\"", JsonString.serialize("lorem").toString())
-        assertEquals("\"1234\"", JsonString.serialize("1234").toString())
+        assertEquals("\"lorem\"", JsonString.serializeToJson("lorem").toString())
+        assertEquals("\"1234\"", JsonString.serializeToJson("1234").toString())
     }
 
     @Test

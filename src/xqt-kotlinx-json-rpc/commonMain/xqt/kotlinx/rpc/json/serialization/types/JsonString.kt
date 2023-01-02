@@ -12,7 +12,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Defines a string.
  */
 object JsonString : JsonSerialization<String> {
-    override fun serialize(value: String): JsonElement = JsonPrimitive(value)
+    override fun serializeToJson(value: String): JsonElement = JsonPrimitive(value)
 
     override fun deserialize(json: JsonElement): String = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)

@@ -12,7 +12,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Defines a boolean.
  */
 object JsonBoolean : JsonSerialization<Boolean> {
-    override fun serialize(value: Boolean): JsonElement = JsonPrimitive(value)
+    override fun serializeToJson(value: Boolean): JsonElement = JsonPrimitive(value)
 
     override fun deserialize(json: JsonElement): Boolean = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)

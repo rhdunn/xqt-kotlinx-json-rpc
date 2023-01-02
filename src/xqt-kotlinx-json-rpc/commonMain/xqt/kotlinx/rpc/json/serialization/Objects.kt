@@ -66,7 +66,7 @@ fun <T> JsonObject.getOptionalArray(key: String, serializer: JsonSerialization<T
  * @param serializer how to serialize the JSON element value.
  */
 fun <T> JsonObjectBuilder.put(key: String, value: T?, serializer: JsonSerialization<T>) {
-    put(key, value?.let { serializer.serialize(it) } ?: JsonNull)
+    put(key, value?.let { serializer.serializeToJson(it) } ?: JsonNull)
 }
 
 /**
@@ -93,7 +93,7 @@ fun <T> JsonObjectBuilder.putArray(key: String, value: List<T>, serializer: Json
  * @param serializer how to serialize the JSON element value.
  */
 fun <T> JsonObjectBuilder.putOptional(key: String, value: T?, serializer: JsonSerialization<T>) {
-    value?.let { put(key, serializer.serialize(it)) }
+    value?.let { put(key, serializer.serializeToJson(it)) }
 }
 
 /**

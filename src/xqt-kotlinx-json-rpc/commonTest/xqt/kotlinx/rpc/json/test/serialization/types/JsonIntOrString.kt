@@ -20,13 +20,13 @@ class TheJsonIntOrStringType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals("1234", JsonIntOrString.serialize(integer(1234)).toString())
+        assertEquals("1234", JsonIntOrString.serializeToJson(integer(1234)).toString())
 
-        assertEquals("-2147483648", JsonIntOrString.serialize(integer(Int.MIN_VALUE)).toString())
-        assertEquals("2147483647", JsonIntOrString.serialize(integer(Int.MAX_VALUE)).toString())
+        assertEquals("-2147483648", JsonIntOrString.serializeToJson(integer(Int.MIN_VALUE)).toString())
+        assertEquals("2147483647", JsonIntOrString.serializeToJson(integer(Int.MAX_VALUE)).toString())
 
-        assertEquals("\"1234\"", JsonIntOrString.serialize(string("1234")).toString())
-        assertEquals("\"abcdef\"", JsonIntOrString.serialize(string("abcdef")).toString())
+        assertEquals("\"1234\"", JsonIntOrString.serializeToJson(string("1234")).toString())
+        assertEquals("\"abcdef\"", JsonIntOrString.serializeToJson(string("abcdef")).toString())
     }
 
     @Test

@@ -10,7 +10,7 @@ interface JsonSerialization<T> {
     /**
      * Serialize the data type or object `value` to JSON.
      */
-    fun serialize(value: T): JsonElement
+    fun serializeToJson(value: T): JsonElement
 
     /**
      * Deserialize the data type or object from the `json` element.

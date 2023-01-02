@@ -16,8 +16,8 @@ class TheJsonBooleanType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals("true", JsonBoolean.serialize(true).toString())
-        assertEquals("false", JsonBoolean.serialize(false).toString())
+        assertEquals("true", JsonBoolean.serializeToJson(true).toString())
+        assertEquals("false", JsonBoolean.serializeToJson(false).toString())
     }
 
     @Test

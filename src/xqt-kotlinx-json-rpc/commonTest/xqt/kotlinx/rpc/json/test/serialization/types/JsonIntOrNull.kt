@@ -16,11 +16,11 @@ class TheJsonIntOrNullType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals("null", JsonIntOrNull.serialize(null).toString())
-        assertEquals("1234", JsonIntOrNull.serialize(1234).toString())
+        assertEquals("null", JsonIntOrNull.serializeToJson(null).toString())
+        assertEquals("1234", JsonIntOrNull.serializeToJson(1234).toString())
 
-        assertEquals("-2147483648", JsonIntOrNull.serialize(Int.MIN_VALUE).toString())
-        assertEquals("2147483647", JsonIntOrNull.serialize(Int.MAX_VALUE).toString())
+        assertEquals("-2147483648", JsonIntOrNull.serializeToJson(Int.MIN_VALUE).toString())
+        assertEquals("2147483647", JsonIntOrNull.serializeToJson(Int.MAX_VALUE).toString())
     }
 
     @Test

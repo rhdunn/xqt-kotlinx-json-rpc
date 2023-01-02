@@ -10,7 +10,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Defines a JSON array.
  */
 object JsonArray : JsonSerialization<JsonArray> {
-    override fun serialize(value: JsonArray): JsonElement = value
+    override fun serializeToJson(value: JsonArray): JsonElement = value
 
     override fun deserialize(json: JsonElement): JsonArray = when (json) {
         is JsonArray -> json

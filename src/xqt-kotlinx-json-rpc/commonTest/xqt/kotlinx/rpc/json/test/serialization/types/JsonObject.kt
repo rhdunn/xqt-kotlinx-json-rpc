@@ -16,10 +16,10 @@ class TheJsonObjectType {
     @Test
     @DisplayName("can serialize to JSON")
     fun can_serialize_to_json() {
-        assertEquals(jsonObjectOf(), JsonObject.serialize(jsonObjectOf()))
+        assertEquals(jsonObjectOf(), JsonObject.serializeToJson(jsonObjectOf()))
 
         val `object` = jsonObjectOf("test" to JsonPrimitive(1234))
-        assertEquals(`object`, JsonObject.serialize(`object`))
+        assertEquals(`object`, JsonObject.serializeToJson(`object`))
     }
 
     @Test

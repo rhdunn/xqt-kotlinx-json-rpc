@@ -9,7 +9,7 @@ import xqt.kotlinx.rpc.json.serialization.*
  * Defines an unsigned integer number in the range of 0 to 2^32 - 1.
  */
 object JsonUInt : JsonSerialization<UInt> {
-    override fun serialize(value: UInt): JsonElement = JsonPrimitive(value.toLong())
+    override fun serializeToJson(value: UInt): JsonElement = JsonPrimitive(value.toLong())
 
     override fun deserialize(json: JsonElement): UInt = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)

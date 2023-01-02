@@ -20,7 +20,7 @@ object JsonTypedArray {
      * @param serialization the serialization method to use for the array items.
      */
     fun <T> serialize(value: List<T>, serialization: JsonSerialization<T>): JsonElement = buildJsonArray {
-        value.forEach { item -> add(serialization.serialize(item)) }
+        value.forEach { item -> add(serialization.serializeToJson(item)) }
     }
 
     /**
