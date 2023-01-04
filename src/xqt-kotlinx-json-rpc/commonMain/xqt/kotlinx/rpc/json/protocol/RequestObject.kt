@@ -35,7 +35,7 @@ data class RequestObject(
     val id: JsonIntOrString,
 
     /**
-     * The method's params.
+     * The method's parameters.
      */
     val params: JsonElement? = null
 ) : Message {
@@ -53,6 +53,49 @@ data class RequestObject(
                 jsonprc = json.get("jsonrpc", JsonString),
                 method = json.get("method", JsonString),
                 id = json.get("id", JsonIntOrString),
+                params = json.getOptional("params", JsonArrayOrObject)
+            )
+        }
+    }
+}
+
+/**
+ * A notification message.
+ *
+ * A processed notification message must not send a response back. They work like events.
+ *
+ * @see <a href="https://www.jsonrpc.org/specification#notification">JSON-RPC 2.0 Notification</a>
+ * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#notificationMessage">LSP 3.17 NotificationMessage</a>
+ */
+data class Notification(
+    override val jsonprc: String,
+
+    /**
+     * The method to be invoked.
+     *
+     * Method names that begin with the word rpc followed by a period character
+     * (`.`) are reserved for rpc-internal methods and extensions and *must not*
+     * be used for anything else.
+     */
+    val method: String,
+
+    /**
+     * The method's parameters.
+     */
+    val params: JsonElement? = null
+) : Message {
+    companion object : JsonSerialization<Notification> {
+        override fun serializeToJson(value: Notification): JsonElement = buildJsonObject {
+            put("jsonrpc", value.jsonprc, JsonString)
+            put("method", value.method, JsonString)
+            putOptional("params", value.params, JsonArrayOrObject)
+        }
+
+        override fun deserialize(json: JsonElement): Notification = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> Notification(
+                jsonprc = json.get("jsonrpc", JsonString),
+                method = json.get("method", JsonString),
                 params = json.getOptional("params", JsonArrayOrObject)
             )
         }
