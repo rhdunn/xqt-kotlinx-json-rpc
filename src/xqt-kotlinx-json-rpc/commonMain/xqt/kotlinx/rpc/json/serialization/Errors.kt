@@ -29,6 +29,12 @@ class UnsupportedKindValueException(kind: String) :
     JsonDeserializationException("Unsupported kind property value '$kind'")
 
 /**
+ * The `value` is out of range.
+ */
+class ValueOutOfRangeException(value: String) :
+    JsonDeserializationException("The value '$value' is out of range")
+
+/**
  * Throws a non-empty array is empty exception.
  */
 fun emptyArray(): Nothing = throw EmptyArrayException()
@@ -73,15 +79,11 @@ fun unsupportedKindValue(json: JsonObject): Nothing {
 }
 
 /**
- * A helper function for reporting numeric values outside supported bounds.
+ * Throws a value is out of range exception.
  */
-fun <T> valueOutOfRange(value: T): Nothing {
-    throw IllegalArgumentException("The value '$value' is out of range")
-}
+fun <T> valueOutOfRange(value: T): Nothing = throw ValueOutOfRangeException(value.toString())
 
 /**
- * A helper function for reporting numeric values outside supported bounds.
+ * Throws a value is out of range exception.
  */
-fun valueOutOfRange(json: JsonPrimitive): Nothing {
-    throw IllegalArgumentException("The value '${json.content}' is out of range")
-}
+fun valueOutOfRange(json: JsonPrimitive): Nothing = throw ValueOutOfRangeException(json.content)

@@ -1,8 +1,9 @@
-// Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.test.serialization.types
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.rpc.json.serialization.ValueOutOfRangeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.rpc.json.serialization.types.JsonUInt
@@ -35,11 +36,11 @@ class TheJsonUIntType {
     @DisplayName("throws an error if the value is out of range")
     fun throws_an_error_if_the_value_is_out_of_range() {
         val e1 = assertFails { JsonUInt.deserialize(JsonPrimitive(-1)) }
-        assertEquals(IllegalArgumentException::class, e1::class)
+        assertEquals(ValueOutOfRangeException::class, e1::class)
         assertEquals("The value '-1' is out of range", e1.message)
 
         val e2 = assertFails { JsonUInt.deserialize(JsonPrimitive(UInt.MAX_VALUE.toLong() + 1)) }
-        assertEquals(IllegalArgumentException::class, e2::class)
+        assertEquals(ValueOutOfRangeException::class, e2::class)
         assertEquals("The value '4294967296' is out of range", e2.message)
     }
 
