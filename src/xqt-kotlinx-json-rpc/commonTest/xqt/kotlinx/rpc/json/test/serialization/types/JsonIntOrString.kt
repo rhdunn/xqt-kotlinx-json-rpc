@@ -6,7 +6,6 @@ import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
@@ -48,23 +47,23 @@ class TheJsonIntOrStringType {
     @Test
     @DisplayName("throws an error if the kind type is not supported")
     fun throws_an_error_if_the_kind_type_is_not_supported() {
-        val e1 = assertFails { JsonInt.deserialize(jsonObjectOf()) }
+        val e1 = assertFails { JsonIntOrString.deserialize(jsonObjectOf()) }
         assertEquals(UnsupportedKindTypeException::class, e1::class)
         assertEquals("Unsupported kind type 'object'", e1.message)
 
-        val e2 = assertFails { JsonInt.deserialize(jsonArrayOf()) }
+        val e2 = assertFails { JsonIntOrString.deserialize(jsonArrayOf()) }
         assertEquals(UnsupportedKindTypeException::class, e2::class)
         assertEquals("Unsupported kind type 'array'", e2.message)
 
-        val e3 = assertFails { JsonInt.deserialize(JsonNull) }
+        val e3 = assertFails { JsonIntOrString.deserialize(JsonNull) }
         assertEquals(UnsupportedKindTypeException::class, e3::class)
         assertEquals("Unsupported kind type 'null'", e3.message)
 
-        val e4 = assertFails { JsonInt.deserialize(JsonPrimitive(true)) }
+        val e4 = assertFails { JsonIntOrString.deserialize(JsonPrimitive(true)) }
         assertEquals(UnsupportedKindTypeException::class, e4::class)
         assertEquals("Unsupported kind type 'boolean'", e4.message)
 
-        val e5 = assertFails { JsonInt.deserialize(JsonPrimitive(1.2)) }
+        val e5 = assertFails { JsonIntOrString.deserialize(JsonPrimitive(1.2)) }
         assertEquals(UnsupportedKindTypeException::class, e5::class)
         assertEquals("Unsupported kind type 'decimal'", e5.message)
     }
