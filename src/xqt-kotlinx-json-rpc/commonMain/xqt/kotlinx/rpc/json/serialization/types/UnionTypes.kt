@@ -10,7 +10,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 import kotlin.jvm.JvmInline
 
 /**
- * Defines an integer|string value union type.
+ * Defines an integer|string union type.
  */
 sealed interface JsonIntOrString {
     /**

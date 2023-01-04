@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
-@DisplayName("The JSON Int|String type")
+@DisplayName("The JSON integer|string type")
 class TheJsonIntOrStringType {
     private fun integer(value: Int): JsonIntOrString = JsonIntOrString.IntegerValue(value)
     private fun string(value: String): JsonIntOrString = JsonIntOrString.StringValue(value)
