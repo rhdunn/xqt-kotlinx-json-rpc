@@ -1,7 +1,9 @@
-// Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.serialization.types
 
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.KindType
@@ -61,5 +63,22 @@ sealed interface JsonIntOrString {
                 else -> unsupportedKindType(json)
             }
         }
+    }
+}
+
+/**
+ * Defines an array|object union type.
+ */
+object JsonArrayOrObject : JsonSerialization<JsonElement> {
+    override fun serializeToJson(value: JsonElement): JsonElement = when (value) {
+        is JsonArray -> value
+        is JsonObject -> value
+        else -> unsupportedKindType(value)
+    }
+
+    override fun deserialize(json: JsonElement): JsonElement = when (json) {
+        is JsonArray -> json
+        is JsonObject -> json
+        else -> unsupportedKindType(json)
     }
 }
