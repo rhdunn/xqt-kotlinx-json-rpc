@@ -23,6 +23,12 @@ class MissingKeyException(key: String) :
     JsonDeserializationException("Missing $key key")
 
 /**
+ * The JSON kind type is not supported.
+ */
+class UnsupportedKindTypeException(kindType: KindType) :
+    JsonDeserializationException("Unsupported kind type '${kindType.kindName}'")
+
+/**
  * The `kind` key type is not supported.
  */
 class UnsupportedKindValueException(kind: String) :
@@ -55,16 +61,14 @@ fun missingKey(vararg key: String): Nothing {
 fun missingKey(key: String): Nothing = throw MissingKeyException(key)
 
 /**
- * A helper function for reporting unsupported JSON types during deserialization.
+ * Throws a JSON kind type is not supported exception.
  */
-fun unsupportedKindType(json: JsonElement): Nothing = unsupportedKindType(json.kindType)
+fun unsupportedKindType(json: JsonElement): Nothing = throw UnsupportedKindTypeException(json.kindType)
 
 /**
- * A helper function for reporting unsupported JSON types during deserialization.
+ * Throws a JSON kind type is not supported exception.
  */
-fun unsupportedKindType(kindType: KindType): Nothing {
-    throw IllegalArgumentException("Unsupported kind type '${kindType.kindName}'")
-}
+fun unsupportedKindType(kindType: KindType): Nothing = throw UnsupportedKindTypeException(kindType)
 
 /**
  * Throws a kind key type is not supported exception.

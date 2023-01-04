@@ -4,6 +4,7 @@ package xqt.kotlinx.rpc.json.test.protocol
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.protocol.ErrorCode
+import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.test.DisplayName
@@ -45,27 +46,27 @@ class TheErrorCodeType {
     @DisplayName("throws an error if the kind type is not supported")
     fun throws_an_error_if_the_kind_type_is_not_supported() {
         val e1 = assertFails { ErrorCode.deserialize(jsonObjectOf()) }
-        assertEquals(IllegalArgumentException::class, e1::class)
+        assertEquals(UnsupportedKindTypeException::class, e1::class)
         assertEquals("Unsupported kind type 'object'", e1.message)
 
         val e2 = assertFails { ErrorCode.deserialize(jsonArrayOf()) }
-        assertEquals(IllegalArgumentException::class, e2::class)
+        assertEquals(UnsupportedKindTypeException::class, e2::class)
         assertEquals("Unsupported kind type 'array'", e2.message)
 
         val e3 = assertFails { ErrorCode.deserialize(JsonNull) }
-        assertEquals(IllegalArgumentException::class, e3::class)
+        assertEquals(UnsupportedKindTypeException::class, e3::class)
         assertEquals("Unsupported kind type 'null'", e3.message)
 
         val e4 = assertFails { ErrorCode.deserialize(JsonPrimitive("test")) }
-        assertEquals(IllegalArgumentException::class, e4::class)
+        assertEquals(UnsupportedKindTypeException::class, e4::class)
         assertEquals("Unsupported kind type 'string'", e4.message)
 
         val e5 = assertFails { ErrorCode.deserialize(JsonPrimitive(true)) }
-        assertEquals(IllegalArgumentException::class, e5::class)
+        assertEquals(UnsupportedKindTypeException::class, e5::class)
         assertEquals("Unsupported kind type 'boolean'", e5.message)
 
         val e6 = assertFails { ErrorCode.deserialize(JsonPrimitive(1.2)) }
-        assertEquals(IllegalArgumentException::class, e6::class)
+        assertEquals(UnsupportedKindTypeException::class, e6::class)
         assertEquals("Unsupported kind type 'decimal'", e6.message)
     }
 }
