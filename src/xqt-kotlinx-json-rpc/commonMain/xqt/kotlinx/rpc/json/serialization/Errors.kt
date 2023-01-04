@@ -5,11 +5,19 @@ import kotlinx.serialization.json.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
- * A helper function for reporting unsupported JSON types during deserialization.
+ * An error during `JsonSerialization.deserialize`.
  */
-fun emptyArray(): Nothing {
-    throw IllegalArgumentException("The array is empty")
-}
+open class JsonDeserializationException(message: String) : RuntimeException(message)
+
+/**
+ * A non-empty JSON array is empty.
+ */
+class EmptyArrayException : JsonDeserializationException("The array is empty")
+
+/**
+ * Throws a non-empty array is empty exception.
+ */
+fun emptyArray(): Nothing = throw EmptyArrayException()
 
 /**
  * A helper function for reporting a missing key in a JSON object.
