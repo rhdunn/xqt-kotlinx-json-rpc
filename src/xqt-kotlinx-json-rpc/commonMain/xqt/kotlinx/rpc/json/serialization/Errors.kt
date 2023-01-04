@@ -23,6 +23,12 @@ class MissingKeyException(key: String) :
     JsonDeserializationException("Missing $key key")
 
 /**
+ * A conflicting key in a JSON object.
+ */
+class ConflictingKeyException(key: String) :
+    JsonDeserializationException("Conflicting $key key")
+
+/**
  * The JSON kind type is not supported.
  */
 class UnsupportedKindTypeException(kindType: KindType) :
@@ -59,6 +65,16 @@ fun missingKey(vararg key: String): Nothing {
  * Throws a missing key in a JSON object exception.
  */
 fun missingKey(key: String): Nothing = throw MissingKeyException(key)
+
+/**
+ * Throws a conflicting key in a JSON object exception.
+ */
+fun conflictingKey(vararg key: String): Nothing {
+    val keyNames = key.withIndex().joinToString(", ") { (index, name) ->
+        if (index == key.size - 1) "or '$name'" else "'$name'"
+    }
+    throw ConflictingKeyException(keyNames)
+}
 
 /**
  * Throws a JSON kind type is not supported exception.
