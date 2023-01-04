@@ -2,9 +2,13 @@
 package xqt.kotlinx.rpc.json.protocol
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
 
 /**
@@ -12,7 +16,7 @@ import kotlin.jvm.JvmInline
  *
  * @param code the error code value.
  *
- * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object code</a>
+ * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#errorCodes">LSP 3.17 ErrorCodes</a>
  */
 @JvmInline
@@ -60,5 +64,48 @@ value class ErrorCode(val code: Int) {
          * Reserved for implementation-defined server-errors.
          */
         val ServerErrorRangeEnd: ErrorCode = ErrorCode(-32000)
+    }
+}
+
+/**
+ * An error processing an RPC call.
+ *
+ * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
+ * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseError">LSP 3.17 ResponseError</a>
+ */
+data class ErrorObject(
+    /**
+     * A number indicating the error type that occurred.
+     */
+    val code: ErrorCode,
+
+    /**
+     * A string providing a short description of the error.
+     */
+    val message: String,
+
+    /**
+     * A primitive or structured value that contains additional
+     * information about the error.
+     *
+     * Can be omitted.
+     */
+    val data: JsonElement? = null
+) {
+    companion object : JsonSerialization<ErrorObject> {
+        override fun serializeToJson(value: ErrorObject): JsonElement = buildJsonObject {
+            put("code", value.code, ErrorCode)
+            put("message", value.message, JsonString)
+            putOptional("data", value.data, JsonElementType)
+        }
+
+        override fun deserialize(json: JsonElement): ErrorObject = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> ErrorObject(
+                code = json.get("code", ErrorCode),
+                message = json.get("message", JsonString),
+                data = json.getOptional("data", JsonElementType)
+            )
+        }
     }
 }
