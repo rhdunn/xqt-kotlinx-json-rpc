@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
-@DisplayName("The JSON Int or null type")
+@DisplayName("The JSON integer|null type")
 class TheJsonIntOrNullType {
     @Test
     @DisplayName("can serialize to JSON")
