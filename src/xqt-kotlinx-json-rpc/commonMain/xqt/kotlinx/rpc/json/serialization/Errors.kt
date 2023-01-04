@@ -15,26 +15,29 @@ open class JsonDeserializationException(message: String) : RuntimeException(mess
 class EmptyArrayException : JsonDeserializationException("The array is empty")
 
 /**
+ * A missing key in a JSON object.
+ */
+class MissingKeyException(key: String) : JsonDeserializationException("Missing $key key")
+
+/**
  * Throws a non-empty array is empty exception.
  */
 fun emptyArray(): Nothing = throw EmptyArrayException()
 
 /**
- * A helper function for reporting a missing key in a JSON object.
+ * Throws a missing key in a JSON object exception.
  */
 fun missingKey(vararg key: String): Nothing {
     val keyNames = key.withIndex().joinToString(", ") { (index, name) ->
         if (index == key.size - 1) "or '$name'" else "'$name'"
     }
-    throw IllegalArgumentException("Missing $keyNames key")
+    throw MissingKeyException(keyNames)
 }
 
 /**
- * A helper function for reporting a missing key in a JSON object.
+ * Throws a missing key in a JSON object exception.
  */
-fun missingKey(key: String): Nothing {
-    throw IllegalArgumentException("Missing '$key' key")
-}
+fun missingKey(key: String): Nothing = throw MissingKeyException(key)
 
 /**
  * A helper function for reporting unsupported JSON types during deserialization.
