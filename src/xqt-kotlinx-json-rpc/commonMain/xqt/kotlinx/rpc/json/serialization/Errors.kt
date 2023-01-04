@@ -7,17 +7,26 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
 /**
  * An error during `JsonSerialization.deserialize`.
  */
-open class JsonDeserializationException(message: String) : RuntimeException(message)
+open class JsonDeserializationException(message: String) :
+    RuntimeException(message)
 
 /**
  * A non-empty JSON array is empty.
  */
-class EmptyArrayException : JsonDeserializationException("The array is empty")
+class EmptyArrayException :
+    JsonDeserializationException("The array is empty")
 
 /**
  * A missing key in a JSON object.
  */
-class MissingKeyException(key: String) : JsonDeserializationException("Missing $key key")
+class MissingKeyException(key: String) :
+    JsonDeserializationException("Missing $key key")
+
+/**
+ * The `kind` key type is not supported.
+ */
+class UnsupportedKindValueException(kind: String) :
+    JsonDeserializationException("Unsupported kind property value '$kind'")
 
 /**
  * Throws a non-empty array is empty exception.
@@ -52,14 +61,12 @@ fun unsupportedKindType(kindType: KindType): Nothing {
 }
 
 /**
- * A helper function for reporting unsupported JSON types during deserialization.
+ * Throws a kind key type is not supported exception.
  */
-fun unsupportedKindValue(kind: String): Nothing {
-    throw IllegalArgumentException("Unsupported kind property value '$kind'")
-}
+fun unsupportedKindValue(kind: String): Nothing = throw UnsupportedKindValueException(kind)
 
 /**
- * A helper function for reporting unsupported JSON types during deserialization.
+ * Throws a kind key type is not supported exception.
  */
 fun unsupportedKindValue(json: JsonObject): Nothing {
     unsupportedKindValue(json.get("kind", JsonString))
