@@ -101,3 +101,11 @@ data class Notification(
         }
     }
 }
+
+/**
+ * Processes a JSON-RPC request message.
+ */
+fun Message.request(handler: RequestObject.() -> ResponseObject): ResponseObject? = when (this) {
+    is RequestObject -> this.handler()
+    else -> null
+}
