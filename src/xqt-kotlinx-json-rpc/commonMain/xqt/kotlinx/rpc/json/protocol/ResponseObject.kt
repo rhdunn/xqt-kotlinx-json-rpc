@@ -87,3 +87,33 @@ fun <T> RequestObject.result(value: T, serialization: JsonSerialization<T>): Res
         result = serialization.serializeToJson(value)
     )
 }
+
+/**
+ * Create a JSON-RPC response error.
+ */
+fun RequestObject.error(code: ErrorCode, message: String, data: JsonElement? = null): ResponseObject {
+    return ResponseObject(
+        id = id,
+        error = ErrorObject(
+            code = code,
+            message = message,
+            data = data
+        )
+    )
+}
+
+/**
+ * Create a JSON-RPC response error.
+ */
+fun <T> RequestObject.error(
+    code: ErrorCode,
+    message: String,
+    data: T,
+    serialization: JsonSerialization<T>
+): ResponseObject {
+    return this.error(
+        code = code,
+        message = message,
+        data = serialization.serializeToJson(data)
+    )
+}
