@@ -21,8 +21,6 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseMessage">LSP 3.17 ResponseMessage</a>
  */
 data class ResponseObject(
-    override val jsonprc: String,
-
     /**
      * The request id.
      *
@@ -49,7 +47,9 @@ data class ResponseObject(
      *
      * This member *must not* exist if there was no error triggered during invocation.
      */
-    val error: ErrorObject? = null
+    val error: ErrorObject? = null,
+
+    override val jsonprc: String = Message.JSON_RPC_2_0
 ) : Message {
     init {
         if (result == null && error == null)

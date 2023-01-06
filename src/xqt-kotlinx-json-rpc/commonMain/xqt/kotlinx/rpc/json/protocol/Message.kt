@@ -13,4 +13,11 @@ interface Message {
      * This must be exactly "2.0".
      */
     val jsonprc: String
+
+    companion object {
+        /**
+         * JSON-RPC 2.0
+         */
+        const val JSON_RPC_2_0 = "2.0"
+    }
 }

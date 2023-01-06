@@ -18,8 +18,6 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#requestMessage">LSP 3.17 RequestMessage</a>
  */
 data class RequestObject(
-    override val jsonprc: String,
-
     /**
      * The method to be invoked.
      *
@@ -37,7 +35,9 @@ data class RequestObject(
     /**
      * The method's parameters.
      */
-    val params: JsonElement? = null
+    val params: JsonElement? = null,
+
+    override val jsonprc: String = Message.JSON_RPC_2_0
 ) : Message {
     companion object : JsonSerialization<RequestObject> {
         override fun serializeToJson(value: RequestObject): JsonElement = buildJsonObject {
@@ -68,8 +68,6 @@ data class RequestObject(
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#notificationMessage">LSP 3.17 NotificationMessage</a>
  */
 data class Notification(
-    override val jsonprc: String,
-
     /**
      * The method to be invoked.
      *
@@ -82,7 +80,9 @@ data class Notification(
     /**
      * The method's parameters.
      */
-    val params: JsonElement? = null
+    val params: JsonElement? = null,
+
+    override val jsonprc: String = Message.JSON_RPC_2_0
 ) : Message {
     companion object : JsonSerialization<Notification> {
         override fun serializeToJson(value: Notification): JsonElement = buildJsonObject {
