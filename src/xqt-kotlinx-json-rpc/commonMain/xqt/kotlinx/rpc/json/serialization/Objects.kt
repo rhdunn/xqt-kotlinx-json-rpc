@@ -119,14 +119,25 @@ fun <K, V> JsonObject.getOptionalMap(
 /**
  * Serialize the data type or object to the JSON element.
  *
+ * @param key the name of the key to serialize to.
+ * @param value the content of the array to serialize to.
+ * @param serializer how to serialize the JSON element value.
+ */
+fun <T> JsonObjectBuilder.put(key: String, value: T, serializer: JsonSerialization<T>) {
+    put(key, serializer.serializeToJson(value))
+}
+
+/**
+ * Serialize the nullable data type or object to the JSON element.
+ *
  * If the value is null, this will add it to the JSON element as a null.
  *
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON element value.
  */
-fun <T> JsonObjectBuilder.put(key: String, value: T?, serializer: JsonSerialization<T>) {
-    put(key, value?.let { serializer.serializeToJson(it) } ?: JsonNull)
+fun <T> JsonObjectBuilder.putNullable(key: String, value: T?, serializer: JsonSerialization<T>) {
+    put(key, serializer.serializeToJsonOrNull(value))
 }
 
 /**

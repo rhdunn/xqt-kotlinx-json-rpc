@@ -61,7 +61,7 @@ data class ResponseObject(
     companion object : JsonSerialization<ResponseObject> {
         override fun serializeToJson(value: ResponseObject): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonprc, JsonString)
-            put("id", value.id, JsonIntOrString)
+            putNullable("id", value.id, JsonIntOrString)
             putOptional("result", value.result, JsonElementType)
             putOptional("error", value.error, ErrorObject)
         }
