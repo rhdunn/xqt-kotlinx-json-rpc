@@ -109,3 +109,12 @@ fun Message.request(handler: RequestObject.() -> ResponseObject): ResponseObject
     is RequestObject -> this.handler()
     else -> null
 }
+
+/**
+ * Processes a JSON-RPC notification message.
+ */
+fun Message.notification(handler: Notification.() -> Unit) {
+    if (this is Notification) {
+        this.handler()
+    }
+}
