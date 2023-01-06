@@ -212,3 +212,24 @@ fun <K, V> JsonObjectBuilder.putOptionalMap(
         put(key, JsonTypedMap.serialize(value, keySerializer, valueSerializer))
     }
 }
+
+/**
+ * Checks the value of the `kind` property of a JSON object.
+ */
+fun JsonElement.hasKindKey(value: String): Boolean = when (this) {
+    is JsonObject -> this.hasKindKey(value)
+    else -> false
+}
+
+/**
+ * Checks the value of the `kind` property of a JSON object.
+ */
+fun JsonObject.hasKindKey(value: String): Boolean {
+    val kind = get("kind")
+    return when {
+        kind == null -> false
+        kind !is JsonPrimitive -> false
+        !kind.isString -> false
+        else -> kind.content == value
+    }
+}
