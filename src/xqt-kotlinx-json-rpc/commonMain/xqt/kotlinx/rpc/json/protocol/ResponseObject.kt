@@ -77,3 +77,13 @@ data class ResponseObject(
         }
     }
 }
+
+/**
+ * Create a JSON-RPC response result.
+ */
+fun <T> RequestObject.result(value: T, serialization: JsonSerialization<T>): ResponseObject {
+    return ResponseObject(
+        id = id,
+        result = serialization.serializeToJson(value)
+    )
+}
