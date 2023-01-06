@@ -70,7 +70,7 @@ data class ResponseObject(
             !is JsonObject -> unsupportedKindType(json)
             else -> ResponseObject(
                 jsonprc = json.get("jsonrpc", JsonString),
-                id = json.get("id", JsonIntOrString),
+                id = json.getNullable("id", JsonIntOrString),
                 result = json.getOptional("result", JsonElementType),
                 error = json.getOptional("error", ErrorObject)
             )

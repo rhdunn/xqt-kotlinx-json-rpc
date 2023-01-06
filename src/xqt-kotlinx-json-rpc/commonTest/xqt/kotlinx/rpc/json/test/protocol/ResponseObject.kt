@@ -46,6 +46,24 @@ class TheResponseObjectType {
     }
 
     @Test
+    @DisplayName("supports a null id property")
+    fun supports_a_null_id_property() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "id" to JsonNull,
+            "result" to JsonPrimitive("lorem ipsum")
+        )
+
+        val response = ResponseObject.deserialize(json)
+        assertEquals("2.0", response.jsonprc)
+        assertEquals(null, response.id)
+        assertEquals(JsonPrimitive("lorem ipsum"), response.result)
+        assertEquals(null, response.error)
+
+        assertEquals(json.toString(), ResponseObject.serializeToJson(response).toString())
+    }
+
+    @Test
     @DisplayName("supports result properties")
     fun supports_result_properties() {
         val json = jsonObjectOf(
@@ -68,7 +86,7 @@ class TheResponseObjectType {
     fun supports_error_properties() {
         val json = jsonObjectOf(
             "jsonrpc" to JsonPrimitive("2.0"),
-            "id" to JsonPrimitive(1234),
+            "id" to JsonPrimitive("abcdef"),
             "error" to jsonObjectOf(
                 "code" to JsonPrimitive(-32601),
                 "message" to JsonPrimitive("Method 'foo' not found.")
@@ -77,7 +95,7 @@ class TheResponseObjectType {
 
         val response = ResponseObject.deserialize(json)
         assertEquals("2.0", response.jsonprc)
-        assertEquals(JsonIntOrString.IntegerValue(1234), response.id)
+        assertEquals(JsonIntOrString.StringValue("abcdef"), response.id)
         assertEquals(null, response.result)
 
         assertEquals(ErrorCode.MethodNotFound, response.error?.code)

@@ -67,6 +67,16 @@ fun <T> JsonObject.get(key: String, serializer: JsonSerialization<T>): T {
 }
 
 /**
+ * Deserialize the nullable data type or object from the `json` element.
+ *
+ * @param key the name of the required key to deserialize.
+ * @param serializer how to deserialize the JSON element value.
+ */
+fun <T> JsonObject.getNullable(key: String, serializer: JsonSerialization<T>): T? {
+    return serializer.deserializeOrNull(get(key) ?: missingKey(key))
+}
+
+/**
  * Deserialize the array of data types or objects from the `json` element.
  *
  * @param key the name of the required key to deserialize.
