@@ -20,7 +20,7 @@ class TheNotificationDSL {
         )
 
         var called = false
-        json.jsonRpc {
+        val response = json.jsonRpc {
             notification {
                 called = true
 
@@ -31,6 +31,7 @@ class TheNotificationDSL {
         }
 
         assertEquals(true, called, "The notification DSL should have been called.")
+        assertEquals(null, response)
     }
 
     @Test
@@ -43,7 +44,7 @@ class TheNotificationDSL {
         )
 
         var called = false
-        json.jsonRpc {
+        val response = json.jsonRpc {
             notification {
                 called = true
 
@@ -54,5 +55,6 @@ class TheNotificationDSL {
         }
 
         assertEquals(true, called, "The notification DSL should have been called.")
+        assertEquals(null, response)
     }
 }

@@ -22,9 +22,8 @@ class TheResponseDsl {
             "id" to JsonPrimitive(1234)
         )
 
-        var response: ResponseObject? = null
-        json.jsonRpc {
-            response = request {
+        val response = json.jsonRpc {
+            request {
                 result("lorem ipsum", JsonString)
             }
         }
@@ -44,9 +43,8 @@ class TheResponseDsl {
             "id" to JsonPrimitive(1234)
         )
 
-        var response: ResponseObject? = null
-        json.jsonRpc {
-            response = request {
+        val response = json.jsonRpc {
+            request {
                 error(ErrorCode.MethodNotFound, "method not found")
             }
         }
@@ -69,9 +67,8 @@ class TheResponseDsl {
             "id" to JsonPrimitive(1234)
         )
 
-        var response: ResponseObject? = null
-        json.jsonRpc {
-            response = request {
+        val response = json.jsonRpc {
+            request {
                 error(ErrorCode.MethodNotFound, "method not found", "loremIpsum", JsonString)
             }
         }
