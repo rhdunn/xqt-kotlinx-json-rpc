@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.protocol
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
@@ -76,6 +77,16 @@ data class ResponseObject(
             )
         }
     }
+}
+
+/**
+ * Create a JSON-RPC void/empty result.
+ */
+fun RequestObject.void(): ResponseObject {
+    return ResponseObject(
+        id = id,
+        result = JsonNull
+    )
 }
 
 /**

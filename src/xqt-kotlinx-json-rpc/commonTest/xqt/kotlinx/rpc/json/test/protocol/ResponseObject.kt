@@ -64,6 +64,24 @@ class TheResponseObjectType {
     }
 
     @Test
+    @DisplayName("supports void responses")
+    fun supports_void_responses() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "id" to JsonPrimitive(1234),
+            "result" to JsonNull
+        )
+
+        val response = ResponseObject.deserialize(json)
+        assertEquals("2.0", response.jsonprc)
+        assertEquals(JsonIntOrString.IntegerValue(1234), response.id)
+        assertEquals(JsonNull, response.result)
+        assertEquals(null, response.error)
+
+        assertEquals(json.toString(), ResponseObject.serializeToJson(response).toString())
+    }
+
+    @Test
     @DisplayName("supports result properties")
     fun supports_result_properties() {
         val json = jsonObjectOf(

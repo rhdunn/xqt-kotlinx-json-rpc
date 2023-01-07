@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.test.protocol
 
 import io.ktor.http.*
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -13,6 +14,27 @@ import kotlin.test.assertEquals
 
 @DisplayName("The response DSL")
 class TheResponseDsl {
+    @Test
+    @DisplayName("supports void responses")
+    fun supports_void_responses() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "method" to JsonPrimitive("test"),
+            "id" to JsonPrimitive(1234)
+        )
+
+        val response = json.jsonRpc {
+            request {
+                void()
+            }
+        }
+
+        assertEquals("2.0", response?.jsonprc)
+        assertEquals(JsonIntOrString.IntegerValue(1234), response?.id)
+        assertEquals(JsonNull, response?.result)
+        assertEquals(null, response?.error)
+    }
+
     @Test
     @DisplayName("supports result responses")
     fun supports_result_responses() {
