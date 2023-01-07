@@ -233,3 +233,16 @@ fun JsonObject.hasKindKey(value: String): Boolean {
         else -> kind.content == value
     }
 }
+
+/**
+ * Checks the JSON object contains all the specified keys.
+ */
+fun JsonElement.containsKeys(vararg key: String): Boolean = when (this) {
+    is JsonObject -> key.all { containsKey(it) }
+    else -> false
+}
+
+/**
+ * Checks the JSON object contains all the specified keys.
+ */
+fun JsonObject.containsKeys(vararg key: String): Boolean = key.all { containsKey(it) }
