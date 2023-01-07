@@ -64,7 +64,7 @@ fun missingKey(vararg key: String): Nothing {
 /**
  * Throws a missing key in a JSON object exception.
  */
-fun missingKey(key: String): Nothing = throw MissingKeyException(key)
+fun missingKey(key: String): Nothing = throw MissingKeyException("'$key'")
 
 /**
  * Throws a conflicting key in a JSON object exception.
