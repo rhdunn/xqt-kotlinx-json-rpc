@@ -3,6 +3,7 @@ package xqt.kotlinx.rpc.json.test.protocol
 
 import io.ktor.http.*
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.rpc.json.protocol.ErrorCode
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -24,7 +25,7 @@ class TheRequestDsl {
         )
 
         var called = false
-        json.jsonRpc {
+        val response = json.jsonRpc {
             request {
                 called = true
 
@@ -36,6 +37,14 @@ class TheRequestDsl {
         }
 
         assertEquals(true, called, "The request DSL should have been called.")
+
+        assertEquals("2.0", response?.jsonprc)
+        assertEquals(JsonIntOrString.IntegerValue(1234), response?.id)
+        assertEquals(null, response?.result)
+
+        assertEquals(ErrorCode.MethodNotFound, response?.error?.code)
+        assertEquals("Method Not Found", response?.error?.message)
+        assertEquals(null, response?.error?.data)
     }
 
     @Test
@@ -49,7 +58,7 @@ class TheRequestDsl {
         )
 
         var called = false
-        json.jsonRpc {
+        val response = json.jsonRpc {
             request {
                 called = true
 
@@ -61,5 +70,13 @@ class TheRequestDsl {
         }
 
         assertEquals(true, called, "The request DSL should have been called.")
+
+        assertEquals("2.0", response?.jsonprc)
+        assertEquals(JsonIntOrString.IntegerValue(1234), response?.id)
+        assertEquals(null, response?.result)
+
+        assertEquals(ErrorCode.MethodNotFound, response?.error?.code)
+        assertEquals("Method Not Found", response?.error?.message)
+        assertEquals(null, response?.error?.data)
     }
 }
