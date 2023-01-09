@@ -39,6 +39,8 @@ data class RequestObject(
 
     override val jsonprc: String = Message.JSON_RPC_2_0
 ) : Message {
+    internal var response: ResponseObject? = null
+
     companion object : JsonSerialization<RequestObject> {
         override fun serializeToJson(value: RequestObject): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonprc, JsonString)
@@ -105,8 +107,12 @@ data class Notification(
 /**
  * Processes a JSON-RPC request message.
  */
-fun Message.request(handler: RequestObject.() -> ResponseObject): ResponseObject? = when (this) {
-    is RequestObject -> this.handler()
+fun Message.request(handler: RequestObject.() -> Unit): ResponseObject? = when (this) {
+    is RequestObject -> {
+        this.handler()
+        response
+    }
+
     else -> null
 }
 

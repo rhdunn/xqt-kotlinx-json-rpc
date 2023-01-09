@@ -80,30 +80,30 @@ data class ResponseObject(
 }
 
 /**
- * Create a JSON-RPC void/empty result.
+ * Set a JSON-RPC void/empty result for the request.
  */
-fun RequestObject.void(): ResponseObject {
-    return ResponseObject(
+fun RequestObject.void() {
+    response = ResponseObject(
         id = id,
         result = JsonNull
     )
 }
 
 /**
- * Create a JSON-RPC response result.
+ * Set a JSON-RPC response result for the request.
  */
-fun <T> RequestObject.result(value: T, serialization: JsonSerialization<T>): ResponseObject {
-    return ResponseObject(
+fun <T> RequestObject.result(value: T, serialization: JsonSerialization<T>) {
+    response = ResponseObject(
         id = id,
         result = serialization.serializeToJson(value)
     )
 }
 
 /**
- * Create a JSON-RPC response error.
+ * Set a JSON-RPC response error for the request.
  */
-fun RequestObject.error(code: ErrorCode, message: String, data: JsonElement? = null): ResponseObject {
-    return ResponseObject(
+fun RequestObject.error(code: ErrorCode, message: String, data: JsonElement? = null) {
+    response = ResponseObject(
         id = id,
         error = ErrorObject(
             code = code,
@@ -114,15 +114,15 @@ fun RequestObject.error(code: ErrorCode, message: String, data: JsonElement? = n
 }
 
 /**
- * Create a JSON-RPC response error.
+ * Set a JSON-RPC response error for the request.
  */
 fun <T> RequestObject.error(
     code: ErrorCode,
     message: String,
     data: T,
     serialization: JsonSerialization<T>
-): ResponseObject {
-    return this.error(
+) {
+    error(
         code = code,
         message = message,
         data = serialization.serializeToJson(data)

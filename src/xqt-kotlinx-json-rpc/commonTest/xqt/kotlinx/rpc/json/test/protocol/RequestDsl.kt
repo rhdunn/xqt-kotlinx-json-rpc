@@ -3,7 +3,6 @@ package xqt.kotlinx.rpc.json.test.protocol
 
 import io.ktor.http.*
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.rpc.json.protocol.ResponseObject
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -33,8 +32,6 @@ class TheRequestDsl {
                 assertEquals("test", method)
                 assertEquals(JsonIntOrString.IntegerValue(1234), id)
                 assertEquals(null, params)
-
-                ResponseObject(id = id, result = JsonPrimitive(1234))
             }
         }
 
@@ -60,8 +57,6 @@ class TheRequestDsl {
                 assertEquals("test", method)
                 assertEquals(JsonIntOrString.IntegerValue(1234), id)
                 assertEquals(jsonArrayOf(JsonPrimitive(1)), params)
-
-                ResponseObject(id = id, result = JsonPrimitive(1234))
             }
         }
 
