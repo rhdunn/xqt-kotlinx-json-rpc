@@ -1,7 +1,9 @@
 // Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.serialization
 
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**

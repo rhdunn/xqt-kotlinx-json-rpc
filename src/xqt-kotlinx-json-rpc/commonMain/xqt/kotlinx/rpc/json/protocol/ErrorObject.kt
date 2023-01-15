@@ -6,10 +6,10 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
-import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
+import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
 
 /**
  * A number that indicates the error type that occurred.

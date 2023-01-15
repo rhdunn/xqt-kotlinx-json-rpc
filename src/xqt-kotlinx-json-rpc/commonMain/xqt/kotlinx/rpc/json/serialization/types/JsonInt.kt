@@ -2,7 +2,6 @@
 package xqt.kotlinx.rpc.json.serialization.types
 
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.serialization.*
 

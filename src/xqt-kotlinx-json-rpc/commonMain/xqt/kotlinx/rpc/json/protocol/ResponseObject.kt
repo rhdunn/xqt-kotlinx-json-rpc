@@ -6,9 +6,9 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
-import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
 
 /**
  * A response message sent as a result of a request.
