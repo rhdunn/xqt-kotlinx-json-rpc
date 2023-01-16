@@ -24,4 +24,13 @@ expect interface BinaryOutputChannel {
      * Close the output channel.
      */
     fun close()
+
+    companion object {
+        /**
+         * The standard output channel.
+         *
+         * @return the standard output channel, or null if it is not available
+         */
+        val stdout: BinaryOutputChannel?
+    }
 }

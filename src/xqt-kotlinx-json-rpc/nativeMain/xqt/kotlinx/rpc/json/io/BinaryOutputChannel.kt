@@ -24,4 +24,13 @@ actual interface BinaryOutputChannel {
      * Close the output channel.
      */
     actual fun close()
+
+    actual companion object {
+        /**
+         * The standard output channel.
+         *
+         * @return the standard output channel, or null if it is not available
+         */
+        actual val stdout: BinaryOutputChannel? = null
+    }
 }
