@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.io
 
 import java.io.Closeable
+import java.io.OutputStream
 
 /**
  * A binary data channel to write data to.
@@ -33,6 +34,25 @@ actual interface BinaryOutputChannel : Closeable {
          *
          * @return the standard output channel, or null if it is not available
          */
-        actual val stdout: BinaryOutputChannel? = null
+        actual val stdout: BinaryOutputChannel? by lazy {
+            OutputStreamChannel(System.out)
+        }
+    }
+}
+
+private class OutputStreamChannel(private val output: OutputStream) : BinaryOutputChannel {
+    override fun writeByte(byte: Byte) {
+        output.write(byte.toInt())
+    }
+
+    override fun writeBytes(bytes: ByteArray) {
+        output.write(bytes)
+    }
+
+    override fun flush() {
+        output.flush()
+    }
+
+    override fun close() {
     }
 }
