@@ -26,4 +26,14 @@ actual interface BinaryInputChannel {
      * Close the input channel.
      */
     actual fun close()
+
+    actual companion object {
+        /**
+         * The standard input channel.
+         *
+         * @return the standard input channel, or null if it is not available
+         */
+        actual val stdin: BinaryInputChannel?
+            get() = null
+    }
 }

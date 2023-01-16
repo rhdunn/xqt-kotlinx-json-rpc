@@ -26,4 +26,13 @@ expect interface BinaryInputChannel {
      * Close the input channel.
      */
     fun close()
+
+    companion object {
+        /**
+         * The standard input channel.
+         *
+         * @return the standard input channel, or null if it is not available
+         */
+        val stdin: BinaryInputChannel?
+    }
 }
