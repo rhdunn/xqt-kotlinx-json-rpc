@@ -84,6 +84,11 @@ kotlin {
 
         val nativeMain by getting {
             kotlin.srcDir("nativeMain")
+            when {
+                hostOs == "Mac OS X" -> kotlin.srcDir("posixMain")
+                hostOs == "Linux" -> kotlin.srcDir("posixMain")
+                hostOs.startsWith("Windows") -> kotlin.srcDir("windowsMain")
+            }
         }
         val nativeTest by getting {
             kotlin.srcDir("nativeTest")
