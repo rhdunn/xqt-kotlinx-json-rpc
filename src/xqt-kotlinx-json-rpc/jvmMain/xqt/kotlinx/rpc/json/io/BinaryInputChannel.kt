@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.io
 
 import java.io.Closeable
+import java.io.InputStream
 
 /**
  * A binary data channel to read data from.
@@ -35,7 +36,20 @@ actual interface BinaryInputChannel : Closeable {
          *
          * @return the standard input channel, or null if it is not available
          */
-        actual val stdin: BinaryInputChannel?
-            get() = null
+        actual val stdin: BinaryInputChannel? by lazy {
+            InputStreamChannel(System.`in`)
+        }
+    }
+}
+
+private class InputStreamChannel(private val input: InputStream) : BinaryInputChannel {
+    override fun readByte(): Byte? = when (val c = input.read()) {
+        -1 -> null
+        else -> c.toByte()
+    }
+
+    override fun readBytes(size: Int): ByteArray = input.readNBytes(size)
+
+    override fun close() {
     }
 }
