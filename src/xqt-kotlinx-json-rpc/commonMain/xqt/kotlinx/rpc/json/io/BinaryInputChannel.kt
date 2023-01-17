@@ -36,3 +36,28 @@ expect interface BinaryInputChannel {
         val stdin: BinaryInputChannel?
     }
 }
+
+/**
+ * Reads a line from the channel as a UTF-8 string.
+ */
+fun BinaryInputChannel.readUtf8Line(lineEnding: LineEnding, maxLength: Int = 512): String? {
+    val line = ByteArray(maxLength)
+    var c: Byte? = readByte() ?: return null
+
+    var i = 0
+    while (i < line.size && c != null) {
+        line[i] = c
+        when (lineEnding.secondByte) {
+            null -> if (line[i] == lineEnding.firstByte) {
+                return line.decodeToString(endIndex = i)
+            }
+
+            else -> if (i > 0 && line[i - 1] == lineEnding.firstByte && line[i] == lineEnding.secondByte) {
+                return line.decodeToString(endIndex = i - 1)
+            }
+        }
+        ++i
+        c = readByte()
+    }
+    return line.decodeToString()
+}
