@@ -34,3 +34,14 @@ expect interface BinaryOutputChannel {
         val stdout: BinaryOutputChannel?
     }
 }
+
+/**
+ * Writes a string to the channel as a UTF-8 string.
+ */
+fun BinaryOutputChannel.writeUtf8String(string: String, lineEnding: LineEnding? = null) {
+    if (string.isNotEmpty()) {
+        writeBytes(string.encodeToByteArray())
+    }
+    lineEnding?.firstByte?.let { writeByte(it) }
+    lineEnding?.secondByte?.let { writeByte(it) }
+}
