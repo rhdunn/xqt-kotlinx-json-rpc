@@ -22,3 +22,14 @@ expect interface JsonRpcChannel {
      */
     fun close()
 }
+
+/**
+ * Processes a JSON-RPC message.
+ */
+fun JsonRpcChannel.jsonRpc(handler: Message.() -> ResponseObject?) {
+    var message = receive()?.let { Message.deserialize(it) }
+    while (message != null) {
+        message.handler()
+        message = receive()?.let { Message.deserialize(it) }
+    }
+}

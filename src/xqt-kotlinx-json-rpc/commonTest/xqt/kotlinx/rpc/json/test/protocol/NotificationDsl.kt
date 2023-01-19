@@ -14,13 +14,16 @@ class TheNotificationDSL {
     @Test
     @DisplayName("supports notifications without parameters")
     fun supports_notifications_without_parameters() {
-        val json = jsonObjectOf(
-            "jsonrpc" to JsonPrimitive("2.0"),
-            "method" to JsonPrimitive("test")
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
         )
 
         var called = false
-        val response = json.jsonRpc {
+        channel.jsonRpc {
             notification {
                 called = true
 
@@ -31,20 +34,23 @@ class TheNotificationDSL {
         }
 
         assertEquals(true, called, "The notification DSL should have been called.")
-        assertEquals(null, response)
+        assertEquals(0, channel.output.size)
     }
 
     @Test
     @DisplayName("supports notifications with parameters")
     fun supports_notifications_with_parameters() {
-        val json = jsonObjectOf(
-            "jsonrpc" to JsonPrimitive("2.0"),
-            "method" to JsonPrimitive("test"),
-            "params" to jsonArrayOf(JsonPrimitive(1))
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test"),
+                "params" to jsonArrayOf(JsonPrimitive(1))
+            )
         )
 
         var called = false
-        val response = json.jsonRpc {
+        channel.jsonRpc {
             notification {
                 called = true
 
@@ -55,6 +61,6 @@ class TheNotificationDSL {
         }
 
         assertEquals(true, called, "The notification DSL should have been called.")
-        assertEquals(null, response)
+        assertEquals(0, channel.output.size)
     }
 }
