@@ -23,10 +23,11 @@ class TheNotificationDSL {
             )
         )
 
-        var called = false
+        var called = 0
         channel.jsonRpc {
+            ++called
             notification {
-                called = true
+                assertEquals(1, called)
 
                 assertEquals("2.0", jsonprc)
                 assertEquals("test", method)
@@ -34,7 +35,7 @@ class TheNotificationDSL {
             }
         }
 
-        assertEquals(true, called, "The notification DSL should have been called.")
+        assertEquals(1, called, "The notification DSL should have been called.")
         assertEquals(0, channel.output.size)
     }
 
@@ -50,10 +51,11 @@ class TheNotificationDSL {
             )
         )
 
-        var called = false
+        var called = 0
         channel.jsonRpc {
+            ++called
             notification {
-                called = true
+                assertEquals(1, called)
 
                 assertEquals("2.0", jsonprc)
                 assertEquals("test", method)
@@ -61,7 +63,7 @@ class TheNotificationDSL {
             }
         }
 
-        assertEquals(true, called, "The notification DSL should have been called.")
+        assertEquals(1, called, "The notification DSL should have been called.")
         assertEquals(0, channel.output.size)
     }
 
@@ -85,19 +87,18 @@ class TheNotificationDSL {
 
         var called = 0
         channel.jsonRpc {
+            ++called
             notification {
                 when (method) {
                     "lorem" -> {
-                        assertEquals(0, called)
-                        ++called
+                        assertEquals(1, called)
 
                         assertEquals("2.0", jsonprc)
                         assertEquals(null, params)
                     }
 
                     "ipsum" -> {
-                        assertEquals(1, called)
-                        ++called
+                        assertEquals(2, called)
 
                         assertEquals("2.0", jsonprc)
                         assertEquals(jsonArrayOf(JsonPrimitive(1)), params)
