@@ -28,7 +28,7 @@ expect interface JsonRpcChannel {
 /**
  * Processes a JSON-RPC message.
  */
-fun JsonRpcChannel.jsonRpc(handler: Message.() -> ResponseObject?) {
+fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
     var body = receive()
     while (body != null) {
         when (body) {

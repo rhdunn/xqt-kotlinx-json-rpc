@@ -126,9 +126,8 @@ fun Message.request(handler: RequestObject.() -> Unit): ResponseObject? = when (
 /**
  * Processes a JSON-RPC notification message.
  */
-fun Message.notification(handler: Notification.() -> Unit): ResponseObject? {
+fun Message.notification(handler: Notification.() -> Unit) {
     if (this is Notification) {
         this.handler()
     }
-    return null
 }
