@@ -1,7 +1,9 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.protocol
 
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 
 /**
  * A JSON-RPC channel to send/receive message on.
@@ -27,9 +29,16 @@ expect interface JsonRpcChannel {
  * Processes a JSON-RPC message.
  */
 fun JsonRpcChannel.jsonRpc(handler: Message.() -> ResponseObject?) {
-    var message = receive()?.let { Message.deserialize(it) }
-    while (message != null) {
-        message.handler()
-        message = receive()?.let { Message.deserialize(it) }
+    var body = receive()
+    while (body != null) {
+        when (body) {
+            is JsonObject -> Message.deserialize(body).handler()
+            is JsonArray -> body.forEach {
+                Message.deserialize(it).handler()
+            }
+
+            else -> {}
+        }
+        body = receive()
     }
 }

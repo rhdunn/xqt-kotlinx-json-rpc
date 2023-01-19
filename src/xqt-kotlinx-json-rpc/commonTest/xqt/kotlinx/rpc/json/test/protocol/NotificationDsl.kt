@@ -112,4 +112,50 @@ class TheNotificationDSL {
         assertEquals(2, called, "The notification DSL should have been called.")
         assertEquals(0, channel.output.size)
     }
+
+    @Test
+    @DisplayName("supports batched notification messages")
+    fun supports_batched_notification_messages() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonArrayOf(
+                jsonObjectOf(
+                    "jsonrpc" to JsonPrimitive("2.0"),
+                    "method" to JsonPrimitive("lorem")
+                ),
+                jsonObjectOf(
+                    "jsonrpc" to JsonPrimitive("2.0"),
+                    "method" to JsonPrimitive("ipsum"),
+                    "params" to jsonArrayOf(JsonPrimitive(1))
+                )
+            )
+        )
+
+        var called = 0
+        channel.jsonRpc {
+            ++called
+            notification {
+                when (method) {
+                    "lorem" -> {
+                        assertEquals(1, called)
+
+                        assertEquals("2.0", jsonprc)
+                        assertEquals(null, params)
+                    }
+
+                    "ipsum" -> {
+                        assertEquals(2, called)
+
+                        assertEquals("2.0", jsonprc)
+                        assertEquals(jsonArrayOf(JsonPrimitive(1)), params)
+                    }
+
+                    else -> assertTrue(false, "Unknown notification event: $method")
+                }
+            }
+        }
+
+        assertEquals(2, called, "The notification DSL should have been called.")
+        assertEquals(0, channel.output.size)
+    }
 }
