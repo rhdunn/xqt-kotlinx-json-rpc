@@ -2,7 +2,6 @@
 package xqt.kotlinx.rpc.json.protocol
 
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
@@ -77,54 +76,4 @@ data class ResponseObject(
             )
         }
     }
-}
-
-/**
- * Set a JSON-RPC void/empty result for the request.
- */
-fun RequestObject.void() {
-    response = ResponseObject(
-        id = id,
-        result = JsonNull
-    )
-}
-
-/**
- * Set a JSON-RPC response result for the request.
- */
-fun <T> RequestObject.result(value: T, serialization: JsonSerialization<T>) {
-    response = ResponseObject(
-        id = id,
-        result = serialization.serializeToJson(value)
-    )
-}
-
-/**
- * Set a JSON-RPC response error for the request.
- */
-fun RequestObject.error(code: ErrorCode, message: String, data: JsonElement? = null) {
-    response = ResponseObject(
-        id = id,
-        error = ErrorObject(
-            code = code,
-            message = message,
-            data = data
-        )
-    )
-}
-
-/**
- * Set a JSON-RPC response error for the request.
- */
-fun <T> RequestObject.error(
-    code: ErrorCode,
-    message: String,
-    data: T,
-    serialization: JsonSerialization<T>
-) {
-    error(
-        code = code,
-        message = message,
-        data = serialization.serializeToJson(data)
-    )
 }

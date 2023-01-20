@@ -39,8 +39,6 @@ data class RequestObject(
 
     override val jsonprc: String = Message.JSON_RPC_2_0
 ) : Message {
-    internal var response: ResponseObject? = null
-
     companion object : JsonSerialization<RequestObject> {
         override fun serializeToJson(value: RequestObject): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonprc, JsonString)
@@ -102,25 +100,6 @@ data class Notification(
             )
         }
     }
-}
-
-/**
- * Processes a JSON-RPC request message.
- *
- * If the `handler` does not call one of the response methods (`error`, `void`,
- * `result`, or any of the method-specific methods) this sets the response to a
- * MethodNotFound error.
- */
-fun Message.request(handler: RequestObject.() -> Unit): ResponseObject? = when (this) {
-    is RequestObject -> {
-        this.handler()
-        if (response == null) {
-            error(ErrorCode.MethodNotFound, "Method Not Found")
-        }
-        response
-    }
-
-    else -> null
 }
 
 /**
