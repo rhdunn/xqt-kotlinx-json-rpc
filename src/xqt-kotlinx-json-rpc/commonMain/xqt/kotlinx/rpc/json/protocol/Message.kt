@@ -47,11 +47,3 @@ sealed interface Message {
         }
     }
 }
-
-/**
- * Processes a JSON-RPC message.
- */
-fun JsonElement.jsonRpc(handler: Message.() -> ResponseObject?): ResponseObject? {
-    val message = Message.deserialize(this)
-    return message.handler()
-}
