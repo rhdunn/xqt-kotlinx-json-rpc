@@ -79,3 +79,12 @@ data class ResponseObject(
         }
     }
 }
+
+/**
+ * Processes a JSON-RPC response message.
+ */
+fun Message.response(handler: ResponseObject.() -> Unit) {
+    if (this is ResponseObject) {
+        this.handler()
+    }
+}
