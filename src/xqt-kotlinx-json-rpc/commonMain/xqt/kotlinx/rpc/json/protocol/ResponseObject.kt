@@ -51,6 +51,8 @@ data class ResponseObject(
 
     override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
+    override var channel: JsonRpcChannel? = null
+
     init {
         if (result == null && error == null)
             missingKey("result", "error")

@@ -32,9 +32,16 @@ fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
     var body = receive()
     while (body != null) {
         when (body) {
-            is JsonObject -> Message.deserialize(body).handler()
+            is JsonObject -> {
+                val message = Message.deserialize(body)
+                message.channel = this
+                message.handler()
+            }
+
             is JsonArray -> body.forEach {
-                Message.deserialize(it).handler()
+                val message = Message.deserialize(it)
+                message.channel = this
+                message.handler()
             }
 
             else -> {}

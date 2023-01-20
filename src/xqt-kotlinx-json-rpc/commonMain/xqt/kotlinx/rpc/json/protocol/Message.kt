@@ -19,6 +19,11 @@ sealed interface Message {
      */
     val jsonrpc: String
 
+    /**
+     * The JSON-RPC channel that the message originated from.
+     */
+    var channel: JsonRpcChannel?
+
     companion object : JsonSerialization<Message> {
         /**
          * JSON-RPC 2.0

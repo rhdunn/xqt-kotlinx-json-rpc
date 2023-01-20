@@ -39,6 +39,8 @@ data class RequestObject(
 
     override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
+    override var channel: JsonRpcChannel? = null
+
     companion object : JsonSerialization<RequestObject> {
         override fun serializeToJson(value: RequestObject): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonrpc, JsonString)
@@ -84,6 +86,8 @@ data class Notification(
 
     override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
+    override var channel: JsonRpcChannel? = null
+
     companion object : JsonSerialization<Notification> {
         override fun serializeToJson(value: Notification): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonrpc, JsonString)
