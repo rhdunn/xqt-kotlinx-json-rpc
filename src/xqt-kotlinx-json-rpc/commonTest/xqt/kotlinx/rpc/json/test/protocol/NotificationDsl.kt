@@ -158,4 +158,76 @@ class TheNotificationDSL {
         assertEquals(2, called, "The notification DSL should have been called.")
         assertEquals(0, channel.output.size)
     }
+
+    @Test
+    @DisplayName("supports sending notifications without parameters")
+    fun supports_sending_notifications_without_parameters() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendNotification(Notification(method = "lorem/ipsum"))
+                sendNotification(method = "notify/test")
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("lorem/ipsum")
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("notify/test")
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending notifications with parameters")
+    fun supports_sending_notifications_with_parameters() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendNotification(Notification(method = "lorem/ipsum", params = jsonArrayOf(JsonPrimitive(5))))
+                sendNotification(method = "notify/test", params = jsonArrayOf(JsonPrimitive(123)))
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("lorem/ipsum"),
+                "params" to jsonArrayOf(JsonPrimitive(5))
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("notify/test"),
+                "params" to jsonArrayOf(JsonPrimitive(123))
+            ),
+            channel.output[1]
+        )
+    }
 }

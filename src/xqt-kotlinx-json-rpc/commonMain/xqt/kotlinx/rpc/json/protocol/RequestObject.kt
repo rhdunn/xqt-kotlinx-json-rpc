@@ -107,6 +107,32 @@ data class Notification(
 }
 
 /**
+ * Send a notification to the channel the message originated from.
+ */
+fun Message.sendNotification(notification: Notification) {
+    channel?.send(Notification.serializeToJson(notification))
+}
+
+/**
+ * Send a notification to the channel the message originated from.
+ *
+ * Method names that begin with the word rpc followed by a period character
+ * (`.`) are reserved for rpc-internal methods and extensions and *must not*
+ * be used for anything else.
+ *
+ * @param method the method to be invoked
+ * @param params the method's parameters
+ */
+fun Message.sendNotification(method: String, params: JsonElement? = null) {
+    val notification = Notification(
+        method = method,
+        params = params,
+        jsonrpc = jsonrpc
+    )
+    channel?.send(Notification.serializeToJson(notification))
+}
+
+/**
  * Processes a JSON-RPC notification message.
  */
 fun Message.notification(handler: Notification.() -> Unit) {
