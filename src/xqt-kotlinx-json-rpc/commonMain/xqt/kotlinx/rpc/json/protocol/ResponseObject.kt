@@ -101,6 +101,30 @@ fun RequestObject.sendResult(result: JsonElement?) {
 }
 
 /**
+ * Send an error-based response to the channel the message originated from.
+ */
+fun RequestObject.sendError(error: ErrorObject) {
+    val response = ResponseObject(
+        id = id,
+        error = error,
+        jsonrpc = jsonrpc
+    )
+    channel?.send(ResponseObject.serializeToJson(response))
+}
+
+/**
+ * Send an error-based response to the channel the message originated from.
+ */
+fun RequestObject.sendError(code: ErrorCode, message: String, data: JsonElement? = null) {
+    val error = ErrorObject(
+        code = code,
+        message = message,
+        data = data
+    )
+    sendError(error = error)
+}
+
+/**
  * Processes a JSON-RPC response message.
  */
 fun Message.response(handler: ResponseObject.() -> Unit) {
