@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -224,6 +225,288 @@ class TheNotificationDSL {
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("notify/test"),
+                "params" to jsonArrayOf(JsonPrimitive(123))
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending requests without parameters for integer|string ids")
+    fun supports_sending_requests_without_parameters_for_integer_or_string_ids() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendRequest(
+                    RequestObject(
+                        method = "lorem/ipsum",
+                        id = JsonIntOrString.IntegerValue(1)
+                    )
+                )
+                sendRequest(
+                    method = "notify/test",
+                    id = JsonIntOrString.IntegerValue(2)
+                )
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "method" to JsonPrimitive("lorem/ipsum")
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(2),
+                "method" to JsonPrimitive("notify/test")
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending requests without parameters for integer ids")
+    fun supports_sending_requests_without_parameters_for_integer_ids() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendRequest(
+                    RequestObject(
+                        method = "lorem/ipsum",
+                        id = JsonIntOrString.IntegerValue(1)
+                    )
+                )
+                sendRequest(
+                    method = "notify/test",
+                    id = JsonIntOrString.IntegerValue(2)
+                )
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "method" to JsonPrimitive("lorem/ipsum")
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(2),
+                "method" to JsonPrimitive("notify/test")
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending requests without parameters for string ids")
+    fun supports_sending_requests_without_parameters_for_string_ids() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendRequest(
+                    RequestObject(
+                        method = "lorem/ipsum",
+                        id = "one"
+                    )
+                )
+                sendRequest(
+                    method = "notify/test",
+                    id = "two"
+                )
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive("one"),
+                "method" to JsonPrimitive("lorem/ipsum")
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive("two"),
+                "method" to JsonPrimitive("notify/test")
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending requests with parameters for integer|string ids")
+    fun supports_sending_requests_with_parameters_for_integer_or_string_ids() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendRequest(
+                    RequestObject(
+                        method = "lorem/ipsum",
+                        id = JsonIntOrString.IntegerValue(1),
+                        params = jsonArrayOf(JsonPrimitive(5))
+                    )
+                )
+                sendRequest(
+                    method = "notify/test",
+                    id = JsonIntOrString.IntegerValue(2),
+                    params = jsonArrayOf(JsonPrimitive(123))
+                )
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "method" to JsonPrimitive("lorem/ipsum"),
+                "params" to jsonArrayOf(JsonPrimitive(5))
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(2),
+                "method" to JsonPrimitive("notify/test"),
+                "params" to jsonArrayOf(JsonPrimitive(123))
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending requests with parameters for integer ids")
+    fun supports_sending_requests_with_parameters_for_integer_ids() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendRequest(
+                    RequestObject(
+                        method = "lorem/ipsum",
+                        id = 1,
+                        params = jsonArrayOf(JsonPrimitive(5))
+                    )
+                )
+                sendRequest(
+                    method = "notify/test",
+                    id = 2,
+                    params = jsonArrayOf(JsonPrimitive(123))
+                )
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "method" to JsonPrimitive("lorem/ipsum"),
+                "params" to jsonArrayOf(JsonPrimitive(5))
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(2),
+                "method" to JsonPrimitive("notify/test"),
+                "params" to jsonArrayOf(JsonPrimitive(123))
+            ),
+            channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending requests with parameters for string ids")
+    fun supports_sending_requests_with_parameters_for_string_ids() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test")
+            )
+        )
+
+        channel.jsonRpc {
+            notification {
+                sendRequest(
+                    RequestObject(
+                        method = "lorem/ipsum",
+                        id = "one",
+                        params = jsonArrayOf(JsonPrimitive(5))
+                    )
+                )
+                sendRequest(
+                    method = "notify/test",
+                    id = "two",
+                    params = jsonArrayOf(JsonPrimitive(123))
+                )
+            }
+        }
+
+        assertEquals(2, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive("one"),
+                "method" to JsonPrimitive("lorem/ipsum"),
+                "params" to jsonArrayOf(JsonPrimitive(5))
+            ),
+            channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive("two"),
                 "method" to JsonPrimitive("notify/test"),
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),

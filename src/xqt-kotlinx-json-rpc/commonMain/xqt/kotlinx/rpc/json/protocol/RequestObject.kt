@@ -39,6 +39,12 @@ data class RequestObject(
 
     override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
+    constructor(method: String, id: Int, params: JsonElement? = null) :
+            this(method, JsonIntOrString.IntegerValue(id), params)
+
+    constructor(method: String, id: String, params: JsonElement? = null) :
+            this(method, JsonIntOrString.StringValue(id), params)
+
     override var channel: JsonRpcChannel? = null
 
     companion object : JsonSerialization<RequestObject> {
@@ -59,6 +65,60 @@ data class RequestObject(
             )
         }
     }
+}
+
+/**
+ * Send a request to the channel the message originated from.
+ */
+fun Message.sendRequest(request: RequestObject) {
+    channel?.send(RequestObject.serializeToJson(request))
+}
+
+/**
+ * Send a request to the channel the message originated from.
+ *
+ * @param method the method to be invoked
+ * @param id the request identifier
+ * @param params the method's parameters
+ */
+fun Message.sendRequest(method: String, id: JsonIntOrString, params: JsonElement? = null) {
+    val request = RequestObject(
+        method = method,
+        id = id,
+        params = params,
+        jsonrpc = jsonrpc
+    )
+    channel?.send(RequestObject.serializeToJson(request))
+}
+
+/**
+ * Send a request to the channel the message originated from.
+ *
+ * @param method the method to be invoked
+ * @param id the request identifier
+ * @param params the method's parameters
+ */
+fun Message.sendRequest(method: String, id: Int, params: JsonElement? = null) {
+    sendRequest(
+        method = method,
+        id = JsonIntOrString.IntegerValue(id),
+        params = params
+    )
+}
+
+/**
+ * Send a request to the channel the message originated from.
+ *
+ * @param method the method to be invoked
+ * @param id the request identifier
+ * @param params the method's parameters
+ */
+fun Message.sendRequest(method: String, id: String, params: JsonElement? = null) {
+    sendRequest(
+        method = method,
+        id = JsonIntOrString.StringValue(id),
+        params = params
+    )
 }
 
 /**
