@@ -17,7 +17,7 @@ sealed interface Message {
      *
      * This must be exactly "2.0".
      */
-    val jsonprc: String
+    val jsonrpc: String
 
     companion object : JsonSerialization<Message> {
         /**

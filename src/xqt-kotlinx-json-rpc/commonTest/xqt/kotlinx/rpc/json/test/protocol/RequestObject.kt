@@ -25,7 +25,7 @@ class TheRequestObjectType {
         )
 
         val request = RequestObject.deserialize(json)
-        assertEquals("2.0", request.jsonprc)
+        assertEquals("2.0", request.jsonrpc)
         assertEquals("test", request.method)
         assertEquals(JsonIntOrString.IntegerValue(1234), request.id)
         assertEquals(null, request.params)
@@ -44,7 +44,7 @@ class TheRequestObjectType {
         )
 
         val request = RequestObject.deserialize(json)
-        assertEquals("2.0", request.jsonprc)
+        assertEquals("2.0", request.jsonrpc)
         assertEquals("test", request.method)
         assertEquals(JsonIntOrString.IntegerValue(1234), request.id)
         assertEquals(jsonArrayOf(JsonPrimitive(1)), request.params)

@@ -37,11 +37,11 @@ data class RequestObject(
      */
     val params: JsonElement? = null,
 
-    override val jsonprc: String = Message.JSON_RPC_2_0
+    override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
     companion object : JsonSerialization<RequestObject> {
         override fun serializeToJson(value: RequestObject): JsonElement = buildJsonObject {
-            put("jsonrpc", value.jsonprc, JsonString)
+            put("jsonrpc", value.jsonrpc, JsonString)
             put("method", value.method, JsonString)
             put("id", value.id, JsonIntOrString)
             putOptional("params", value.params, JsonArrayOrObject)
@@ -50,7 +50,7 @@ data class RequestObject(
         override fun deserialize(json: JsonElement): RequestObject = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> RequestObject(
-                jsonprc = json.get("jsonrpc", JsonString),
+                jsonrpc = json.get("jsonrpc", JsonString),
                 method = json.get("method", JsonString),
                 id = json.get("id", JsonIntOrString),
                 params = json.getOptional("params", JsonArrayOrObject)
@@ -82,11 +82,11 @@ data class Notification(
      */
     val params: JsonElement? = null,
 
-    override val jsonprc: String = Message.JSON_RPC_2_0
+    override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
     companion object : JsonSerialization<Notification> {
         override fun serializeToJson(value: Notification): JsonElement = buildJsonObject {
-            put("jsonrpc", value.jsonprc, JsonString)
+            put("jsonrpc", value.jsonrpc, JsonString)
             put("method", value.method, JsonString)
             putOptional("params", value.params, JsonArrayOrObject)
         }
@@ -94,7 +94,7 @@ data class Notification(
         override fun deserialize(json: JsonElement): Notification = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> Notification(
-                jsonprc = json.get("jsonrpc", JsonString),
+                jsonrpc = json.get("jsonrpc", JsonString),
                 method = json.get("method", JsonString),
                 params = json.getOptional("params", JsonArrayOrObject)
             )

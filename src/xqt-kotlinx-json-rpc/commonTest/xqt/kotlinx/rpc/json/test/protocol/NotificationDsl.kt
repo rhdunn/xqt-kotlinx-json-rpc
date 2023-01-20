@@ -29,7 +29,7 @@ class TheNotificationDSL {
             notification {
                 assertEquals(1, called)
 
-                assertEquals("2.0", jsonprc)
+                assertEquals("2.0", jsonrpc)
                 assertEquals("test", method)
                 assertEquals(null, params)
             }
@@ -57,7 +57,7 @@ class TheNotificationDSL {
             notification {
                 assertEquals(1, called)
 
-                assertEquals("2.0", jsonprc)
+                assertEquals("2.0", jsonrpc)
                 assertEquals("test", method)
                 assertEquals(jsonArrayOf(JsonPrimitive(1)), params)
             }
@@ -93,14 +93,14 @@ class TheNotificationDSL {
                     "lorem" -> {
                         assertEquals(1, called)
 
-                        assertEquals("2.0", jsonprc)
+                        assertEquals("2.0", jsonrpc)
                         assertEquals(null, params)
                     }
 
                     "ipsum" -> {
                         assertEquals(2, called)
 
-                        assertEquals("2.0", jsonprc)
+                        assertEquals("2.0", jsonrpc)
                         assertEquals(jsonArrayOf(JsonPrimitive(1)), params)
                     }
 
@@ -139,14 +139,14 @@ class TheNotificationDSL {
                     "lorem" -> {
                         assertEquals(1, called)
 
-                        assertEquals("2.0", jsonprc)
+                        assertEquals("2.0", jsonrpc)
                         assertEquals(null, params)
                     }
 
                     "ipsum" -> {
                         assertEquals(2, called)
 
-                        assertEquals("2.0", jsonprc)
+                        assertEquals("2.0", jsonrpc)
                         assertEquals(jsonArrayOf(JsonPrimitive(1)), params)
                     }
 

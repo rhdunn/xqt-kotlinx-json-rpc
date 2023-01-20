@@ -27,7 +27,7 @@ class TheMessageType {
         assertEquals(Notification::class, message::class)
 
         val notification = message as Notification
-        assertEquals("2.0", notification.jsonprc)
+        assertEquals("2.0", notification.jsonrpc)
         assertEquals("test", notification.method)
         assertEquals(null, notification.params)
 
@@ -47,7 +47,7 @@ class TheMessageType {
         assertEquals(Notification::class, message::class)
 
         val notification = message as Notification
-        assertEquals("2.0", notification.jsonprc)
+        assertEquals("2.0", notification.jsonrpc)
         assertEquals("test", notification.method)
         assertEquals(jsonArrayOf(JsonPrimitive(1)), notification.params)
 
@@ -67,7 +67,7 @@ class TheMessageType {
         assertEquals(RequestObject::class, message::class)
 
         val request = message as RequestObject
-        assertEquals("2.0", request.jsonprc)
+        assertEquals("2.0", request.jsonrpc)
         assertEquals("test", request.method)
         assertEquals(JsonIntOrString.IntegerValue(1234), request.id)
         assertEquals(null, request.params)
@@ -89,7 +89,7 @@ class TheMessageType {
         assertEquals(RequestObject::class, message::class)
 
         val request = message as RequestObject
-        assertEquals("2.0", request.jsonprc)
+        assertEquals("2.0", request.jsonrpc)
         assertEquals("test", request.method)
         assertEquals(JsonIntOrString.IntegerValue(1234), request.id)
         assertEquals(jsonArrayOf(JsonPrimitive(1)), request.params)
@@ -110,7 +110,7 @@ class TheMessageType {
         assertEquals(ResponseObject::class, message::class)
 
         val response = message as ResponseObject
-        assertEquals("2.0", response.jsonprc)
+        assertEquals("2.0", response.jsonrpc)
         assertEquals(JsonIntOrString.IntegerValue(1234), response.id)
         assertEquals(JsonPrimitive("lorem ipsum"), response.result)
         assertEquals(null, response.error)
@@ -134,7 +134,7 @@ class TheMessageType {
         assertEquals(ResponseObject::class, message::class)
 
         val response = message as ResponseObject
-        assertEquals("2.0", response.jsonprc)
+        assertEquals("2.0", response.jsonrpc)
         assertEquals(JsonIntOrString.StringValue("abcdef"), response.id)
         assertEquals(null, response.result)
 

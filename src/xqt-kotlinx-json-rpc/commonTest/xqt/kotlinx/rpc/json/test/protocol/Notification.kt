@@ -23,7 +23,7 @@ class TheNotificationType {
         )
 
         val notification = Notification.deserialize(json)
-        assertEquals("2.0", notification.jsonprc)
+        assertEquals("2.0", notification.jsonrpc)
         assertEquals("test", notification.method)
         assertEquals(null, notification.params)
 
@@ -40,7 +40,7 @@ class TheNotificationType {
         )
 
         val notification = Notification.deserialize(json)
-        assertEquals("2.0", notification.jsonprc)
+        assertEquals("2.0", notification.jsonrpc)
         assertEquals("test", notification.method)
         assertEquals(jsonArrayOf(JsonPrimitive(1)), notification.params)
 

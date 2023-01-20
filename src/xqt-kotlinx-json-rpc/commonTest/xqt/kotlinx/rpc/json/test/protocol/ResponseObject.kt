@@ -55,7 +55,7 @@ class TheResponseObjectType {
         )
 
         val response = ResponseObject.deserialize(json)
-        assertEquals("2.0", response.jsonprc)
+        assertEquals("2.0", response.jsonrpc)
         assertEquals(null, response.id)
         assertEquals(JsonPrimitive("lorem ipsum"), response.result)
         assertEquals(null, response.error)
@@ -73,7 +73,7 @@ class TheResponseObjectType {
         )
 
         val response = ResponseObject.deserialize(json)
-        assertEquals("2.0", response.jsonprc)
+        assertEquals("2.0", response.jsonrpc)
         assertEquals(JsonIntOrString.IntegerValue(1234), response.id)
         assertEquals(JsonNull, response.result)
         assertEquals(null, response.error)
@@ -91,7 +91,7 @@ class TheResponseObjectType {
         )
 
         val response = ResponseObject.deserialize(json)
-        assertEquals("2.0", response.jsonprc)
+        assertEquals("2.0", response.jsonrpc)
         assertEquals(JsonIntOrString.IntegerValue(1234), response.id)
         assertEquals(JsonPrimitive("lorem ipsum"), response.result)
         assertEquals(null, response.error)
@@ -112,7 +112,7 @@ class TheResponseObjectType {
         )
 
         val response = ResponseObject.deserialize(json)
-        assertEquals("2.0", response.jsonprc)
+        assertEquals("2.0", response.jsonrpc)
         assertEquals(JsonIntOrString.StringValue("abcdef"), response.id)
         assertEquals(null, response.result)
 

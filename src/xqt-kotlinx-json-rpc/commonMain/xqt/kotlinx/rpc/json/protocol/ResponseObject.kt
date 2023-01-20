@@ -49,7 +49,7 @@ data class ResponseObject(
      */
     val error: ErrorObject? = null,
 
-    override val jsonprc: String = Message.JSON_RPC_2_0
+    override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
     init {
         if (result == null && error == null)
@@ -60,7 +60,7 @@ data class ResponseObject(
 
     companion object : JsonSerialization<ResponseObject> {
         override fun serializeToJson(value: ResponseObject): JsonElement = buildJsonObject {
-            put("jsonrpc", value.jsonprc, JsonString)
+            put("jsonrpc", value.jsonrpc, JsonString)
             putNullable("id", value.id, JsonIntOrString)
             putOptional("result", value.result, JsonElementType)
             putOptional("error", value.error, ErrorObject)
@@ -69,7 +69,7 @@ data class ResponseObject(
         override fun deserialize(json: JsonElement): ResponseObject = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> ResponseObject(
-                jsonprc = json.get("jsonrpc", JsonString),
+                jsonrpc = json.get("jsonrpc", JsonString),
                 id = json.getNullable("id", JsonIntOrString),
                 result = json.getOptional("result", JsonElementType),
                 error = json.getOptional("error", ErrorObject)
