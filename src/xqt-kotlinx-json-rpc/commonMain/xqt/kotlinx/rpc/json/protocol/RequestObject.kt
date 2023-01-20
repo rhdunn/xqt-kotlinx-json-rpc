@@ -122,6 +122,15 @@ fun Message.sendRequest(method: String, id: String, params: JsonElement? = null)
 }
 
 /**
+ * Processes a JSON-RPC request message.
+ */
+fun Message.request(handler: RequestObject.() -> Unit) {
+    if (this is RequestObject) {
+        this.handler()
+    }
+}
+
+/**
  * A notification message.
  *
  * A processed notification message must not send a response back. They work like events.
