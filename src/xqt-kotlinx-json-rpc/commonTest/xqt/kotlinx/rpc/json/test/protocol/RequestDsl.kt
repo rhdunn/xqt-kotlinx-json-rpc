@@ -262,10 +262,11 @@ class TheRequestDSL {
         channel.jsonRpc {
             request {
                 sendResponse(ResponseObject(id = id, result = JsonPrimitive("lorem")))
+                sendResult(result = JsonPrimitive("ipsum"))
             }
         }
 
-        assertEquals(1, channel.output.size)
+        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -273,6 +274,14 @@ class TheRequestDSL {
                 "result" to JsonPrimitive("lorem")
             ),
             channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to JsonPrimitive("ipsum")
+            ),
+            channel.output[1]
         )
     }
 
@@ -291,10 +300,11 @@ class TheRequestDSL {
         channel.jsonRpc {
             request {
                 sendResponse(ResponseObject(id = id, result = JsonNull))
+                sendResult(result = null)
             }
         }
 
-        assertEquals(1, channel.output.size)
+        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -302,6 +312,14 @@ class TheRequestDSL {
                 "result" to JsonNull
             ),
             channel.output[0]
+        )
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to JsonNull
+            ),
+            channel.output[1]
         )
     }
 

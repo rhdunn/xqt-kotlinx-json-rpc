@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.protocol
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
@@ -84,6 +85,18 @@ data class ResponseObject(
  * Send a response to the channel the message originated from.
  */
 fun RequestObject.sendResponse(response: ResponseObject) {
+    channel?.send(ResponseObject.serializeToJson(response))
+}
+
+/**
+ * Send a result-based response to the channel the message originated from.
+ */
+fun RequestObject.sendResult(result: JsonElement?) {
+    val response = ResponseObject(
+        id = id,
+        result = result ?: JsonNull,
+        jsonrpc = jsonrpc
+    )
     channel?.send(ResponseObject.serializeToJson(response))
 }
 
