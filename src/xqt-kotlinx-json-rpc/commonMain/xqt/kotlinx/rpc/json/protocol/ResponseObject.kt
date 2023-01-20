@@ -81,6 +81,13 @@ data class ResponseObject(
 }
 
 /**
+ * Send a response to the channel the message originated from.
+ */
+fun RequestObject.sendResponse(response: ResponseObject) {
+    channel?.send(ResponseObject.serializeToJson(response))
+}
+
+/**
  * Processes a JSON-RPC response message.
  */
 fun Message.response(handler: ResponseObject.() -> Unit) {

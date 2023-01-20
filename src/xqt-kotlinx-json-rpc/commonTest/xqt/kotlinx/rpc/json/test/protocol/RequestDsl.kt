@@ -1,6 +1,7 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.test.protocol
 
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -243,6 +244,143 @@ class TheRequestDSL {
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),
             channel.output[1]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending responses with results")
+    fun supports_sending_responses_with_results() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test"),
+                "id" to JsonPrimitive(1)
+            )
+        )
+
+        channel.jsonRpc {
+            request {
+                sendResponse(ResponseObject(id = id, result = JsonPrimitive("lorem")))
+            }
+        }
+
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to JsonPrimitive("lorem")
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending responses with null results")
+    fun supports_sending_responses_with_null_results() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test"),
+                "id" to JsonPrimitive(1)
+            )
+        )
+
+        channel.jsonRpc {
+            request {
+                sendResponse(ResponseObject(id = id, result = JsonNull))
+            }
+        }
+
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to JsonNull
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending responses with errors without data")
+    fun supports_sending_responses_with_errors_without_data() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test"),
+                "id" to JsonPrimitive(1)
+            )
+        )
+
+        channel.jsonRpc {
+            request {
+                sendResponse(
+                    ResponseObject(
+                        id = id,
+                        error = ErrorObject(code = ErrorCode.ParseError, message = "Parse Error")
+                    )
+                )
+            }
+        }
+
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(-32700),
+                    "message" to JsonPrimitive("Parse Error")
+                )
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending responses with errors with data")
+    fun supports_sending_responses_with_errors_with_data() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test"),
+                "id" to JsonPrimitive(1)
+            )
+        )
+
+        channel.jsonRpc {
+            request {
+                sendResponse(
+                    ResponseObject(
+                        id = id,
+                        error = ErrorObject(
+                            code = ErrorCode.ParseError,
+                            message = "Parse Error",
+                            data = JsonPrimitive(123)
+                        )
+                    )
+                )
+            }
+        }
+
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(-32700),
+                    "message" to JsonPrimitive("Parse Error"),
+                    "data" to JsonPrimitive(123)
+                )
+            ),
+            channel.output[0]
         )
     }
 
