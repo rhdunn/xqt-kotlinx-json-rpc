@@ -1,24 +1,13 @@
 // Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.serialization.types
 
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.KindType
-import xqt.kotlinx.rpc.json.serialization.kindType
-import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
+import xqt.kotlinx.rpc.json.serialization.StringSerialization
 
 /**
  * Defines a string.
  */
-object JsonString : JsonSerialization<String> {
-    override fun serializeToJson(value: String): JsonElement = JsonPrimitive(value)
+object JsonString : StringSerialization<String> {
+    override fun serializeToString(value: String): String = value
 
-    override fun deserialize(json: JsonElement): String = when (json) {
-        !is JsonPrimitive -> unsupportedKindType(json)
-        else -> when (json.kindType) {
-            KindType.String -> json.content
-            else -> unsupportedKindType(json)
-        }
-    }
+    override fun deserialize(value: String): String = value
 }

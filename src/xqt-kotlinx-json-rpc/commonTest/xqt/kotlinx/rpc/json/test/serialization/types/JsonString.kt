@@ -29,6 +29,20 @@ class TheJsonStringType {
     }
 
     @Test
+    @DisplayName("can serialize to string")
+    fun can_serialize_to_string() {
+        assertEquals("lorem", JsonString.serializeToString("lorem"))
+        assertEquals("1234", JsonString.serializeToString("1234"))
+    }
+
+    @Test
+    @DisplayName("can deserialize from string")
+    fun can_deserialize_from_string() {
+        assertEquals("lorem", JsonString.deserialize("lorem"))
+        assertEquals("1234", JsonString.deserialize("1234"))
+    }
+
+    @Test
     @DisplayName("throws an error if the kind type is not supported")
     fun throws_an_error_if_the_kind_type_is_not_supported() {
         val e1 = assertFails { JsonString.deserialize(jsonObjectOf()) }

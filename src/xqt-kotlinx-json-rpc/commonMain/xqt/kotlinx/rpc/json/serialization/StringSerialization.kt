@@ -3,7 +3,6 @@ package xqt.kotlinx.rpc.json.serialization
 
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
  * Defines serialization for a data type or object to/from string values.
@@ -21,5 +20,11 @@ interface StringSerialization<T> : JsonSerialization<T> {
 
     override fun serializeToJson(value: T): JsonElement = JsonPrimitive(serializeToString(value))
 
-    override fun deserialize(json: JsonElement): T = deserialize(JsonString.deserialize(json))
+    override fun deserialize(json: JsonElement): T = when (json) {
+        !is JsonPrimitive -> unsupportedKindType(json)
+        else -> when (json.kindType) {
+            KindType.String -> deserialize(json.content)
+            else -> unsupportedKindType(json)
+        }
+    }
 }
