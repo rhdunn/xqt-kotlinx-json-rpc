@@ -165,6 +165,23 @@ fun <T> JsonObjectBuilder.putArray(key: String, value: List<T>, serializer: Json
 }
 
 /**
+ * Serialize the map of data types to the JSON element.
+ *
+ * @param key the name of the key to serialize to.
+ * @param value the content of the array to serialize to.
+ * @param keySerializer how to serialize the keys in the map.
+ * @param valueSerializer how to serialize the values in the map.
+ */
+fun <K, V> JsonObjectBuilder.putMap(
+    key: String,
+    value: Map<K, V>,
+    keySerializer: StringSerialization<K>,
+    valueSerializer: JsonSerialization<V>
+) {
+    put(key, JsonTypedMap.serialize(value, keySerializer, valueSerializer))
+}
+
+/**
  * Serialize the data type or object to the JSON element.
  *
  * If the value is null, this will not add it to the JSON element.
