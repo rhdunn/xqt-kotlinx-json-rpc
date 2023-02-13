@@ -3,6 +3,7 @@ package xqt.kotlinx.rpc.json.serialization
 
 import kotlinx.serialization.json.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObject
 
 /**
  * Returns a new read-only JSON object with the specified contents, given as a
@@ -14,48 +15,6 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
  * Entries of the map are iterated in the order they were specified.
  */
 fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObject(mapOf(*pairs))
-
-/**
- * Serialization helpers for typed maps.
- */
-object JsonTypedMap {
-    /**
-     * Serialize the map of values to JSON.
-     *
-     * @param keySerializer how to serialize the keys in the map.
-     * @param valueSerializer how to serialize the values in the map.
-     */
-    fun <K, V> serialize(
-        value: Map<K, V>,
-        keySerializer: StringSerialization<K>,
-        valueSerializer: JsonSerialization<V>
-    ): JsonElement = buildJsonObject {
-        value.forEach { (key, value) ->
-            val k = keySerializer.serializeToString(key)
-            val v = valueSerializer.serializeToJson(value)
-            put(k, v)
-        }
-    }
-
-    /**
-     * Deserialize the map of values from the `json` object.
-     *
-     * @param keySerializer how to deserialize the keys in the map.
-     * @param valueSerializer how to deserialize the values in the map.
-     */
-    fun <K, V> deserialize(
-        json: JsonElement,
-        keySerializer: StringSerialization<K>,
-        valueSerializer: JsonSerialization<V>
-    ): Map<K, V> = when (json) {
-        !is JsonObject -> unsupportedKindType(json)
-        else -> json.entries.associate { (key, value) ->
-            val k = keySerializer.deserialize(key)
-            val v = valueSerializer.deserialize(value)
-            k to v
-        }
-    }
-}
 
 /**
  * Deserialize the data type or object from the `json` element.
@@ -91,7 +50,7 @@ fun <T> JsonObject.getOptional(key: String, serializer: JsonSerialization<T>): T
  * Deserialize the array of data types or objects from the `json` element.
  *
  * @param key the name of the optional key to deserialize.
- * @param serializer how to deserialize the JSON elements in the array.
+ * @param serializer how to deserialize the JSON array value.
  */
 fun <T> JsonObject.getOptional(key: String, serializer: JsonTypedArray<T>): List<T> {
     val data = get(key) ?: return listOf()
@@ -102,16 +61,11 @@ fun <T> JsonObject.getOptional(key: String, serializer: JsonTypedArray<T>): List
  * Deserialize the map of data types from the `json` element.
  *
  * @param key the name of the optional key to deserialize.
- * @param keySerializer how to deserialize the keys in the map.
- * @param valueSerializer how to deserialize the values in the map.
+ * @param serializer how to deserialize the JSON object value.
  */
-fun <K, V> JsonObject.getOptionalMap(
-    key: String,
-    keySerializer: StringSerialization<K>,
-    valueSerializer: JsonSerialization<V>
-): Map<K, V> {
+fun <K, V> JsonObject.getOptional(key: String, serializer: JsonTypedObject<K, V>): Map<K, V> {
     val data = get(key) ?: return mapOf()
-    return JsonTypedMap.deserialize(data, keySerializer, valueSerializer)
+    return serializer.deserialize(data)
 }
 
 /**
@@ -158,7 +112,7 @@ fun <T> JsonObjectBuilder.putOptional(key: String, value: T?, serializer: JsonSe
  *
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
- * @param serializer how to serialize the JSON element value.
+ * @param serializer how to serialize the JSON array value.
  */
 fun <T> JsonObjectBuilder.putOptional(key: String, value: List<T>, serializer: JsonTypedArray<T>) {
     if (value.isNotEmpty()) {
@@ -169,21 +123,15 @@ fun <T> JsonObjectBuilder.putOptional(key: String, value: List<T>, serializer: J
 /**
  * Serialize the map of data types to the JSON element.
  *
- * If the map is empty, this will not add the map to the JSON element.
+ * If the map is empty, this will not add the object to the JSON element.
  *
  * @param key the name of the key to serialize to.
- * @param value the content of the array to serialize to.
- * @param keySerializer how to serialize the keys in the map.
- * @param valueSerializer how to serialize the values in the map.
+ * @param value the content of the map to serialize to.
+ * @param serializer how to serialize the JSON map value.
  */
-fun <K, V> JsonObjectBuilder.putOptionalMap(
-    key: String,
-    value: Map<K, V>,
-    keySerializer: StringSerialization<K>,
-    valueSerializer: JsonSerialization<V>
-) {
+fun <K, V> JsonObjectBuilder.putOptional(key: String, value: Map<K, V>, serializer: JsonTypedObject<K, V>) {
     if (value.isNotEmpty()) {
-        put(key, JsonTypedMap.serialize(value, keySerializer, valueSerializer))
+        put(key, serializer.serializeToJson(value))
     }
 }
 
