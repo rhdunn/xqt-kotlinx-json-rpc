@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.serialization
 
 import kotlinx.serialization.json.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Returns a new read-only JSON object with the specified contents, given as a
@@ -108,9 +109,9 @@ fun <T> JsonObject.getOptional(key: String, serializer: JsonSerialization<T>): T
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON elements in the array.
  */
-fun <T> JsonObject.getOptionalArray(key: String, serializer: JsonSerialization<T>): List<T> {
+fun <T> JsonObject.getOptional(key: String, serializer: JsonTypedArray<T>): List<T> {
     val data = get(key) ?: return listOf()
-    return JsonTypedArray.deserialize(data, serializer)
+    return serializer.deserialize(data)
 }
 
 /**
@@ -192,9 +193,9 @@ fun <T> JsonObjectBuilder.putOptional(key: String, value: T?, serializer: JsonSe
  * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON element value.
  */
-fun <T> JsonObjectBuilder.putOptionalArray(key: String, value: List<T>, serializer: JsonSerialization<T>) {
+fun <T> JsonObjectBuilder.putOptional(key: String, value: List<T>, serializer: JsonTypedArray<T>) {
     if (value.isNotEmpty()) {
-        put(key, JsonTypedArray.serialize(value, serializer))
+        put(key, serializer.serializeToJson(value))
     }
 }
 
