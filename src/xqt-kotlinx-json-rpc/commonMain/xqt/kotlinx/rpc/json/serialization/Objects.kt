@@ -78,22 +78,6 @@ fun <T> JsonObject.getNullable(key: String, serializer: JsonSerialization<T>): T
 }
 
 /**
- * Deserialize the map of data types from the `json` element.
- *
- * @param key the name of the key to deserialize.
- * @param keySerializer how to deserialize the keys in the map.
- * @param valueSerializer how to deserialize the values in the map.
- */
-fun <K, V> JsonObject.getMap(
-    key: String,
-    keySerializer: StringSerialization<K>,
-    valueSerializer: JsonSerialization<V>
-): Map<K, V> {
-    val data = get(key) ?: missingKey(key)
-    return JsonTypedMap.deserialize(data, keySerializer, valueSerializer)
-}
-
-/**
  * Deserialize the data type or object from the `json` element.
  *
  * @param key the name of the required key to deserialize.
@@ -152,23 +136,6 @@ fun <T> JsonObjectBuilder.put(key: String, value: T, serializer: JsonSerializati
  */
 fun <T> JsonObjectBuilder.putNullable(key: String, value: T?, serializer: JsonSerialization<T>) {
     put(key, serializer.serializeToJsonOrNull(value))
-}
-
-/**
- * Serialize the map of data types to the JSON element.
- *
- * @param key the name of the key to serialize to.
- * @param value the content of the array to serialize to.
- * @param keySerializer how to serialize the keys in the map.
- * @param valueSerializer how to serialize the values in the map.
- */
-fun <K, V> JsonObjectBuilder.putMap(
-    key: String,
-    value: Map<K, V>,
-    keySerializer: StringSerialization<K>,
-    valueSerializer: JsonSerialization<V>
-) {
-    put(key, JsonTypedMap.serialize(value, keySerializer, valueSerializer))
 }
 
 /**
