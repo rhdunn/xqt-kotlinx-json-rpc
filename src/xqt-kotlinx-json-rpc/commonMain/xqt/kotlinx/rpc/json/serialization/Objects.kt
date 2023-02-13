@@ -77,17 +77,6 @@ fun <T> JsonObject.getNullable(key: String, serializer: JsonSerialization<T>): T
 }
 
 /**
- * Deserialize the array of data types or objects from the `json` element.
- *
- * @param key the name of the required key to deserialize.
- * @param serializer how to deserialize the JSON elements in the array.
- */
-fun <T> JsonObject.getArray(key: String, serializer: JsonSerialization<T>): List<T> {
-    val data = get(key) ?: missingKey(key)
-    return JsonTypedArray.deserialize(data, serializer)
-}
-
-/**
  * Deserialize the map of data types from the `json` element.
  *
  * @param key the name of the key to deserialize.
@@ -162,20 +151,6 @@ fun <T> JsonObjectBuilder.put(key: String, value: T, serializer: JsonSerializati
  */
 fun <T> JsonObjectBuilder.putNullable(key: String, value: T?, serializer: JsonSerialization<T>) {
     put(key, serializer.serializeToJsonOrNull(value))
-}
-
-/**
- * Serialize the array of data types to the JSON element.
- *
- * If the list is empty, this will add the empty array in the specified key of
- * the JSON element.
- *
- * @param key the name of the key to serialize to.
- * @param value the content of the array to serialize to.
- * @param serializer how to serialize the JSON element value.
- */
-fun <T> JsonObjectBuilder.putArray(key: String, value: List<T>, serializer: JsonSerialization<T>) {
-    put(key, JsonTypedArray.serialize(value, serializer))
 }
 
 /**
