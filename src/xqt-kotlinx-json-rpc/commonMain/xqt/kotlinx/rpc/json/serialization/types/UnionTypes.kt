@@ -1,10 +1,10 @@
 // Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.serialization.types
 
+import kotlinx.serialization.json.*
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.KindType
 import xqt.kotlinx.rpc.json.serialization.kindType
@@ -79,6 +79,29 @@ object JsonArrayOrObject : JsonSerialization<JsonElement> {
     override fun deserialize(json: JsonElement): JsonElement = when (json) {
         is JsonArray -> json
         is JsonObject -> json
+        else -> unsupportedKindType(json)
+    }
+}
+
+/**
+ * Defines a typed JSON object|array.
+ *
+ * If there is only one item in the array it will be treated as an object of
+ * that type.
+ *
+ * @param itemSerialization how to serialize the items in the array
+ */
+data class JsonTypedObjectOrArray<T>(private val itemSerialization: JsonSerialization<T>) : JsonSerialization<List<T>> {
+    override fun serializeToJson(value: List<T>): JsonElement = when (value.size) {
+        1 -> itemSerialization.serializeToJson(value[0])
+        else -> buildJsonArray {
+            value.forEach { item -> add(itemSerialization.serializeToJson(item)) }
+        }
+    }
+
+    override fun deserialize(json: JsonElement): List<T> = when (json) {
+        is JsonObject -> listOf(itemSerialization.deserialize(json))
+        is JsonArray -> json.map { item -> itemSerialization.deserialize(item) }
         else -> unsupportedKindType(json)
     }
 }
