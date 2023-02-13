@@ -100,8 +100,7 @@ data class JsonTypedObjectOrArray<T>(private val itemSerialization: JsonSerializ
     }
 
     override fun deserialize(json: JsonElement): List<T> = when (json) {
-        is JsonObject -> listOf(itemSerialization.deserialize(json))
         is JsonArray -> json.map { item -> itemSerialization.deserialize(item) }
-        else -> unsupportedKindType(json)
+        else -> listOf(itemSerialization.deserialize(json))
     }
 }
