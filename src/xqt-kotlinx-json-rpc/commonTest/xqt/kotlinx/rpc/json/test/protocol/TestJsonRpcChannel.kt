@@ -5,8 +5,12 @@ import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.protocol.JsonRpcChannel
 
 class TestJsonRpcChannel : JsonRpcChannel {
-    val input = mutableListOf<JsonElement>()
+    private val input = mutableListOf<JsonElement>()
     val output = mutableListOf<JsonElement>()
+
+    fun push(message: JsonElement) {
+        input.add(message)
+    }
 
     override fun send(message: JsonElement) {
         output.add(message)

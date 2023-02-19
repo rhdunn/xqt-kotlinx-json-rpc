@@ -17,7 +17,7 @@ class TheNotificationDSL {
     @DisplayName("supports notifications without parameters")
     fun supports_notifications_without_parameters() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -44,7 +44,7 @@ class TheNotificationDSL {
     @DisplayName("supports notifications with parameters")
     fun supports_notifications_with_parameters() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -72,13 +72,13 @@ class TheNotificationDSL {
     @DisplayName("supports multiple notification messages")
     fun supports_multiple_notification_messages() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("lorem")
             )
         )
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("ipsum"),
@@ -118,7 +118,7 @@ class TheNotificationDSL {
     @DisplayName("supports batched notification messages")
     fun supports_batched_notification_messages() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonArrayOf(
                 jsonObjectOf(
                     "jsonrpc" to JsonPrimitive("2.0"),
@@ -164,7 +164,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending notifications without parameters")
     fun supports_sending_notifications_without_parameters() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -199,7 +199,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending notifications with parameters")
     fun supports_sending_notifications_with_parameters() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -236,7 +236,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending requests without parameters for integer|string ids")
     fun supports_sending_requests_without_parameters_for_integer_or_string_ids() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -281,7 +281,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending requests without parameters for integer ids")
     fun supports_sending_requests_without_parameters_for_integer_ids() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -326,7 +326,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending requests without parameters for string ids")
     fun supports_sending_requests_without_parameters_for_string_ids() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -371,7 +371,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending requests with parameters for integer|string ids")
     fun supports_sending_requests_with_parameters_for_integer_or_string_ids() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -420,7 +420,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending requests with parameters for integer ids")
     fun supports_sending_requests_with_parameters_for_integer_ids() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
@@ -469,7 +469,7 @@ class TheNotificationDSL {
     @DisplayName("supports sending requests with parameters for string ids")
     fun supports_sending_requests_with_parameters_for_string_ids() {
         val channel = TestJsonRpcChannel()
-        channel.input.add(
+        channel.push(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test")
