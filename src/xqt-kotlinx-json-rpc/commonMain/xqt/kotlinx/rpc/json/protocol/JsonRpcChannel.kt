@@ -29,8 +29,8 @@ expect interface JsonRpcChannel {
  * Processes a JSON-RPC message.
  */
 fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
-    var body = receive()
-    while (body != null) {
+    while (true) {
+        val body = receive() ?: return
         when (body) {
             is JsonObject -> {
                 val message = Message.deserialize(body)
@@ -46,6 +46,5 @@ fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
 
             else -> {}
         }
-        body = receive()
     }
 }
