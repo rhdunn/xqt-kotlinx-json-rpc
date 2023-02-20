@@ -162,7 +162,15 @@ data class Notification(
 ) : Message {
     override var channel: JsonRpcChannel? = null
 
-    companion object : JsonSerialization<Notification> {
+    companion object : JsonObjectType<Notification> {
+        override fun instanceOf(json: JsonElement): Boolean = when {
+            json.containsKeys("id") -> {
+                (json as JsonObject)["id"] == JsonNull && json.containsKeys("jsonrpc", "method")
+            }
+
+            else -> json.containsKeys("jsonrpc", "method")
+        }
+
         override fun serializeToJson(value: Notification): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonrpc, JsonString)
             put("method", value.method, JsonString)
