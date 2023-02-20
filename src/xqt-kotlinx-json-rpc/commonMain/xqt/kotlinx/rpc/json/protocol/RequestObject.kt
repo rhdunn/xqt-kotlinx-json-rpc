@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.protocol
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
@@ -47,7 +48,11 @@ data class RequestObject(
 
     override var channel: JsonRpcChannel? = null
 
-    companion object : JsonSerialization<RequestObject> {
+    companion object : JsonObjectType<RequestObject> {
+        override fun instanceOf(json: JsonElement): Boolean {
+            return json.containsKeys("jsonrpc", "method", "id") && (json as JsonObject)["id"] != JsonNull
+        }
+
         override fun serializeToJson(value: RequestObject): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonrpc, JsonString)
             put("method", value.method, JsonString)

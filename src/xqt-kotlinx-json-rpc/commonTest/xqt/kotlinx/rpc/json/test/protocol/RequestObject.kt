@@ -4,14 +4,13 @@ package xqt.kotlinx.rpc.json.test.protocol
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.protocol.RequestObject
+import xqt.kotlinx.rpc.json.serialization.MissingKeyException
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.*
 
 @DisplayName("The RequestObject type")
 class TheRequestObjectType {
@@ -23,6 +22,9 @@ class TheRequestObjectType {
             "method" to JsonPrimitive("test"),
             "id" to JsonPrimitive(1234)
         )
+
+        assertTrue(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
 
         val request = RequestObject.deserialize(json)
         assertEquals("2.0", request.jsonrpc)
@@ -43,6 +45,9 @@ class TheRequestObjectType {
             "params" to jsonArrayOf(JsonPrimitive(1))
         )
 
+        assertTrue(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
+
         val request = RequestObject.deserialize(json)
         assertEquals("2.0", request.jsonrpc)
         assertEquals("test", request.method)
@@ -50,6 +55,88 @@ class TheRequestObjectType {
         assertEquals(jsonArrayOf(JsonPrimitive(1)), request.params)
 
         assertEquals(json.toString(), RequestObject.serializeToJson(request).toString())
+    }
+
+    @Test
+    @DisplayName("throws an error if jsonrpc is missing")
+    fun throws_an_error_if_jsonrpc_is_missing() {
+        val json = jsonObjectOf(
+            "method" to JsonPrimitive("test"),
+            "id" to JsonPrimitive(1234)
+        )
+
+        assertFalse(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
+
+        val e = assertFails { RequestObject.deserialize(json) }
+        assertEquals(MissingKeyException::class, e::class)
+        assertEquals("Missing 'jsonrpc' key", e.message)
+    }
+
+    @Test
+    @DisplayName("throws an error if method is missing")
+    fun throws_an_error_if_method_is_missing() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "id" to JsonPrimitive(1234)
+        )
+
+        assertFalse(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
+
+        val e = assertFails { RequestObject.deserialize(json) }
+        assertEquals(MissingKeyException::class, e::class)
+        assertEquals("Missing 'method' key", e.message)
+    }
+
+    @Test
+    @DisplayName("throws an error if id is missing")
+    fun throws_an_error_if_id_is_missing() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "method" to JsonPrimitive("test")
+        )
+
+        assertFalse(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
+
+        val e = assertFails { RequestObject.deserialize(json) }
+        assertEquals(MissingKeyException::class, e::class)
+        assertEquals("Missing 'id' key", e.message)
+    }
+
+    @Test
+    @DisplayName("throws an error if method is not a string")
+    fun throws_an_error_if_method_is_not_a_string() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "method" to JsonPrimitive(1),
+            "id" to JsonPrimitive(1234)
+        )
+
+        assertTrue(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
+
+        val e = assertFails { RequestObject.deserialize(json) }
+        assertEquals(UnsupportedKindTypeException::class, e::class)
+        assertEquals("Unsupported kind type 'integer'", e.message)
+    }
+
+    @Test
+    @DisplayName("throws an error if id is null")
+    fun throws_an_error_if_id_is_null() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "method" to JsonPrimitive("test"),
+            "id" to JsonNull
+        )
+
+        assertFalse(RequestObject.instanceOf(json), "RequestObject.instanceOf")
+        assertFalse(RequestObject.kindOf(json), "RequestObject.kindOf")
+
+        val e = assertFails { RequestObject.deserialize(json) }
+        assertEquals(UnsupportedKindTypeException::class, e::class)
+        assertEquals("Unsupported kind type 'null'", e.message)
     }
 
     @Test
