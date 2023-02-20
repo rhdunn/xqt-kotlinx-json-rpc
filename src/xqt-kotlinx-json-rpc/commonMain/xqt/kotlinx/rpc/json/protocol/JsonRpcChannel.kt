@@ -26,6 +26,12 @@ expect interface JsonRpcChannel {
     fun close()
 }
 
+private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.() -> Unit) {
+    val message = Message.deserialize(body)
+    message.channel = this
+    message.handler()
+}
+
 /**
  * Processes a JSON-RPC message.
  */
@@ -46,16 +52,10 @@ fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
         }
 
         when (body) {
-            is JsonObject -> {
-                val message = Message.deserialize(body)
-                message.channel = this
-                message.handler()
-            }
+            is JsonObject -> this.processMessage(body, handler)
 
-            is JsonArray -> body.forEach {
-                val message = Message.deserialize(it)
-                message.channel = this
-                message.handler()
+            is JsonArray -> body.forEach { element ->
+                this.processMessage(element, handler)
             }
 
             else -> {}
