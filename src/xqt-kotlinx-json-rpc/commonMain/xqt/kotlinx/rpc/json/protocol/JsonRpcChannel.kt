@@ -1,6 +1,7 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.rpc.json.protocol
 
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -30,7 +31,20 @@ expect interface JsonRpcChannel {
  */
 fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
     while (true) {
-        val body = receive() ?: return
+        val body = try {
+            receive() ?: return
+        } catch (e: SerializationException) {
+            val response = ResponseObject(
+                id = null,
+                error = ErrorObject(
+                    code = ErrorCode.ParseError,
+                    message = e.message?.splitToSequence('\n')?.firstOrNull() ?: "Parse Error"
+                )
+            )
+            send(ResponseObject.serializeToJson(response))
+            continue
+        }
+
         when (body) {
             is JsonObject -> {
                 val message = Message.deserialize(body)
