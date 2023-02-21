@@ -8,12 +8,42 @@ import xqt.kotlinx.rpc.json.protocol.ResponseObject
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFails
+import kotlin.test.*
 
 @DisplayName("The ResponseObject type")
 class TheResponseObjectType {
+    @Test
+    @DisplayName("throws an error if jsonrpc is missing")
+    fun throws_an_error_if_jsonrpc_is_missing() {
+        val json = jsonObjectOf(
+            "id" to JsonPrimitive(1234),
+            "result" to JsonPrimitive("lorem ipsum")
+        )
+
+        assertFalse(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
+
+        val e1 = assertFails { ResponseObject.deserialize(json) }
+        assertEquals(MissingKeyException::class, e1::class)
+        assertEquals("Missing 'jsonrpc' key", e1.message)
+    }
+
+    @Test
+    @DisplayName("throws an error if id is missing")
+    fun throws_an_error_if_id_is_missing() {
+        val json = jsonObjectOf(
+            "jsonrpc" to JsonPrimitive("2.0"),
+            "result" to JsonPrimitive("lorem ipsum")
+        )
+
+        assertFalse(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
+
+        val e1 = assertFails { ResponseObject.deserialize(json) }
+        assertEquals(MissingKeyException::class, e1::class)
+        assertEquals("Missing 'id' key", e1.message)
+    }
+
     @Test
     @DisplayName("throws an error if no result or error are specified")
     fun throws_an_error_if_no_result_or_error_are_specified() {
@@ -21,6 +51,9 @@ class TheResponseObjectType {
             "jsonrpc" to JsonPrimitive("2.0"),
             "id" to JsonPrimitive(1234)
         )
+
+        assertFalse(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
 
         val e1 = assertFails { ResponseObject.deserialize(json) }
         assertEquals(MissingKeyException::class, e1::class)
@@ -40,6 +73,9 @@ class TheResponseObjectType {
             )
         )
 
+        assertTrue(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
+
         val e1 = assertFails { ResponseObject.deserialize(json) }
         assertEquals(ConflictingKeyException::class, e1::class)
         assertEquals("Conflicting 'result', or 'error' key", e1.message)
@@ -53,6 +89,9 @@ class TheResponseObjectType {
             "id" to JsonNull,
             "result" to JsonPrimitive("lorem ipsum")
         )
+
+        assertTrue(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
 
         val response = ResponseObject.deserialize(json)
         assertEquals("2.0", response.jsonrpc)
@@ -72,6 +111,9 @@ class TheResponseObjectType {
             "result" to JsonNull
         )
 
+        assertTrue(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
+
         val response = ResponseObject.deserialize(json)
         assertEquals("2.0", response.jsonrpc)
         assertEquals(JsonIntOrString.IntegerValue(1234), response.id)
@@ -89,6 +131,9 @@ class TheResponseObjectType {
             "id" to JsonPrimitive(1234),
             "result" to JsonPrimitive("lorem ipsum")
         )
+
+        assertTrue(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
 
         val response = ResponseObject.deserialize(json)
         assertEquals("2.0", response.jsonrpc)
@@ -110,6 +155,9 @@ class TheResponseObjectType {
                 "message" to JsonPrimitive("Method 'foo' not found.")
             )
         )
+
+        assertTrue(ResponseObject.instanceOf(json), "ResponseObject.instanceOf")
+        assertFalse(ResponseObject.kindOf(json), "ResponseObject.kindOf")
 
         val response = ResponseObject.deserialize(json)
         assertEquals("2.0", response.jsonrpc)

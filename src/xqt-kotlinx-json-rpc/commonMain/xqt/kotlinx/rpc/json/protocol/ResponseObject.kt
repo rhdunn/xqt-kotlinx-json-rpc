@@ -61,7 +61,14 @@ data class ResponseObject(
             conflictingKey("result", "error")
     }
 
-    companion object : JsonSerialization<ResponseObject> {
+    companion object : JsonObjectType<ResponseObject> {
+        override fun instanceOf(json: JsonElement): Boolean {
+            if (!json.containsKeys("jsonrpc", "id")) {
+                return false
+            }
+            return json.containsKeys("result") || json.containsKeys("error")
+        }
+
         override fun serializeToJson(value: ResponseObject): JsonElement = buildJsonObject {
             put("jsonrpc", value.jsonrpc, JsonString)
             putNullable("id", value.id, JsonIntOrString)
