@@ -5,6 +5,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 /**
  * A JSON-RPC channel to send/receive message on.
@@ -26,6 +27,14 @@ expect interface JsonRpcChannel {
     fun close()
 }
 
+private fun JsonRpcChannel.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
+    val response = ResponseObject(
+        id = id,
+        error = error
+    )
+    send(ResponseObject.serializeToJson(response))
+}
+
 private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.() -> Unit) {
     val message = Message.deserialize(body)
     message.channel = this
@@ -40,11 +49,7 @@ fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
         val body = try {
             receive() ?: return
         } catch (e: SerializationException) {
-            val response = ResponseObject(
-                id = null,
-                error = ParseError(e.message?.splitToSequence('\n')?.firstOrNull())
-            )
-            send(ResponseObject.serializeToJson(response))
+            sendError(ParseError(e.message?.splitToSequence('\n')?.firstOrNull()))
             continue
         }
 
