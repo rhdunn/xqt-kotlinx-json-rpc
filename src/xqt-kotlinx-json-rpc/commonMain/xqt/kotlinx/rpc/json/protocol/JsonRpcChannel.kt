@@ -42,10 +42,7 @@ fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
         } catch (e: SerializationException) {
             val response = ResponseObject(
                 id = null,
-                error = ErrorObject(
-                    code = ErrorCode.ParseError,
-                    message = e.message?.splitToSequence('\n')?.firstOrNull() ?: "Parse Error"
-                )
+                error = ParseError(e.message?.splitToSequence('\n')?.firstOrNull())
             )
             send(ResponseObject.serializeToJson(response))
             continue
