@@ -82,7 +82,7 @@ data class ErrorObject(
     /**
      * A string providing a short description of the error.
      */
-    val message: String,
+    override val message: String,
 
     /**
      * A primitive or structured value that contains additional
@@ -91,7 +91,7 @@ data class ErrorObject(
      * Can be omitted.
      */
     val data: JsonElement? = null
-) {
+) : RuntimeException() {
     companion object : JsonSerialization<ErrorObject> {
         override fun serializeToJson(value: ErrorObject): JsonElement = buildJsonObject {
             put("code", value.code, ErrorCode)
