@@ -337,50 +337,21 @@ class TheRequestDSL {
 
         channel.jsonRpc {
             request {
-                sendResponse(
-                    ResponseObject(
-                        id = id,
-                        error = ErrorObject(code = ErrorCode.ParseError, message = "Parse Error")
-                    )
-                )
-                sendError(error = ErrorObject(code = ErrorCode.InternalError, message = "Internal Error"))
-                sendError(code = ErrorCode.InvalidRequest, message = "Invalid Request")
+                throw InvalidParams("Lorem ipsum")
             }
         }
 
-        assertEquals(3, channel.output.size)
+        assertEquals(1, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "error" to jsonObjectOf(
-                    "code" to JsonPrimitive(-32700),
-                    "message" to JsonPrimitive("Parse Error")
+                    "code" to JsonPrimitive(-32602),
+                    "message" to JsonPrimitive("Lorem ipsum")
                 )
             ),
             channel.output[0]
-        )
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(1),
-                "error" to jsonObjectOf(
-                    "code" to JsonPrimitive(-32603),
-                    "message" to JsonPrimitive("Internal Error")
-                )
-            ),
-            channel.output[1]
-        )
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(1),
-                "error" to jsonObjectOf(
-                    "code" to JsonPrimitive(-32600),
-                    "message" to JsonPrimitive("Invalid Request")
-                )
-            ),
-            channel.output[2]
         )
     }
 
@@ -398,67 +369,22 @@ class TheRequestDSL {
 
         channel.jsonRpc {
             request {
-                sendResponse(
-                    ResponseObject(
-                        id = id,
-                        error = ErrorObject(
-                            code = ErrorCode.ParseError,
-                            message = "Parse Error",
-                            data = JsonPrimitive(123)
-                        )
-                    )
-                )
-                sendError(
-                    error = ErrorObject(
-                        code = ErrorCode.InternalError,
-                        message = "Internal Error",
-                        data = JsonPrimitive(456)
-                    )
-                )
-                sendError(
-                    code = ErrorCode.InvalidRequest,
-                    message = "Invalid Request",
-                    data = JsonPrimitive(789)
-                )
+                throw InvalidParams("Lorem ipsum", data = JsonPrimitive(123))
             }
         }
 
-        assertEquals(3, channel.output.size)
+        assertEquals(1, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "error" to jsonObjectOf(
-                    "code" to JsonPrimitive(-32700),
-                    "message" to JsonPrimitive("Parse Error"),
+                    "code" to JsonPrimitive(-32602),
+                    "message" to JsonPrimitive("Lorem ipsum"),
                     "data" to JsonPrimitive(123)
                 )
             ),
             channel.output[0]
-        )
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(1),
-                "error" to jsonObjectOf(
-                    "code" to JsonPrimitive(-32603),
-                    "message" to JsonPrimitive("Internal Error"),
-                    "data" to JsonPrimitive(456)
-                )
-            ),
-            channel.output[1]
-        )
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(1),
-                "error" to jsonObjectOf(
-                    "code" to JsonPrimitive(-32600),
-                    "message" to JsonPrimitive("Invalid Request"),
-                    "data" to JsonPrimitive(789)
-                )
-            ),
-            channel.output[2]
         )
     }
 
