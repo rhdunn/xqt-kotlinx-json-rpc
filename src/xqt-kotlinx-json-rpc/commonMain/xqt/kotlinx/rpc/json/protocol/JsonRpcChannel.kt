@@ -50,7 +50,20 @@ private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.()
     } catch (e: ErrorObject) {
         sendError(
             error = e,
-            id = (message as? RequestObject)?.id
+            id = when (message) {
+                is RequestObject -> message.id
+                is ResponseObject -> message.id
+                else -> null
+            }
+        )
+    } catch (e: Throwable) {
+        sendError(
+            error = InternalError(e.message),
+            id = when (message) {
+                is RequestObject -> message.id
+                is ResponseObject -> message.id
+                else -> null
+            }
         )
     }
 }

@@ -73,6 +73,38 @@ class TheRequestDSL {
     }
 
     @Test
+    @DisplayName("reports ErrorCode.InternalError for generic exceptions")
+    fun reports_internal_error_for_generic_exceptions() {
+        val channel = TestJsonRpcChannel()
+        channel.push(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("test"),
+                "id" to JsonPrimitive(1)
+            )
+        )
+
+        channel.jsonRpc {
+            request {
+                throw RuntimeException("Lorem ipsum")
+            }
+        }
+
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(ErrorCode.InternalError.code),
+                    "message" to JsonPrimitive("Lorem ipsum")
+                )
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
     @DisplayName("supports requests without parameters")
     fun supports_requests_without_parameters() {
         val channel = TestJsonRpcChannel()
