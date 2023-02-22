@@ -15,6 +15,64 @@ import kotlin.test.assertTrue
 @DisplayName("The request DSL")
 class TheRequestDSL {
     @Test
+    @DisplayName("reports ErrorCode.ParseError on invalid JSON")
+    fun reports_parse_error_on_invalid_json() {
+        val channel = TestJsonRpcChannel()
+        channel.push("{\"jsonrpc\":\"2.0\",method:\"test\",\"id\":1}")
+
+        var called = 0
+        channel.jsonRpc {
+            ++called
+        }
+
+        assertEquals(0, called, "The jsonRpc DSL should not have been called.")
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonNull,
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(ErrorCode.ParseError.code),
+                    "message" to JsonPrimitive("Unexpected JSON token at offset 22: Expected quotation mark '\"', but had 'd' instead at path: \$")
+                )
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
+    @DisplayName("reports ErrorCode.InvalidRequest on an invalid RequestObject")
+    fun reports_invalid_request_on_an_invalid_request_object() {
+        val channel = TestJsonRpcChannel()
+        channel.push(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive(1),
+                "id" to JsonPrimitive(1234)
+            )
+        )
+
+        var called = 0
+        channel.jsonRpc {
+            ++called
+        }
+
+        assertEquals(0, called, "The jsonRpc DSL should not have been called.")
+        assertEquals(1, channel.output.size)
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonNull,
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(ErrorCode.InvalidRequest.code),
+                    "message" to JsonPrimitive("Unsupported kind type 'integer'")
+                )
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
     @DisplayName("supports requests without parameters")
     fun supports_requests_without_parameters() {
         val channel = TestJsonRpcChannel()
