@@ -73,6 +73,23 @@ data class RequestObject(
 }
 
 /**
+ * Parse the request parameters.
+ *
+ * @throws InvalidParams if the `params` property is missing, or cannot be converted to
+ *         the specified type
+ * @param serializer how to deserialize the JSON element value
+ * @return the deserialized JSON object
+ */
+fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
+    if (params == null) throw InvalidParams("Missing params object")
+    try {
+        return serializer.deserialize(params)
+    } catch (e: JsonDeserializationException) {
+        throw InvalidParams(e.message)
+    }
+}
+
+/**
  * Send a request to the channel the message originated from.
  */
 fun Message.sendRequest(request: RequestObject) {
