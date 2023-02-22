@@ -5,6 +5,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import xqt.kotlinx.rpc.json.serialization.JsonDeserializationException
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 /**
@@ -36,7 +37,13 @@ private fun JsonRpcChannel.sendError(error: ErrorObject, id: JsonIntOrString? = 
 }
 
 private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.() -> Unit) {
-    val message = Message.deserialize(body)
+    val message = try {
+        Message.deserialize(body)
+    } catch (e: JsonDeserializationException) {
+        sendError(InvalidRequest(e.message))
+        return
+    }
+
     message.channel = this
     message.handler()
 }
