@@ -206,6 +206,23 @@ data class Notification(
 }
 
 /**
+ * Parse the notification parameters.
+ *
+ * @throws InvalidParams if the `params` property is missing, or cannot be converted to
+ *         the specified type
+ * @param serializer how to deserialize the JSON element value
+ * @return the deserialized JSON object
+ */
+fun <T> Notification.params(serializer: JsonSerialization<T>): T {
+    if (params == null) throw InvalidParams("Missing params object")
+    try {
+        return serializer.deserialize(params)
+    } catch (e: JsonDeserializationException) {
+        throw InvalidParams(e.message)
+    }
+}
+
+/**
  * Send a notification to the channel the message originated from.
  */
 fun Message.sendNotification(notification: Notification) {
