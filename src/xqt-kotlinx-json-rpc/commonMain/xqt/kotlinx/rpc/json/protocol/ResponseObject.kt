@@ -108,6 +108,18 @@ fun RequestObject.sendResult(result: JsonElement?) {
 }
 
 /**
+ * Send a result-based response to the channel the message originated from.
+ */
+fun <T> RequestObject.sendResult(result: T, serializer: JsonSerialization<T>) {
+    val response = ResponseObject(
+        id = id,
+        result = serializer.serializeToJson(result),
+        jsonrpc = jsonrpc
+    )
+    channel?.send(ResponseObject.serializeToJson(response))
+}
+
+/**
  * Processes a JSON-RPC response message.
  */
 fun Message.response(handler: ResponseObject.() -> Unit) {
