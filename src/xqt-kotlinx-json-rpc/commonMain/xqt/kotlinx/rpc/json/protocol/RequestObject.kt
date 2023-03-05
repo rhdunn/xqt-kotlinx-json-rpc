@@ -92,8 +92,8 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
 /**
  * Send a request to the channel the message originated from.
  */
-fun Message.sendRequest(request: RequestObject) {
-    channel?.send(RequestObject.serializeToJson(request))
+fun JsonRpcChannel.sendRequest(request: RequestObject) {
+    send(RequestObject.serializeToJson(request))
 }
 
 /**
@@ -103,14 +103,13 @@ fun Message.sendRequest(request: RequestObject) {
  * @param id the request identifier
  * @param params the method's parameters
  */
-fun Message.sendRequest(method: String, id: JsonIntOrString, params: JsonElement? = null) {
+fun JsonRpcChannel.sendRequest(method: String, id: JsonIntOrString, params: JsonElement? = null) {
     val request = RequestObject(
         method = method,
         id = id,
-        params = params,
-        jsonrpc = jsonrpc
+        params = params
     )
-    channel?.send(RequestObject.serializeToJson(request))
+    send(RequestObject.serializeToJson(request))
 }
 
 /**
@@ -120,7 +119,7 @@ fun Message.sendRequest(method: String, id: JsonIntOrString, params: JsonElement
  * @param id the request identifier
  * @param params the method's parameters
  */
-fun Message.sendRequest(method: String, id: Int, params: JsonElement? = null) {
+fun JsonRpcChannel.sendRequest(method: String, id: Int, params: JsonElement? = null) {
     sendRequest(
         method = method,
         id = JsonIntOrString.IntegerValue(id),
@@ -135,7 +134,7 @@ fun Message.sendRequest(method: String, id: Int, params: JsonElement? = null) {
  * @param id the request identifier
  * @param params the method's parameters
  */
-fun Message.sendRequest(method: String, id: String, params: JsonElement? = null) {
+fun JsonRpcChannel.sendRequest(method: String, id: String, params: JsonElement? = null) {
     sendRequest(
         method = method,
         id = JsonIntOrString.StringValue(id),

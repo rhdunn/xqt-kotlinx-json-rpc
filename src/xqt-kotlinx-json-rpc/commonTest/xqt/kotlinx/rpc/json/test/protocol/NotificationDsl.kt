@@ -319,13 +319,13 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                sendRequest(
+                server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = JsonIntOrString.IntegerValue(1)
                     )
                 )
-                sendRequest(
+                server.sendRequest(
                     method = "notify/test",
                     id = JsonIntOrString.IntegerValue(2)
                 )
@@ -363,13 +363,13 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                sendRequest(
+                server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = JsonIntOrString.IntegerValue(1)
                     )
                 )
-                sendRequest(
+                server.sendRequest(
                     method = "notify/test",
                     id = JsonIntOrString.IntegerValue(2)
                 )
@@ -407,13 +407,13 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                sendRequest(
+                server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = "one"
                     )
                 )
-                sendRequest(
+                server.sendRequest(
                     method = "notify/test",
                     id = "two"
                 )
@@ -451,14 +451,14 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                sendRequest(
+                server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = JsonIntOrString.IntegerValue(1),
                         params = jsonArrayOf(JsonPrimitive(5))
                     )
                 )
-                sendRequest(
+                server.sendRequest(
                     method = "notify/test",
                     id = JsonIntOrString.IntegerValue(2),
                     params = jsonArrayOf(JsonPrimitive(123))
@@ -499,14 +499,14 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                sendRequest(
+                server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = 1,
                         params = jsonArrayOf(JsonPrimitive(5))
                     )
                 )
-                sendRequest(
+                server.sendRequest(
                     method = "notify/test",
                     id = 2,
                     params = jsonArrayOf(JsonPrimitive(123))
@@ -547,14 +547,14 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                sendRequest(
+                server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = "one",
                         params = jsonArrayOf(JsonPrimitive(5))
                     )
                 )
-                sendRequest(
+                server.sendRequest(
                     method = "notify/test",
                     id = "two",
                     params = jsonArrayOf(JsonPrimitive(123))
