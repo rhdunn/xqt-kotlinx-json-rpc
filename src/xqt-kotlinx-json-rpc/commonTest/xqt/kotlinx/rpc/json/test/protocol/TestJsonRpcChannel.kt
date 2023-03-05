@@ -5,20 +5,16 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.protocol.JsonRpcChannel
 
-class TestJsonRpcChannel : JsonRpcChannel {
-    private val input = mutableListOf<String>()
-    val output = mutableListOf<JsonElement>()
-
-    fun push(message: JsonElement) {
-        input.add(message.toString())
-    }
-
-    fun push(message: String) {
-        input.add(message)
+data class TestJsonRpcChannel(
+    private val input: MutableList<String>,
+    private val output: MutableList<String>
+) : JsonRpcChannel {
+    fun send(message: String) {
+        output.add(message)
     }
 
     override fun send(message: JsonElement) {
-        output.add(message)
+        output.add(message.toString())
     }
 
     override fun receive(): JsonElement? {
@@ -28,4 +24,10 @@ class TestJsonRpcChannel : JsonRpcChannel {
 
     override fun close() {
     }
+}
+
+fun testJsonRpcChannels(): Pair<TestJsonRpcChannel, TestJsonRpcChannel> {
+    val input = mutableListOf<String>()
+    val output = mutableListOf<String>()
+    return TestJsonRpcChannel(input, output) to TestJsonRpcChannel(output, input)
 }

@@ -17,16 +17,17 @@ class TheRequestDSL {
     @Test
     @DisplayName("reports ErrorCode.ParseError on invalid JSON")
     fun reports_parse_error_on_invalid_json() {
-        val channel = TestJsonRpcChannel()
-        channel.push("{\"jsonrpc\":\"2.0\",method:\"test\",\"id\":1}")
+        val (client, server) = testJsonRpcChannels()
+
+        client.send("{\"jsonrpc\":\"2.0\",method:\"test\",\"id\":1}")
 
         var called = 0
-        channel.jsonRpc {
+        server.jsonRpc {
             ++called
         }
 
         assertEquals(0, called, "The jsonRpc DSL should not have been called.")
-        assertEquals(1, channel.output.size)
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -36,15 +37,18 @@ class TheRequestDSL {
                     "message" to JsonPrimitive("Unexpected JSON token at offset 22: Expected quotation mark '\"', but had 'd' instead at path: \$")
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("reports ErrorCode.InvalidRequest on an invalid RequestObject")
     fun reports_invalid_request_on_an_invalid_request_object() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive(1),
@@ -53,12 +57,12 @@ class TheRequestDSL {
         )
 
         var called = 0
-        channel.jsonRpc {
+        server.jsonRpc {
             ++called
         }
 
         assertEquals(0, called, "The jsonRpc DSL should not have been called.")
-        assertEquals(1, channel.output.size)
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -68,15 +72,18 @@ class TheRequestDSL {
                     "message" to JsonPrimitive("Unsupported kind type 'integer'")
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("reports ErrorCode.InternalError for generic exceptions")
     fun reports_internal_error_for_generic_exceptions() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -84,13 +91,12 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 throw RuntimeException("Lorem ipsum")
             }
         }
 
-        assertEquals(1, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -100,15 +106,18 @@ class TheRequestDSL {
                     "message" to JsonPrimitive("Lorem ipsum")
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports requests without parameters")
     fun supports_requests_without_parameters() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -117,7 +126,7 @@ class TheRequestDSL {
         )
 
         var called = 0
-        channel.jsonRpc {
+        server.jsonRpc {
             ++called
             request {
                 assertEquals(1, called)
@@ -130,14 +139,15 @@ class TheRequestDSL {
         }
 
         assertEquals(1, called, "The request DSL should have been called.")
-        assertEquals(0, channel.output.size)
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports requests with parameters")
     fun supports_requests_with_parameters() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -147,7 +157,7 @@ class TheRequestDSL {
         )
 
         var called = 0
-        channel.jsonRpc {
+        server.jsonRpc {
             ++called
             request {
                 assertEquals(1, called)
@@ -160,21 +170,22 @@ class TheRequestDSL {
         }
 
         assertEquals(1, called, "The request DSL should have been called.")
-        assertEquals(0, channel.output.size)
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports multiple request messages")
     fun supports_multiple_request_messages() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("lorem"),
                 "id" to JsonPrimitive(1)
             )
         )
-        channel.push(
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("ipsum"),
@@ -184,7 +195,7 @@ class TheRequestDSL {
         )
 
         var called = 0
-        channel.jsonRpc {
+        server.jsonRpc {
             ++called
             request {
                 when (method) {
@@ -210,14 +221,15 @@ class TheRequestDSL {
         }
 
         assertEquals(2, called, "The request DSL should have been called.")
-        assertEquals(0, channel.output.size)
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports batched request messages")
     fun supports_batched_request_messages() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonArrayOf(
                 jsonObjectOf(
                     "jsonrpc" to JsonPrimitive("2.0"),
@@ -234,7 +246,7 @@ class TheRequestDSL {
         )
 
         var called = 0
-        channel.jsonRpc {
+        server.jsonRpc {
             ++called
             request {
                 when (method) {
@@ -260,14 +272,15 @@ class TheRequestDSL {
         }
 
         assertEquals(2, called, "The request DSL should have been called.")
-        assertEquals(0, channel.output.size)
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending notifications without parameters")
     fun supports_sending_notifications_without_parameters() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -275,35 +288,38 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendNotification(Notification(method = "lorem/ipsum"))
                 sendNotification(method = "notify/test")
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("lorem/ipsum")
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("notify/test")
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending notifications with parameters")
     fun supports_sending_notifications_with_parameters() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -311,37 +327,40 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendNotification(Notification(method = "lorem/ipsum", params = jsonArrayOf(JsonPrimitive(5))))
                 sendNotification(method = "notify/test", params = jsonArrayOf(JsonPrimitive(123)))
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("lorem/ipsum"),
                 "params" to jsonArrayOf(JsonPrimitive(5))
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("notify/test"),
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending responses with results")
     fun supports_sending_responses_with_results() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -349,37 +368,40 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendResponse(ResponseObject(id = id, result = JsonPrimitive("lorem")))
                 sendResult(result = JsonPrimitive("ipsum"))
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "result" to JsonPrimitive("lorem")
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "result" to JsonPrimitive("ipsum")
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending responses with null results")
     fun supports_sending_responses_with_null_results() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -387,37 +409,40 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendResponse(ResponseObject(id = id, result = JsonNull))
                 sendResult(result = null)
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "result" to JsonNull
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "result" to JsonNull
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending responses with errors without data")
     fun supports_sending_responses_with_errors_without_data() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -425,13 +450,12 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 throw InvalidParams("Lorem ipsum")
             }
         }
 
-        assertEquals(1, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -441,15 +465,18 @@ class TheRequestDSL {
                     "message" to JsonPrimitive("Lorem ipsum")
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending responses with errors with data")
     fun supports_sending_responses_with_errors_with_data() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -457,13 +484,12 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 throw InvalidParams("Lorem ipsum", data = JsonPrimitive(123))
             }
         }
 
-        assertEquals(1, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -474,15 +500,18 @@ class TheRequestDSL {
                     "data" to JsonPrimitive(123)
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests without parameters for integer|string ids")
     fun supports_sending_requests_without_parameters_for_integer_or_string_ids() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -490,7 +519,7 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendRequest(
                     RequestObject(
@@ -505,30 +534,33 @@ class TheRequestDSL {
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "method" to JsonPrimitive("lorem/ipsum")
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(2),
                 "method" to JsonPrimitive("notify/test")
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests without parameters for integer ids")
     fun supports_sending_requests_without_parameters_for_integer_ids() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -536,7 +568,7 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendRequest(
                     RequestObject(
@@ -551,30 +583,33 @@ class TheRequestDSL {
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
                 "method" to JsonPrimitive("lorem/ipsum")
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(2),
                 "method" to JsonPrimitive("notify/test")
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests without parameters for string ids")
     fun supports_sending_requests_without_parameters_for_string_ids() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -582,7 +617,7 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendRequest(
                     RequestObject(
@@ -597,30 +632,33 @@ class TheRequestDSL {
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive("one"),
                 "method" to JsonPrimitive("lorem/ipsum")
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive("two"),
                 "method" to JsonPrimitive("notify/test")
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests with parameters for integer|string ids")
     fun supports_sending_requests_with_parameters_for_integer_or_string_ids() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -628,7 +666,7 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendRequest(
                     RequestObject(
@@ -645,7 +683,6 @@ class TheRequestDSL {
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -653,8 +690,9 @@ class TheRequestDSL {
                 "method" to JsonPrimitive("lorem/ipsum"),
                 "params" to jsonArrayOf(JsonPrimitive(5))
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -662,15 +700,18 @@ class TheRequestDSL {
                 "method" to JsonPrimitive("notify/test"),
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests with parameters for integer ids")
     fun supports_sending_requests_with_parameters_for_integer_ids() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -678,7 +719,7 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendRequest(
                     RequestObject(
@@ -695,7 +736,6 @@ class TheRequestDSL {
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -703,8 +743,9 @@ class TheRequestDSL {
                 "method" to JsonPrimitive("lorem/ipsum"),
                 "params" to jsonArrayOf(JsonPrimitive(5))
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -712,15 +753,18 @@ class TheRequestDSL {
                 "method" to JsonPrimitive("notify/test"),
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests with parameters for string ids")
     fun supports_sending_requests_with_parameters_for_string_ids() {
-        val channel = TestJsonRpcChannel()
-        channel.push(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("test"),
@@ -728,7 +772,7 @@ class TheRequestDSL {
             )
         )
 
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 sendRequest(
                     RequestObject(
@@ -745,7 +789,6 @@ class TheRequestDSL {
             }
         }
 
-        assertEquals(2, channel.output.size)
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -753,8 +796,9 @@ class TheRequestDSL {
                 "method" to JsonPrimitive("lorem/ipsum"),
                 "params" to jsonArrayOf(JsonPrimitive(5))
             ),
-            channel.output[0]
+            client.receive()
         )
+
         assertEquals(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -762,7 +806,9 @@ class TheRequestDSL {
                 "method" to JsonPrimitive("notify/test"),
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),
-            channel.output[1]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 }
