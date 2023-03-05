@@ -44,7 +44,10 @@ private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.()
         return
     }
 
-    message.channel = this
+    if (message is RequestObject) {
+        message.channel = this
+    }
+
     try {
         message.handler()
     } catch (e: ErrorObject) {

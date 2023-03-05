@@ -46,7 +46,10 @@ data class RequestObject(
     constructor(method: String, id: String, params: JsonElement? = null) :
             this(method, JsonIntOrString.StringValue(id), params)
 
-    override var channel: JsonRpcChannel? = null
+    /**
+     * The JSON-RPC channel that the message originated from.
+     */
+    var channel: JsonRpcChannel? = null
 
     companion object : JsonObjectType<RequestObject> {
         override fun instanceOf(json: JsonElement): Boolean {
@@ -176,8 +179,6 @@ data class Notification(
 
     override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
-    override var channel: JsonRpcChannel? = null
-
     companion object : JsonObjectType<Notification> {
         override fun instanceOf(json: JsonElement): Boolean = when {
             json.containsKeys("id") -> {
