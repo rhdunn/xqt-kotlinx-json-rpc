@@ -4,6 +4,7 @@ package xqt.kotlinx.rpc.json.test.protocol
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.protocol.JsonRpcChannel
+import kotlin.test.assertEquals
 
 data class TestJsonRpcChannel(
     private val input: MutableList<String>,
@@ -31,8 +32,13 @@ data class TestClientServer(val client: TestJsonRpcChannel, val server: TestJson
             this(TestJsonRpcChannel(input, output), TestJsonRpcChannel(output, input))
 }
 
-fun testJsonRpcChannels(): TestClientServer {
+fun testJsonRpc(handler: TestClientServer.() -> Unit) {
     val input = mutableListOf<String>()
     val output = mutableListOf<String>()
-    return TestClientServer(input, output)
+
+    val test = TestClientServer(input, output)
+    test.handler()
+
+    assertEquals(null, test.client.receive())
+    assertEquals(null, test.server.receive())
 }

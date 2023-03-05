@@ -16,9 +16,7 @@ import kotlin.test.assertTrue
 class TheResponseDSL {
     @Test
     @DisplayName("reports ErrorCode.ParseError on invalid JSON")
-    fun reports_parse_error_on_invalid_json() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun reports_parse_error_on_invalid_json() = testJsonRpc {
         client.send("{\"jsonrpc\":\"2.0\",result:\"test\",\"id\":null}")
 
         var called = 0
@@ -39,15 +37,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("reports ErrorCode.InvalidRequest on an invalid RequestObject")
-    fun reports_invalid_request_on_an_invalid_request_object() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun reports_invalid_request_on_an_invalid_request_object() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -74,15 +68,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("reports ErrorCode.InternalError for generic exceptions")
-    fun reports_internal_error_for_generic_exceptions() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun reports_internal_error_for_generic_exceptions() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -108,15 +98,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports responses with results")
-    fun supports_responses_with_results() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_responses_with_results() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -139,14 +125,11 @@ class TheResponseDSL {
         }
 
         assertEquals(1, called, "The response DSL should have been called.")
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports responses with errors")
-    fun supports_responses_with_errors() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_responses_with_errors() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -175,14 +158,11 @@ class TheResponseDSL {
         }
 
         assertEquals(1, called, "The response DSL should have been called.")
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports multiple response messages")
-    fun supports_multiple_response_messages() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_multiple_response_messages() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -232,14 +212,11 @@ class TheResponseDSL {
         }
 
         assertEquals(2, called, "The response DSL should have been called.")
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports batched response messages")
-    fun supports_batched_response_messages() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_batched_response_messages() = testJsonRpc {
         client.send(
             jsonArrayOf(
                 jsonObjectOf(
@@ -289,14 +266,11 @@ class TheResponseDSL {
         }
 
         assertEquals(2, called, "The response DSL should have been called.")
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending notifications without parameters")
-    fun supports_sending_notifications_without_parameters() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_notifications_without_parameters() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -327,15 +301,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending notifications with parameters")
-    fun supports_sending_notifications_with_parameters() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_notifications_with_parameters() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -368,15 +338,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests without parameters for integer|string ids")
-    fun supports_sending_requests_without_parameters_for_integer_or_string_ids() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_requests_without_parameters_for_integer_or_string_ids() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -417,15 +383,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests without parameters for integer ids")
-    fun supports_sending_requests_without_parameters_for_integer_ids() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_requests_without_parameters_for_integer_ids() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -466,15 +428,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests without parameters for string ids")
-    fun supports_sending_requests_without_parameters_for_string_ids() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_requests_without_parameters_for_string_ids() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -515,15 +473,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests with parameters for integer|string ids")
-    fun supports_sending_requests_with_parameters_for_integer_or_string_ids() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_requests_with_parameters_for_integer_or_string_ids() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -568,15 +522,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests with parameters for integer ids")
-    fun supports_sending_requests_with_parameters_for_integer_ids() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_requests_with_parameters_for_integer_ids() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -621,15 +571,11 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports sending requests with parameters for string ids")
-    fun supports_sending_requests_with_parameters_for_string_ids() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_sending_requests_with_parameters_for_string_ids() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -674,7 +620,5 @@ class TheResponseDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 }
