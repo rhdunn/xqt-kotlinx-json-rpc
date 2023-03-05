@@ -225,8 +225,8 @@ fun <T> Notification.params(serializer: JsonSerialization<T>): T {
 /**
  * Send a notification to the channel the message originated from.
  */
-fun Message.sendNotification(notification: Notification) {
-    channel?.send(Notification.serializeToJson(notification))
+fun JsonRpcChannel.sendNotification(notification: Notification) {
+    send(Notification.serializeToJson(notification))
 }
 
 /**
@@ -239,13 +239,12 @@ fun Message.sendNotification(notification: Notification) {
  * @param method the method to be invoked
  * @param params the method's parameters
  */
-fun Message.sendNotification(method: String, params: JsonElement? = null) {
+fun JsonRpcChannel.sendNotification(method: String, params: JsonElement? = null) {
     val notification = Notification(
         method = method,
-        params = params,
-        jsonrpc = jsonrpc
+        params = params
     )
-    channel?.send(Notification.serializeToJson(notification))
+    send(Notification.serializeToJson(notification))
 }
 
 /**

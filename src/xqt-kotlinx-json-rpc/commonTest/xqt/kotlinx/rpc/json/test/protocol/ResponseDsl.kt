@@ -281,8 +281,8 @@ class TheResponseDSL {
 
         server.jsonRpc {
             response {
-                sendNotification(Notification(method = "lorem/ipsum"))
-                sendNotification(method = "notify/test")
+                server.sendNotification(Notification(method = "lorem/ipsum"))
+                server.sendNotification(method = "notify/test")
             }
         }
 
@@ -316,8 +316,8 @@ class TheResponseDSL {
 
         server.jsonRpc {
             response {
-                sendNotification(Notification(method = "lorem/ipsum", params = jsonArrayOf(JsonPrimitive(5))))
-                sendNotification(method = "notify/test", params = jsonArrayOf(JsonPrimitive(123)))
+                server.sendNotification(Notification(method = "lorem/ipsum", params = jsonArrayOf(JsonPrimitive(5))))
+                server.sendNotification(method = "notify/test", params = jsonArrayOf(JsonPrimitive(123)))
             }
         }
 
