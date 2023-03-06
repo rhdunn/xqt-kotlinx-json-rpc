@@ -12,7 +12,7 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 /**
  * A JSON-RPC channel to send/receive message on.
  */
-interface JsonRpcChannel : Closeable {
+interface JsonRpcServer : Closeable {
     /**
      * Send a JSON-RPC message.
      */
@@ -29,7 +29,7 @@ interface JsonRpcChannel : Closeable {
     override fun close()
 }
 
-private fun JsonRpcChannel.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
+private fun JsonRpcServer.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
     val response = ResponseObject(
         id = id,
         error = error
@@ -37,7 +37,7 @@ private fun JsonRpcChannel.sendError(error: ErrorObject, id: JsonIntOrString? = 
     send(ResponseObject.serializeToJson(response))
 }
 
-private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.() -> Unit) {
+private fun JsonRpcServer.processMessage(body: JsonElement, handler: Message.() -> Unit) {
     val message = try {
         Message.deserialize(body)
     } catch (e: JsonDeserializationException) {
@@ -75,7 +75,7 @@ private fun JsonRpcChannel.processMessage(body: JsonElement, handler: Message.()
 /**
  * Processes a JSON-RPC message.
  */
-fun JsonRpcChannel.jsonRpc(handler: Message.() -> Unit) {
+fun JsonRpcServer.jsonRpc(handler: Message.() -> Unit) {
     while (true) {
         val body = try {
             receive() ?: return

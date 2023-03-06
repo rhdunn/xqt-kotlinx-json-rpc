@@ -49,7 +49,7 @@ data class RequestObject(
     /**
      * The JSON-RPC channel that the message originated from.
      */
-    var channel: JsonRpcChannel? = null
+    var channel: JsonRpcServer? = null
 
     companion object : JsonObjectType<RequestObject> {
         override fun instanceOf(json: JsonElement): Boolean {
@@ -95,7 +95,7 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
 /**
  * Send a request to the channel the message originated from.
  */
-fun JsonRpcChannel.sendRequest(request: RequestObject) {
+fun JsonRpcServer.sendRequest(request: RequestObject) {
     send(RequestObject.serializeToJson(request))
 }
 
@@ -106,7 +106,7 @@ fun JsonRpcChannel.sendRequest(request: RequestObject) {
  * @param id the request identifier
  * @param params the method's parameters
  */
-fun JsonRpcChannel.sendRequest(method: String, id: JsonIntOrString, params: JsonElement? = null) {
+fun JsonRpcServer.sendRequest(method: String, id: JsonIntOrString, params: JsonElement? = null) {
     val request = RequestObject(
         method = method,
         id = id,
@@ -122,7 +122,7 @@ fun JsonRpcChannel.sendRequest(method: String, id: JsonIntOrString, params: Json
  * @param id the request identifier
  * @param params the method's parameters
  */
-fun JsonRpcChannel.sendRequest(method: String, id: Int, params: JsonElement? = null) {
+fun JsonRpcServer.sendRequest(method: String, id: Int, params: JsonElement? = null) {
     sendRequest(
         method = method,
         id = JsonIntOrString.IntegerValue(id),
@@ -137,7 +137,7 @@ fun JsonRpcChannel.sendRequest(method: String, id: Int, params: JsonElement? = n
  * @param id the request identifier
  * @param params the method's parameters
  */
-fun JsonRpcChannel.sendRequest(method: String, id: String, params: JsonElement? = null) {
+fun JsonRpcServer.sendRequest(method: String, id: String, params: JsonElement? = null) {
     sendRequest(
         method = method,
         id = JsonIntOrString.StringValue(id),
@@ -225,7 +225,7 @@ fun <T> Notification.params(serializer: JsonSerialization<T>): T {
 /**
  * Send a notification to the channel the message originated from.
  */
-fun JsonRpcChannel.sendNotification(notification: Notification) {
+fun JsonRpcServer.sendNotification(notification: Notification) {
     send(Notification.serializeToJson(notification))
 }
 
@@ -239,7 +239,7 @@ fun JsonRpcChannel.sendNotification(notification: Notification) {
  * @param method the method to be invoked
  * @param params the method's parameters
  */
-fun JsonRpcChannel.sendNotification(method: String, params: JsonElement? = null) {
+fun JsonRpcServer.sendNotification(method: String, params: JsonElement? = null) {
     val notification = Notification(
         method = method,
         params = params
