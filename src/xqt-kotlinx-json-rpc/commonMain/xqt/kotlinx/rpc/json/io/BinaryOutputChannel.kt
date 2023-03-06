@@ -4,7 +4,7 @@ package xqt.kotlinx.rpc.json.io
 /**
  * A binary data channel to write data to.
  */
-expect interface BinaryOutputChannel {
+interface BinaryOutputChannel : Closeable {
     /**
      * Write a single byte to the channel.
      */
@@ -23,7 +23,7 @@ expect interface BinaryOutputChannel {
     /**
      * Close the output channel.
      */
-    fun close()
+    override fun close()
 
     companion object {
         /**
@@ -31,9 +31,13 @@ expect interface BinaryOutputChannel {
          *
          * @return the standard output channel, or null if it is not available
          */
-        val stdout: BinaryOutputChannel?
+        val stdout: BinaryOutputChannel? by lazy {
+            createStdout()
+        }
     }
 }
+
+internal expect fun createStdout(): BinaryOutputChannel?
 
 /**
  * Writes a string to the channel as a UTF-8 string.
