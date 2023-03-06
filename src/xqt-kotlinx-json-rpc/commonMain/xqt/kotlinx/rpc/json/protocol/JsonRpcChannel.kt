@@ -5,13 +5,14 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import xqt.kotlinx.rpc.json.io.Closeable
 import xqt.kotlinx.rpc.json.serialization.JsonDeserializationException
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 /**
  * A JSON-RPC channel to send/receive message on.
  */
-expect interface JsonRpcChannel {
+interface JsonRpcChannel : Closeable {
     /**
      * Send a JSON-RPC message.
      */
@@ -23,9 +24,9 @@ expect interface JsonRpcChannel {
     fun receive(): JsonElement?
 
     /**
-     * Close the output channel.
+     * Close the JSON-RPC channel.
      */
-    fun close()
+    override fun close()
 }
 
 private fun JsonRpcChannel.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
