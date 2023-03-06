@@ -4,7 +4,7 @@ package xqt.kotlinx.rpc.json.io
 /**
  * A binary data channel to read data from.
  */
-expect interface BinaryInputChannel {
+interface BinaryInputChannel : Closeable {
     /**
      * Reads a single byte from the channel.
      *
@@ -25,7 +25,7 @@ expect interface BinaryInputChannel {
     /**
      * Close the input channel.
      */
-    fun close()
+    override fun close()
 
     companion object {
         /**
@@ -33,9 +33,13 @@ expect interface BinaryInputChannel {
          *
          * @return the standard input channel, or null if it is not available
          */
-        val stdin: BinaryInputChannel?
+        val stdin: BinaryInputChannel? by lazy {
+            createStdin()
+        }
     }
 }
+
+internal expect fun createStdin(): BinaryInputChannel?
 
 /**
  * Reads a line from the channel as a UTF-8 string.
