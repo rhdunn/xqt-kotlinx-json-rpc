@@ -103,46 +103,15 @@ fun JsonRpcServer.sendRequest(request: RequestObject) {
  * Send a request to the channel the message originated from.
  *
  * @param method the method to be invoked
- * @param id the request identifier
  * @param params the method's parameters
  */
-fun JsonRpcServer.sendRequest(method: String, id: JsonIntOrString, params: JsonElement? = null) {
+fun JsonRpcServer.sendRequest(method: String, params: JsonElement? = null) {
     val request = RequestObject(
         method = method,
-        id = id,
+        id = nextRequestId,
         params = params
     )
     send(RequestObject.serializeToJson(request))
-}
-
-/**
- * Send a request to the channel the message originated from.
- *
- * @param method the method to be invoked
- * @param id the request identifier
- * @param params the method's parameters
- */
-fun JsonRpcServer.sendRequest(method: String, id: Int, params: JsonElement? = null) {
-    sendRequest(
-        method = method,
-        id = JsonIntOrString.IntegerValue(id),
-        params = params
-    )
-}
-
-/**
- * Send a request to the channel the message originated from.
- *
- * @param method the method to be invoked
- * @param id the request identifier
- * @param params the method's parameters
- */
-fun JsonRpcServer.sendRequest(method: String, id: String, params: JsonElement? = null) {
-    sendRequest(
-        method = method,
-        id = JsonIntOrString.StringValue(id),
-        params = params
-    )
 }
 
 /**

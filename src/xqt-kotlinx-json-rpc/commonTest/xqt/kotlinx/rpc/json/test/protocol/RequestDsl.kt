@@ -459,8 +459,8 @@ class TheRequestDSL {
     }
 
     @Test
-    @DisplayName("supports sending requests without parameters for integer|string ids")
-    fun supports_sending_requests_without_parameters_for_integer_or_string_ids() = testJsonRpc {
+    @DisplayName("supports sending requests without parameters")
+    fun supports_sending_requests_without_parameters() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -474,13 +474,10 @@ class TheRequestDSL {
                 server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
-                        id = JsonIntOrString.IntegerValue(1)
+                        id = server.nextRequestId
                     )
                 )
-                server.sendRequest(
-                    method = "notify/test",
-                    id = JsonIntOrString.IntegerValue(2)
-                )
+                server.sendRequest("notify/test")
             }
         }
 
@@ -504,8 +501,8 @@ class TheRequestDSL {
     }
 
     @Test
-    @DisplayName("supports sending requests without parameters for integer ids")
-    fun supports_sending_requests_without_parameters_for_integer_ids() = testJsonRpc {
+    @DisplayName("supports sending requests with parameters")
+    fun supports_sending_requests_with_parameters() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -519,103 +516,12 @@ class TheRequestDSL {
                 server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
-                        id = JsonIntOrString.IntegerValue(1)
-                    )
-                )
-                server.sendRequest(
-                    method = "notify/test",
-                    id = JsonIntOrString.IntegerValue(2)
-                )
-            }
-        }
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(1),
-                "method" to JsonPrimitive("lorem/ipsum")
-            ),
-            client.receive()
-        )
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(2),
-                "method" to JsonPrimitive("notify/test")
-            ),
-            client.receive()
-        )
-    }
-
-    @Test
-    @DisplayName("supports sending requests without parameters for string ids")
-    fun supports_sending_requests_without_parameters_for_string_ids() = testJsonRpc {
-        client.send(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "method" to JsonPrimitive("test"),
-                "id" to JsonPrimitive(1)
-            )
-        )
-
-        server.jsonRpc {
-            request {
-                server.sendRequest(
-                    RequestObject(
-                        method = "lorem/ipsum",
-                        id = "one"
-                    )
-                )
-                server.sendRequest(
-                    method = "notify/test",
-                    id = "two"
-                )
-            }
-        }
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive("one"),
-                "method" to JsonPrimitive("lorem/ipsum")
-            ),
-            client.receive()
-        )
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive("two"),
-                "method" to JsonPrimitive("notify/test")
-            ),
-            client.receive()
-        )
-    }
-
-    @Test
-    @DisplayName("supports sending requests with parameters for integer|string ids")
-    fun supports_sending_requests_with_parameters_for_integer_or_string_ids() = testJsonRpc {
-        client.send(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "method" to JsonPrimitive("test"),
-                "id" to JsonPrimitive(1)
-            )
-        )
-
-        server.jsonRpc {
-            request {
-                server.sendRequest(
-                    RequestObject(
-                        method = "lorem/ipsum",
-                        id = JsonIntOrString.IntegerValue(1),
+                        id = server.nextRequestId,
                         params = jsonArrayOf(JsonPrimitive(5))
                     )
                 )
                 server.sendRequest(
                     method = "notify/test",
-                    id = JsonIntOrString.IntegerValue(2),
                     params = jsonArrayOf(JsonPrimitive(123))
                 )
             }
@@ -635,104 +541,6 @@ class TheRequestDSL {
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(2),
-                "method" to JsonPrimitive("notify/test"),
-                "params" to jsonArrayOf(JsonPrimitive(123))
-            ),
-            client.receive()
-        )
-    }
-
-    @Test
-    @DisplayName("supports sending requests with parameters for integer ids")
-    fun supports_sending_requests_with_parameters_for_integer_ids() = testJsonRpc {
-        client.send(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "method" to JsonPrimitive("test"),
-                "id" to JsonPrimitive(1)
-            )
-        )
-
-        server.jsonRpc {
-            request {
-                server.sendRequest(
-                    RequestObject(
-                        method = "lorem/ipsum",
-                        id = 1,
-                        params = jsonArrayOf(JsonPrimitive(5))
-                    )
-                )
-                server.sendRequest(
-                    method = "notify/test",
-                    id = 2,
-                    params = jsonArrayOf(JsonPrimitive(123))
-                )
-            }
-        }
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(1),
-                "method" to JsonPrimitive("lorem/ipsum"),
-                "params" to jsonArrayOf(JsonPrimitive(5))
-            ),
-            client.receive()
-        )
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive(2),
-                "method" to JsonPrimitive("notify/test"),
-                "params" to jsonArrayOf(JsonPrimitive(123))
-            ),
-            client.receive()
-        )
-    }
-
-    @Test
-    @DisplayName("supports sending requests with parameters for string ids")
-    fun supports_sending_requests_with_parameters_for_string_ids() = testJsonRpc {
-        client.send(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "method" to JsonPrimitive("test"),
-                "id" to JsonPrimitive(1)
-            )
-        )
-
-        server.jsonRpc {
-            request {
-                server.sendRequest(
-                    RequestObject(
-                        method = "lorem/ipsum",
-                        id = "one",
-                        params = jsonArrayOf(JsonPrimitive(5))
-                    )
-                )
-                server.sendRequest(
-                    method = "notify/test",
-                    id = "two",
-                    params = jsonArrayOf(JsonPrimitive(123))
-                )
-            }
-        }
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive("one"),
-                "method" to JsonPrimitive("lorem/ipsum"),
-                "params" to jsonArrayOf(JsonPrimitive(5))
-            ),
-            client.receive()
-        )
-
-        assertEquals(
-            jsonObjectOf(
-                "jsonrpc" to JsonPrimitive("2.0"),
-                "id" to JsonPrimitive("two"),
                 "method" to JsonPrimitive("notify/test"),
                 "params" to jsonArrayOf(JsonPrimitive(123))
             ),

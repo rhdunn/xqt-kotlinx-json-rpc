@@ -27,6 +27,16 @@ abstract class JsonRpcServer : Closeable {
      * Close the JSON-RPC server.
      */
     abstract override fun close()
+
+    /**
+     * The next request identifier.
+     */
+    var nextRequestId: JsonIntOrString.IntegerValue = JsonIntOrString.IntegerValue(0)
+        get() {
+            field = JsonIntOrString.IntegerValue(field.integer + 1)
+            return field
+        }
+        private set
 }
 
 private fun JsonRpcServer.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
