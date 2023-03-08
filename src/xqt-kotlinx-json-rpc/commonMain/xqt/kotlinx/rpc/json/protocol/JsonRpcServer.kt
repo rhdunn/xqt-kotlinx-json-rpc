@@ -10,23 +10,23 @@ import xqt.kotlinx.rpc.json.serialization.JsonDeserializationException
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 /**
- * A JSON-RPC channel to send/receive message on.
+ * A JSON-RPC server to send/receive message on.
  */
-interface JsonRpcServer : Closeable {
+abstract class JsonRpcServer : Closeable {
     /**
      * Send a JSON-RPC message.
      */
-    fun send(message: JsonElement)
+    abstract fun send(message: JsonElement)
 
     /**
      * Receive the next JSON-RPC message, or null if no messages are pending.
      */
-    fun receive(): JsonElement?
+    abstract fun receive(): JsonElement?
 
     /**
-     * Close the JSON-RPC channel.
+     * Close the JSON-RPC server.
      */
-    override fun close()
+    abstract override fun close()
 }
 
 private fun JsonRpcServer.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
