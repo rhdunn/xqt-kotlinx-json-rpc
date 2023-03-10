@@ -94,8 +94,15 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
 
 /**
  * Send a request to the channel the message originated from.
+ *
+ * @param request the request to send
+ * @param responseHandler the callback to process the response for the request
  */
-fun JsonRpcServer.sendRequest(request: RequestObject) {
+fun JsonRpcServer.sendRequest(
+    request: RequestObject,
+    responseHandler: (ResponseObject.() -> Unit)? = null
+) {
+    responseHandler?.let { registerResponseHandler(request.id, it) }
     send(RequestObject.serializeToJson(request))
 }
 
@@ -104,13 +111,19 @@ fun JsonRpcServer.sendRequest(request: RequestObject) {
  *
  * @param method the method to be invoked
  * @param params the method's parameters
+ * @param responseHandler the callback to process the response for the request
  */
-fun JsonRpcServer.sendRequest(method: String, params: JsonElement? = null) {
+fun JsonRpcServer.sendRequest(
+    method: String,
+    params: JsonElement? = null,
+    responseHandler: (ResponseObject.() -> Unit)? = null
+) {
     val request = RequestObject(
         method = method,
         id = nextRequestId,
         params = params
     )
+    responseHandler?.let { registerResponseHandler(request.id, it) }
     send(RequestObject.serializeToJson(request))
 }
 

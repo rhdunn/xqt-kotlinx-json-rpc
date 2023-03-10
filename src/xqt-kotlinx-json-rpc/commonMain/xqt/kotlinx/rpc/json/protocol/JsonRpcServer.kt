@@ -37,6 +37,12 @@ abstract class JsonRpcServer : Closeable {
             return field
         }
         private set
+
+    internal val responseHandlers: MutableMap<JsonIntOrString, ResponseObject.() -> Unit> = mutableMapOf()
+
+    fun registerResponseHandler(id: JsonIntOrString, handler: ResponseObject.() -> Unit) {
+        responseHandlers[id] = handler
+    }
 }
 
 private fun JsonRpcServer.sendError(error: ErrorObject, id: JsonIntOrString? = null) {
@@ -55,12 +61,24 @@ private fun JsonRpcServer.processMessage(body: JsonElement, handler: Message.() 
         return
     }
 
-    if (message is RequestObject) {
-        message.channel = this
-    }
-
     try {
-        message.handler()
+        when (message) {
+            is RequestObject -> {
+                message.channel = this
+                message.handler()
+            }
+            is Notification -> {
+                message.handler()
+            }
+            is ResponseObject -> {
+                try {
+                    responseHandlers[message.id]?.invoke(message)
+                    message.handler()
+                } finally {
+                    message.id?.let { responseHandlers.remove(it) }
+                }
+            }
+        }
     } catch (e: ErrorObject) {
         sendError(
             error = e,

@@ -429,4 +429,83 @@ class TheResponseDSL {
             client.receive()
         )
     }
+
+    @Test
+    @DisplayName("supports response callbacks from sendRequest talking a RequestObject")
+    fun supports_response_callbacks_from_send_request_taking_a_request_object() = testJsonRpc {
+        var called = 0
+        client.sendRequest(
+            RequestObject(
+                method = "lorem/ipsum",
+                id = client.nextRequestId
+            )
+        ) {
+            ++called
+
+            assertEquals(1, called)
+
+            assertEquals("2.0", jsonrpc)
+            assertEquals(JsonIntOrString.IntegerValue(1), id)
+            assertEquals(JsonPrimitive("test"), result)
+            assertEquals(null, error)
+        }
+
+        assertEquals(0, called, "The response DSL should not have been called.")
+
+        server.jsonRpc {
+            request {
+                sendResponse(
+                    response = ResponseObject(
+                        id = id,
+                        result = JsonPrimitive("test")
+                    )
+                )
+            }
+        }
+
+        assertEquals(0, called, "The response DSL should not have been called.")
+
+        client.jsonRpc {
+            // The response should be processed by the sendRequest handler.
+        }
+
+        assertEquals(1, called, "The response DSL should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports response callbacks from sendRequest talking request parameters")
+    fun supports_response_callbacks_from_send_request_taking_request_parameters() = testJsonRpc {
+        var called = 0
+        client.sendRequest("lorem/ipsum") {
+            ++called
+
+            assertEquals(1, called)
+
+            assertEquals("2.0", jsonrpc)
+            assertEquals(JsonIntOrString.IntegerValue(1), id)
+            assertEquals(JsonPrimitive("test"), result)
+            assertEquals(null, error)
+        }
+
+        assertEquals(0, called, "The response DSL should not have been called.")
+
+        server.jsonRpc {
+            request {
+                sendResponse(
+                    response = ResponseObject(
+                        id = id,
+                        result = JsonPrimitive("test")
+                    )
+                )
+            }
+        }
+
+        assertEquals(0, called, "The response DSL should not have been called.")
+
+        client.jsonRpc {
+            // The response should be processed by the sendRequest handler.
+        }
+
+        assertEquals(1, called, "The response DSL should have been called.")
+    }
 }
