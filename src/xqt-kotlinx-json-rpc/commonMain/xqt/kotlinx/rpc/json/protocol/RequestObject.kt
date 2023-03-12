@@ -97,13 +97,15 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
  *
  * @param request the request to send
  * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
  */
 fun JsonRpcServer.sendRequest(
     request: RequestObject,
     responseHandler: (ResponseObject.() -> Unit)? = null
-) {
+): JsonIntOrString {
     responseHandler?.let { registerResponseHandler(request.id, it) }
     send(RequestObject.serializeToJson(request))
+    return request.id
 }
 
 /**
@@ -112,12 +114,13 @@ fun JsonRpcServer.sendRequest(
  * @param method the method to be invoked
  * @param params the method's parameters
  * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
  */
 fun JsonRpcServer.sendRequest(
     method: String,
     params: JsonElement? = null,
     responseHandler: (ResponseObject.() -> Unit)? = null
-) {
+): JsonIntOrString {
     val request = RequestObject(
         method = method,
         id = nextRequestId,
@@ -125,6 +128,7 @@ fun JsonRpcServer.sendRequest(
     )
     responseHandler?.let { registerResponseHandler(request.id, it) }
     send(RequestObject.serializeToJson(request))
+    return request.id
 }
 
 /**

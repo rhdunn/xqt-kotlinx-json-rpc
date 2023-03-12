@@ -353,13 +353,16 @@ class TheResponseDSL {
 
         server.jsonRpc {
             response {
-                server.sendRequest(
+                val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = server.nextRequestId
                     )
                 )
-                server.sendRequest("notify/test")
+                assertEquals(JsonIntOrString.IntegerValue(1), id1)
+
+                val id2 = server.sendRequest("notify/test")
+                assertEquals(JsonIntOrString.IntegerValue(2), id2)
             }
         }
 
@@ -395,17 +398,20 @@ class TheResponseDSL {
 
         server.jsonRpc {
             response {
-                server.sendRequest(
+                val id1  = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = server.nextRequestId,
                         params = jsonArrayOf(JsonPrimitive(5))
                     )
                 )
-                server.sendRequest(
+                assertEquals(JsonIntOrString.IntegerValue(1), id1)
+
+                val id2 = server.sendRequest(
                     method = "notify/test",
                     params = jsonArrayOf(JsonPrimitive(123))
                 )
+                assertEquals(JsonIntOrString.IntegerValue(2), id2)
             }
         }
 

@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -318,13 +319,16 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                server.sendRequest(
+                val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = server.nextRequestId
                     )
                 )
-                server.sendRequest("notify/test")
+                assertEquals(JsonIntOrString.IntegerValue(1), id1)
+
+                val id2 = server.sendRequest("notify/test")
+                assertEquals(JsonIntOrString.IntegerValue(2), id2)
             }
         }
 
@@ -359,17 +363,20 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
-                server.sendRequest(
+                val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
                         id = server.nextRequestId,
                         params = jsonArrayOf(JsonPrimitive(5))
                     )
                 )
-                server.sendRequest(
+                assertEquals(JsonIntOrString.IntegerValue(1), id1)
+
+                val id2 = server.sendRequest(
                     method = "notify/test",
                     params = jsonArrayOf(JsonPrimitive(123))
                 )
+                assertEquals(JsonIntOrString.IntegerValue(2), id2)
             }
         }
 
