@@ -94,6 +94,16 @@ interface TypedErrorObject<T> {
 }
 
 /**
+ * Convert from an untyped to a typed error object.
+ */
+interface TypedErrorObjectConverter<T> {
+    /**
+     * Convert from an untyped to a typed error object.
+     */
+    fun convert(error: ErrorObject): TypedErrorObject<T>
+}
+
+/**
  * An error processing an RPC call.
  *
  * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
