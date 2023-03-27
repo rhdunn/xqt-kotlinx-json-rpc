@@ -92,7 +92,7 @@ data class ResponseObject(
             conflictingKey("result", "error")
     }
 
-    companion object : JsonObjectType<ResponseObject> {
+    companion object : JsonObjectType<ResponseObject>, TypedResponseObjectConverter<JsonElement?, JsonElement> {
         override fun instanceOf(json: JsonElement): Boolean {
             if (!json.containsKeys("jsonrpc", "id")) {
                 return false
@@ -115,6 +115,10 @@ data class ResponseObject(
                 result = json.getOptional("result", JsonElementType),
                 error = json.getOptional("error", ErrorObject)
             )
+        }
+
+        override fun convert(response: ResponseObject): TypedResponseObject<JsonElement?, JsonElement> {
+            return response
         }
     }
 }
