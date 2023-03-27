@@ -39,7 +39,7 @@ interface TypedResponseObject<ResultT, ErrorDataT> {
      *
      * This member *must not* exist if there was an error invoking the method.
      */
-    val result: ResultT?
+    val result: ResultT
 
     /**
      * The error object in case the request failed.
@@ -84,7 +84,7 @@ data class ResponseObject(
     override val result: JsonElement? = null,
     override val error: ErrorObject? = null,
     override val jsonrpc: String = Message.JSON_RPC_2_0
-) : Message, TypedResponseObject<JsonElement, JsonElement> {
+) : Message, TypedResponseObject<JsonElement?, JsonElement> {
     init {
         if (result == null && error == null)
             missingKey("result", "error")
