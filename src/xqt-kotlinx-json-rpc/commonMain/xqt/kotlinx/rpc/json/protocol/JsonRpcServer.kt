@@ -40,8 +40,15 @@ abstract class JsonRpcServer : Closeable {
 
     internal val responseHandlers: MutableMap<JsonIntOrString, ResponseObject.() -> Unit> = mutableMapOf()
 
-    fun registerResponseHandler(id: JsonIntOrString, handler: ResponseObject.() -> Unit) {
-        responseHandlers[id] = handler
+    fun <ResultT, ErrorDataT> registerResponseHandler(
+        id: JsonIntOrString,
+        handler: (TypedResponseObject<ResultT, ErrorDataT>.() -> Unit),
+        responseObjectConverter: TypedResponseObjectConverter<ResultT, ErrorDataT>
+    ) {
+        responseHandlers[id] = { response: ResponseObject ->
+            val typedResponse = responseObjectConverter.convert(response)
+            handler(typedResponse)
+        }
     }
 }
 

@@ -97,13 +97,56 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
  *
  * @param request the request to send
  * @param responseHandler the callback to process the response for the request
+ * @param responseObjectConverter the typed response object converter
+ * @return the ID of the request
+ */
+fun <ResultT, ErrorDataT> JsonRpcServer.sendRequest(
+    request: RequestObject,
+    responseHandler: (TypedResponseObject<ResultT, ErrorDataT>.() -> Unit)?,
+    responseObjectConverter: TypedResponseObjectConverter<ResultT, ErrorDataT>
+): JsonIntOrString {
+    responseHandler?.let { registerResponseHandler(request.id, it, responseObjectConverter) }
+    send(RequestObject.serializeToJson(request))
+    return request.id
+}
+
+/**
+ * Send a request to the channel the message originated from.
+ *
+ * @param request the request to send
+ * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  */
 fun JsonRpcServer.sendRequest(
     request: RequestObject,
-    responseHandler: (ResponseObject.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<JsonElement?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = sendRequest(
+    request = request,
+    responseHandler = responseHandler,
+    responseObjectConverter = ResponseObject
+)
+
+/**
+ * Send a request to the channel the message originated from.
+ *
+ * @param method the method to be invoked
+ * @param params the method's parameters
+ * @param responseHandler the callback to process the response for the request
+ * @param responseObjectConverter the typed response object converter
+ * @return the ID of the request
+ */
+fun <ResultT, ErrorDataT> JsonRpcServer.sendRequest(
+    method: String,
+    params: JsonElement? = null,
+    responseHandler: (TypedResponseObject<ResultT, ErrorDataT>.() -> Unit)?,
+    responseObjectConverter: TypedResponseObjectConverter<ResultT, ErrorDataT>
 ): JsonIntOrString {
-    responseHandler?.let { registerResponseHandler(request.id, it) }
+    val request = RequestObject(
+        method = method,
+        id = nextRequestId,
+        params = params
+    )
+    responseHandler?.let { registerResponseHandler(request.id, it, responseObjectConverter) }
     send(RequestObject.serializeToJson(request))
     return request.id
 }
@@ -119,17 +162,13 @@ fun JsonRpcServer.sendRequest(
 fun JsonRpcServer.sendRequest(
     method: String,
     params: JsonElement? = null,
-    responseHandler: (ResponseObject.() -> Unit)? = null
-): JsonIntOrString {
-    val request = RequestObject(
-        method = method,
-        id = nextRequestId,
-        params = params
-    )
-    responseHandler?.let { registerResponseHandler(request.id, it) }
-    send(RequestObject.serializeToJson(request))
-    return request.id
-}
+    responseHandler: (TypedResponseObject<JsonElement?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = sendRequest(
+    method = method,
+    params = params,
+    responseHandler = responseHandler,
+    responseObjectConverter = ResponseObject
+)
 
 /**
  * Processes a JSON-RPC request message.
