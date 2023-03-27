@@ -73,16 +73,16 @@ value class ErrorCode(val code: Int) {
  * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseError">LSP 3.17 ResponseError</a>
  */
-data class ErrorObject(
+interface TypedErrorObject<T> {
     /**
      * A number indicating the error type that occurred.
      */
-    val code: ErrorCode,
+    val code: ErrorCode
 
     /**
      * A string providing a short description of the error.
      */
-    override val message: String,
+    val message: String
 
     /**
      * A primitive or structured value that contains additional
@@ -90,8 +90,20 @@ data class ErrorObject(
      *
      * Can be omitted.
      */
-    val data: JsonElement? = null
-) : RuntimeException() {
+    val data: T?
+}
+
+/**
+ * An error processing an RPC call.
+ *
+ * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
+ * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseError">LSP 3.17 ResponseError</a>
+ */
+data class ErrorObject(
+    override val code: ErrorCode,
+    override val message: String,
+    override val data: JsonElement? = null
+) : RuntimeException(), TypedErrorObject<JsonElement> {
     companion object : JsonSerialization<ErrorObject> {
         override fun serializeToJson(value: ErrorObject): JsonElement = buildJsonObject {
             put("code", value.code, ErrorCode)
