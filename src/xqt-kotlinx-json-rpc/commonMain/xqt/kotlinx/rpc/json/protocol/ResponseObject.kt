@@ -21,7 +21,7 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
  * @see <a href="https://www.jsonrpc.org/specification#response_object">JSON-RPC 2.0 Response object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseMessage">LSP 3.17 ResponseMessage</a>
  */
-data class ResponseObject(
+interface TypedResponseObject<ResultT, ErrorDataT> {
     /**
      * The request id.
      *
@@ -30,7 +30,7 @@ data class ResponseObject(
      * If there was an error in detecting the id in the Request object (e.g.
      * Parse error/Invalid Request), it *must* be `null`.
      */
-    val id: JsonIntOrString?,
+    val id: JsonIntOrString?
 
     /**
      * The result of a request.
@@ -39,7 +39,7 @@ data class ResponseObject(
      *
      * This member *must not* exist if there was an error invoking the method.
      */
-    val result: JsonElement? = null,
+    val result: ResultT?
 
     /**
      * The error object in case a request fails.
@@ -48,10 +48,33 @@ data class ResponseObject(
      *
      * This member *must not* exist if there was no error triggered during invocation.
      */
-    val error: ErrorObject? = null,
+    val error: TypedErrorObject<ErrorDataT>?
 
+    /**
+     * The version of the JSON-RPC protocol.
+     *
+     * This must be exactly "2.0".
+     */
+    val jsonrpc: String
+}
+
+/**
+ * A response message sent as a result of a request.
+ *
+ * If a request doesn't provide a result value the receiver of a request still
+ * needs to return a response message to conform to the JSON-RPC specification.
+ * The result property should be set to `null` in this case to signal a
+ * successful request.
+ *
+ * @see <a href="https://www.jsonrpc.org/specification#response_object">JSON-RPC 2.0 Response object</a>
+ * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseMessage">LSP 3.17 ResponseMessage</a>
+ */
+data class ResponseObject(
+    override val id: JsonIntOrString?,
+    override val result: JsonElement? = null,
+    override val error: ErrorObject? = null,
     override val jsonrpc: String = Message.JSON_RPC_2_0
-) : Message {
+) : Message, TypedResponseObject<JsonElement, JsonElement> {
     init {
         if (result == null && error == null)
             missingKey("result", "error")
