@@ -33,7 +33,7 @@ interface TypedResponseObject<ResultT, ErrorDataT> {
     val id: JsonIntOrString?
 
     /**
-     * The result of a request.
+     * The result of the request.
      *
      * This member is *required* on success.
      *
@@ -42,7 +42,7 @@ interface TypedResponseObject<ResultT, ErrorDataT> {
     val result: ResultT?
 
     /**
-     * The error object in case a request fails.
+     * The error object in case the request failed.
      *
      * This member is *required* on error.
      *
