@@ -59,6 +59,16 @@ interface TypedResponseObject<ResultT, ErrorDataT> {
 }
 
 /**
+ * Convert from an untyped to a typed response object.
+ */
+interface TypedResponseObjectConverter<ResultT, ErrorDataT> {
+    /**
+     * Convert from an untyped to a typed response object.
+     */
+    fun convert(response: ResponseObject): TypedResponseObject<ResultT, ErrorDataT>
+}
+
+/**
  * A response message sent as a result of a request.
  *
  * If a request doesn't provide a result value the receiver of a request still
