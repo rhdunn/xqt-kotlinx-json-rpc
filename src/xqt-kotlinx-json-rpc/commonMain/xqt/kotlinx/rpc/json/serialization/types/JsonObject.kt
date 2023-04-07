@@ -12,7 +12,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Defines a JSON object.
  */
 object JsonObject : JsonSerialization<JsonObject> {
-    override fun serializeToJson(value: JsonObject): JsonElement = value
+    override fun serializeToJson(value: JsonObject): JsonObject = value
 
     override fun deserialize(json: JsonElement): JsonObject = when (json) {
         is JsonObject -> json
@@ -30,7 +30,7 @@ data class JsonTypedObject<K, V>(
     private val keySerialization: StringSerialization<K>,
     private val valueSerialization: JsonSerialization<V>
 ) : JsonSerialization<Map<K, V>> {
-    override fun serializeToJson(value: Map<K, V>): JsonElement = buildJsonObject {
+    override fun serializeToJson(value: Map<K, V>): JsonObject = buildJsonObject {
         value.forEach { (key, value) ->
             val k = keySerialization.serializeToString(key)
             val v = valueSerialization.serializeToJson(value)
