@@ -5,6 +5,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.io.Closeable
 import xqt.kotlinx.rpc.json.serialization.JsonDeserializationException
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
@@ -73,9 +74,15 @@ private fun JsonRpcServer.processMessage(body: JsonElement, handler: Message.() 
             is RequestObject -> {
                 message.channel = this
                 message.handler()
+                if (!message.handled) {
+                    sendError(MethodNotFound(data = JsonPrimitive(message.method)))
+                }
             }
             is Notification -> {
                 message.handler()
+                if (!message.handled) {
+                    sendError(MethodNotFound(data = JsonPrimitive(message.method)))
+                }
             }
             is ResponseObject -> {
                 try {

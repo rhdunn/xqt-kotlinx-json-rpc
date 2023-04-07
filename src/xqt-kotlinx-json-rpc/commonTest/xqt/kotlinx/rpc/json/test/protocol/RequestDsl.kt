@@ -115,6 +115,8 @@ class TheRequestDSL {
         server.jsonRpc {
             ++called
             request {
+                handled = true
+
                 assertEquals(1, called)
 
                 assertEquals("2.0", jsonrpc)
@@ -143,6 +145,8 @@ class TheRequestDSL {
         server.jsonRpc {
             ++called
             request {
+                handled = true
+
                 assertEquals(1, called)
 
                 assertEquals("2.0", jsonrpc)
@@ -180,6 +184,8 @@ class TheRequestDSL {
             request {
                 when (method) {
                     "lorem" -> {
+                        handled = true
+
                         assertEquals(1, called)
 
                         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -188,6 +194,8 @@ class TheRequestDSL {
                     }
 
                     "ipsum" -> {
+                        handled = true
+
                         assertEquals(2, called)
 
                         assertEquals(JsonIntOrString.IntegerValue(2), id)
@@ -228,6 +236,8 @@ class TheRequestDSL {
             request {
                 when (method) {
                     "lorem" -> {
+                        handled = true
+
                         assertEquals(1, called)
 
                         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -236,6 +246,8 @@ class TheRequestDSL {
                     }
 
                     "ipsum" -> {
+                        handled = true
+
                         assertEquals(2, called)
 
                         assertEquals(JsonIntOrString.IntegerValue(2), id)
@@ -264,6 +276,8 @@ class TheRequestDSL {
 
         server.jsonRpc {
             request {
+                handled = true
+
                 server.sendNotification(Notification(method = "lorem/ipsum"))
                 server.sendNotification(method = "notify/test")
             }
@@ -299,6 +313,8 @@ class TheRequestDSL {
 
         server.jsonRpc {
             request {
+                handled = true
+
                 server.sendNotification(Notification(method = "lorem/ipsum", params = jsonArrayOf(JsonPrimitive(5))))
                 server.sendNotification(method = "notify/test", params = jsonArrayOf(JsonPrimitive(123)))
             }
@@ -336,6 +352,8 @@ class TheRequestDSL {
 
         server.jsonRpc {
             request {
+                handled = true
+
                 sendResponse(ResponseObject(id = id, result = JsonPrimitive("lorem")))
                 sendResult(result = JsonPrimitive("ipsum"))
             }
@@ -373,6 +391,8 @@ class TheRequestDSL {
 
         server.jsonRpc {
             request {
+                handled = true
+
                 sendResponse(ResponseObject(id = id, result = JsonNull))
                 sendResult(result = null)
             }
@@ -471,6 +491,8 @@ class TheRequestDSL {
 
         server.jsonRpc {
             request {
+                handled = true
+
                 val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
@@ -516,6 +538,8 @@ class TheRequestDSL {
 
         server.jsonRpc {
             request {
+                handled = true
+
                 val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",

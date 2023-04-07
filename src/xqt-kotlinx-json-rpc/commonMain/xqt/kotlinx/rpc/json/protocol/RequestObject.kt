@@ -51,6 +51,14 @@ data class RequestObject(
      */
     var channel: JsonRpcServer? = null
 
+    /**
+     * Has the method been handled?
+     *
+     * If this is `false` after the `jsonRpc` message handler has been called,
+     * a `MethodNotFound` error will be raised.
+     */
+    var handled: Boolean = false
+
     companion object : JsonObjectType<RequestObject> {
         override fun instanceOf(json: JsonElement): Boolean {
             return json.containsKeys("jsonrpc", "method", "id") && (json as JsonObject)["id"] != JsonNull
@@ -107,6 +115,7 @@ fun <ParamsT, ResultT> RequestObject.method(
     resultSerializer: JsonSerialization<ResultT>
 ) {
     if (this.method == method) {
+        this.handled = true
         val result = this.params(paramsSerializer).handler()
         this.sendResult(result, resultSerializer)
     }
@@ -125,6 +134,7 @@ fun <ResultT> RequestObject.method(
     resultSerializer: JsonSerialization<ResultT>
 ) {
     if (this.method == method) {
+        this.handled = true
         val result = handler()
         this.sendResult(result, resultSerializer)
     }
@@ -143,6 +153,7 @@ fun <ParamsT> RequestObject.method(
     paramsSerializer: JsonSerialization<ParamsT>
 ) {
     if (this.method == method) {
+        this.handled = true
         this.params(paramsSerializer).handler()
         this.sendResult(null)
     }
@@ -159,6 +170,7 @@ fun RequestObject.method(
     handler: () -> Unit
 ) {
     if (this.method == method) {
+        this.handled = true
         handler()
         this.sendResult(null)
     }
@@ -276,6 +288,14 @@ data class Notification(
 
     override val jsonrpc: String = Message.JSON_RPC_2_0
 ) : Message {
+    /**
+     * Has the method been handled?
+     *
+     * If this is `false` after the `jsonRpc` message handler has been called,
+     * a `MethodNotFound` error will be raised.
+     */
+    var handled: Boolean = false
+
     companion object : JsonObjectType<Notification> {
         override fun instanceOf(json: JsonElement): Boolean = when {
             json.containsKeys("id") -> {
@@ -332,6 +352,7 @@ fun <ParamsT> Notification.method(
     paramsSerializer: JsonSerialization<ParamsT>
 ) {
     if (this.method == method) {
+        this.handled = true
         this.params(paramsSerializer).handler()
     }
 }
@@ -347,6 +368,7 @@ fun Notification.method(
     handler: () -> Unit
 ) {
     if (this.method == method) {
+        this.handled = true
         handler()
     }
 }

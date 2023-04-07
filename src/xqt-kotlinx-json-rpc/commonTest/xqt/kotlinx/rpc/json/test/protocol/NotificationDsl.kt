@@ -112,6 +112,8 @@ class TheNotificationDSL {
         server.jsonRpc {
             ++called
             notification {
+                handled = true
+
                 assertEquals(1, called)
 
                 assertEquals("2.0", jsonrpc)
@@ -138,6 +140,8 @@ class TheNotificationDSL {
         server.jsonRpc {
             ++called
             notification {
+                handled = true
+
                 assertEquals(1, called)
 
                 assertEquals("2.0", jsonrpc)
@@ -172,6 +176,8 @@ class TheNotificationDSL {
             notification {
                 when (method) {
                     "lorem" -> {
+                        handled = true
+
                         assertEquals(1, called)
 
                         assertEquals("2.0", jsonrpc)
@@ -179,6 +185,8 @@ class TheNotificationDSL {
                     }
 
                     "ipsum" -> {
+                        handled = true
+
                         assertEquals(2, called)
 
                         assertEquals("2.0", jsonrpc)
@@ -216,6 +224,8 @@ class TheNotificationDSL {
             notification {
                 when (method) {
                     "lorem" -> {
+                        handled = true
+
                         assertEquals(1, called)
 
                         assertEquals("2.0", jsonrpc)
@@ -223,6 +233,8 @@ class TheNotificationDSL {
                     }
 
                     "ipsum" -> {
+                        handled = true
+
                         assertEquals(2, called)
 
                         assertEquals("2.0", jsonrpc)
@@ -249,6 +261,8 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
+                handled = true
+
                 server.sendNotification(Notification(method = "lorem/ipsum"))
                 server.sendNotification(method = "notify/test")
             }
@@ -283,6 +297,8 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
+                handled = true
+
                 server.sendNotification(Notification(method = "lorem/ipsum", params = jsonArrayOf(JsonPrimitive(5))))
                 server.sendNotification(method = "notify/test", params = jsonArrayOf(JsonPrimitive(123)))
             }
@@ -319,6 +335,8 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
+                handled = true
+
                 val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
@@ -363,6 +381,8 @@ class TheNotificationDSL {
 
         server.jsonRpc {
             notification {
+                handled = true
+
                 val id1 = server.sendRequest(
                     RequestObject(
                         method = "lorem/ipsum",
