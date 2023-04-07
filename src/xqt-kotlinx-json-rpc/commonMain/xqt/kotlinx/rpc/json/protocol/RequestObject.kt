@@ -248,6 +248,38 @@ fun <T> Notification.params(serializer: JsonSerialization<T>): T {
 }
 
 /**
+ * Handle a notification method.
+ *
+ * @param method the notification method to handle
+ * @param handler the callback used to handle the method
+ * @param paramsSerializer how to deserialize the method parameters
+ */
+fun <ParamsT> Notification.method(
+    method: String,
+    handler: ParamsT.() -> Unit,
+    paramsSerializer: JsonSerialization<ParamsT>
+) {
+    if (this.method == method) {
+        this.params(paramsSerializer).handler()
+    }
+}
+
+/**
+ * Handle a notification method.
+ *
+ * @param method the notification method to handle
+ * @param handler the callback used to handle the method
+ */
+fun Notification.method(
+    method: String,
+    handler: () -> Unit
+) {
+    if (this.method == method) {
+        handler()
+    }
+}
+
+/**
  * Send a notification to the channel the message originated from.
  */
 fun JsonRpcServer.sendNotification(notification: Notification) {
