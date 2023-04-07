@@ -11,7 +11,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Defines a JSON boolean|number|string primitive type.
  */
 object JsonPrimitiveValue : JsonSerialization<JsonPrimitive> {
-    override fun serializeToJson(value: JsonPrimitive): JsonElement = when (value) {
+    override fun serializeToJson(value: JsonPrimitive): JsonPrimitive = when (value) {
         is JsonNull -> unsupportedKindType(value)
         else -> value
     }
