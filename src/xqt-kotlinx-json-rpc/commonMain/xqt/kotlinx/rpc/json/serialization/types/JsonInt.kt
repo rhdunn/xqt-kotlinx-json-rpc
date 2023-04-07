@@ -9,7 +9,7 @@ import xqt.kotlinx.rpc.json.serialization.*
  * Defines an integer number in the range of -2^31 to 2^31 - 1.
  */
 object JsonInt : JsonSerialization<Int> {
-    override fun serializeToJson(value: Int): JsonElement = JsonPrimitive(value)
+    override fun serializeToJson(value: Int): JsonPrimitive = JsonPrimitive(value)
 
     override fun deserialize(json: JsonElement): Int = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)
