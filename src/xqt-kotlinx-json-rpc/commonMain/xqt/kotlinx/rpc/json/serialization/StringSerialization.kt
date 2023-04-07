@@ -18,7 +18,7 @@ interface StringSerialization<T> : JsonSerialization<T> {
      */
     fun deserialize(value: String): T
 
-    override fun serializeToJson(value: T): JsonElement = JsonPrimitive(serializeToString(value))
+    override fun serializeToJson(value: T): JsonPrimitive = JsonPrimitive(serializeToString(value))
 
     override fun deserialize(json: JsonElement): T = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)
