@@ -93,6 +93,78 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
 }
 
 /**
+ * Handle a request method.
+ *
+ * @param method the request method to handle
+ * @param handler the callback used to handle the method
+ * @param paramsSerializer how to deserialize the method parameters
+ * @param resultSerializer how to deserialize the request result
+ */
+fun <ParamsT, ResultT> RequestObject.method(
+    method: String,
+    handler: ParamsT.() -> ResultT,
+    paramsSerializer: JsonSerialization<ParamsT>,
+    resultSerializer: JsonSerialization<ResultT>
+) {
+    if (this.method == method) {
+        val result = this.params(paramsSerializer).handler()
+        this.sendResult(result, resultSerializer)
+    }
+}
+
+/**
+ * Handle a request method.
+ *
+ * @param method the request method to handle
+ * @param handler the callback used to handle the method
+ * @param resultSerializer how to deserialize the request result
+ */
+fun <ResultT> RequestObject.method(
+    method: String,
+    handler: () -> ResultT,
+    resultSerializer: JsonSerialization<ResultT>
+) {
+    if (this.method == method) {
+        val result = handler()
+        this.sendResult(result, resultSerializer)
+    }
+}
+
+/**
+ * Handle a request method.
+ *
+ * @param method the request method to handle
+ * @param handler the callback used to handle the method
+ * @param paramsSerializer how to deserialize the method parameters
+ */
+fun <ParamsT> RequestObject.method(
+    method: String,
+    handler: ParamsT.() -> Unit,
+    paramsSerializer: JsonSerialization<ParamsT>
+) {
+    if (this.method == method) {
+        this.params(paramsSerializer).handler()
+        this.sendResult(null)
+    }
+}
+
+/**
+ * Handle a request method.
+ *
+ * @param method the request method to handle
+ * @param handler the callback used to handle the method
+ */
+fun RequestObject.method(
+    method: String,
+    handler: () -> Unit
+) {
+    if (this.method == method) {
+        handler()
+        this.sendResult(null)
+    }
+}
+
+/**
  * Send a request to the channel the message originated from.
  *
  * @param request the request to send
