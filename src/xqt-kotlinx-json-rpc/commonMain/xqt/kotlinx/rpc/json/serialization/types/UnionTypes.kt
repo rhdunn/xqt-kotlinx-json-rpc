@@ -46,7 +46,7 @@ sealed interface JsonIntOrString {
     }
 
     companion object : JsonSerialization<JsonIntOrString> {
-        override fun serializeToJson(value: JsonIntOrString): JsonElement = when (value) {
+        override fun serializeToJson(value: JsonIntOrString): JsonPrimitive = when (value) {
             is IntegerValue -> JsonPrimitive(value.integer)
             is StringValue -> JsonPrimitive(value.string)
         }
