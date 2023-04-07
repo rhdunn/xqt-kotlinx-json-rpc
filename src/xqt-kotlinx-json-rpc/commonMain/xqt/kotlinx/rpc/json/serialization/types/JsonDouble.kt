@@ -9,7 +9,7 @@ import xqt.kotlinx.rpc.json.serialization.*
  * Defines a decimal number with double precision.
  */
 object JsonDouble : JsonSerialization<Double> {
-    override fun serializeToJson(value: Double): JsonElement = JsonPrimitive(value)
+    override fun serializeToJson(value: Double): JsonPrimitive = JsonPrimitive(value)
 
     override fun deserialize(json: JsonElement): Double = when (json) {
         !is JsonPrimitive -> unsupportedKindType(json)
