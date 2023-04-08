@@ -69,6 +69,38 @@ fun <K, V> JsonObject.getOptional(key: String, serializer: JsonTypedObject<K, V>
 }
 
 /**
+ * Deserialize the data type or object from the `json` element.
+ *
+ * @param key the name of the required key to deserialize.
+ * @param serializer how to deserialize the JSON element value.
+ */
+fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonSerialization<T>): T? {
+    return get(key)?.let { serializer.deserializeOrNull(it) }
+}
+
+/**
+ * Deserialize the array of data types or objects from the `json` element.
+ *
+ * @param key the name of the optional key to deserialize.
+ * @param serializer how to deserialize the JSON array value.
+ */
+fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedArray<T>): List<T> {
+    val data = get(key) ?: return listOf()
+    return serializer.deserializeOrNull(data) ?: listOf()
+}
+
+/**
+ * Deserialize the map of data types from the `json` element.
+ *
+ * @param key the name of the optional key to deserialize.
+ * @param serializer how to deserialize the JSON object value.
+ */
+fun <K, V> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedObject<K, V>): Map<K, V> {
+    val data = get(key) ?: return mapOf()
+    return serializer.deserializeOrNull(data) ?: mapOf()
+}
+
+/**
  * Serialize the data type or object to the JSON element.
  *
  * @param key the name of the key to serialize to.
