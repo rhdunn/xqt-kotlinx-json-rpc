@@ -7,7 +7,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "io.github.${ProjectMetadata.githubId}"
+group = ProjectMetadata.groupId
 version = "0.1-SNAPSHOT"
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
