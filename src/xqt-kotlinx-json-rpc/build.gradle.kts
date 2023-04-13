@@ -75,14 +75,11 @@ kotlin {
         jsTest.kotlin.srcDir("jsTest")
 
         nativeMain.kotlin.srcDir("nativeMain")
+        nativeTest.kotlin.srcDir("nativeTest")
 
         when (BuildConfiguration.hostOs) {
             HostOs.Windows -> nativeMain.kotlin.srcDir("windowsMain")
             else -> nativeMain.kotlin.srcDir("posixMain")
-        }
-
-        val nativeTest by getting {
-            kotlin.srcDir("nativeTest")
         }
     }
 }
