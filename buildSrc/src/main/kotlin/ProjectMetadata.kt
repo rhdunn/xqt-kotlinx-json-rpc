@@ -11,6 +11,11 @@ object ProjectMetadata {
     const val versionTag = "0.1"
 
     /**
+     * The build type of this project.
+     */
+    val buildType = BuildType.Snapshot
+
+    /**
      * The Maven group ID.
      */
     const val groupId = "io.github.$githubId"
