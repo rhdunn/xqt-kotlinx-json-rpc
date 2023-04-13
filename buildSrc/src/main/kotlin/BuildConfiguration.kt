@@ -13,4 +13,9 @@ object BuildConfiguration {
      * The Operating System the build is running on.
      */
     val hostOs = HostOs(System.getProperty("os.name") ?: "Unknown")
+
+    /**
+     * The headless web browser to run the JS tests on.
+     */
+    val jsBrowser = JsBrowser(System.getProperty("js.browser"), hostOs)
 }
