@@ -19,4 +19,9 @@ object ProjectMetadata {
      * The Maven group ID.
      */
     const val groupId = "io.github.$githubId"
+
+    /**
+     * The artifact version ID.
+     */
+    val version = "$versionTag${buildType.suffix}"
 }
