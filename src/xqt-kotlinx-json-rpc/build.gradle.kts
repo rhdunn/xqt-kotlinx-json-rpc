@@ -1,10 +1,20 @@
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:${Version.Plugin.dokka}")
+    }
+}
+
 plugins {
     kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
+    id("org.jetbrains.dokka") version Version.Plugin.dokka
     id("maven-publish")
 }
 
@@ -97,6 +107,15 @@ kotlin.sourceSets {
     when (BuildConfiguration.hostOs) {
         HostOs.Windows -> nativeMain.kotlin.srcDir("windowsMain")
         else -> nativeMain.kotlin.srcDir("posixMain")
+    }
+}
+
+// endregion
+// region Dokka
+
+tasks.withType<DokkaTask>().configureEach {
+    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+        footerMessage = "Copyright © ${ProjectMetadata.copyrightYear} ${ProjectMetadata.copyrightOwner}"
     }
 }
 
