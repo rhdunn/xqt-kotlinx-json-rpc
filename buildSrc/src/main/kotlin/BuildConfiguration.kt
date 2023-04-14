@@ -18,4 +18,14 @@ object BuildConfiguration {
      * The headless web browser to run the JS tests on.
      */
     val jsBrowser = JsBrowser(System.getProperty("js.browser"), hostOs)
+
+    /**
+     * The Open Source Software Repository Hosting (OSSRH) username.
+     */
+    val ossrhUsername = System.getProperty("ossrh.username") ?: System.getenv("OSSRH_USERNAME")
+
+    /**
+     * The Open Source Software Repository Hosting (OSSRH) password.
+     */
+    val ossrhPassword = System.getProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
 }
