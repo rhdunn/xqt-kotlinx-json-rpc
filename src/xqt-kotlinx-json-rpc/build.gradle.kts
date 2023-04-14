@@ -115,7 +115,7 @@ kotlin.sourceSets {
 
 tasks.withType<DokkaTask>().configureEach {
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-        footerMessage = "Copyright © ${ProjectMetadata.copyrightYear} ${ProjectMetadata.copyrightOwner}"
+        footerMessage = "Copyright © ${ProjectMetadata.Copyright.Year} ${ProjectMetadata.Copyright.Owner}"
     }
 }
 
