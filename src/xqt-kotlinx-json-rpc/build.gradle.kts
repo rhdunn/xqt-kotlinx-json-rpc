@@ -18,7 +18,7 @@ plugins {
     id("maven-publish")
 }
 
-group = ProjectMetadata.groupId
+group = ProjectMetadata.GitHub.GroupId
 version = ProjectMetadata.Build.Version
 
 // region Kotlin Multiplatform (Common)

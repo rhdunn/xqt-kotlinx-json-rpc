@@ -17,10 +17,17 @@ object ProjectMetadata {
         val Version = "$VersionTag${Type.suffix}"
     }
 
-    /**
-     * The ID of the GitHub account to which this project belongs.
-     */
-    const val githubId = "rhdunn"
+    object GitHub {
+        /**
+         * The ID of the GitHub account to which this project belongs.
+         */
+        const val AccountId = "rhdunn"
+
+        /**
+         * The Maven group ID.
+         */
+        const val GroupId = "io.github.$AccountId"
+    }
 
     /**
      * The copyright year range for the project.
@@ -31,9 +38,4 @@ object ProjectMetadata {
      * The person or organization owning the copyright for the project.
      */
     const val copyrightOwner = "Reece H. Dunn"
-
-    /**
-     * The Maven group ID.
-     */
-    const val groupId = "io.github.$githubId"
 }
