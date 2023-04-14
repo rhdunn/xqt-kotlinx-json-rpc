@@ -18,7 +18,7 @@ kotlin.sourceSets {
     commonTest.kotlin.srcDir("commonTest")
 
     commonMain.dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.kotlinSerialization}")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.kotlinSerialization}")
     }
 
     commonTest.dependencies {

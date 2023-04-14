@@ -6,6 +6,8 @@ object Version {
         const val kotlinSerialization = kotlin
     }
 
-    const val junit = "5.6.0"
-    const val kotlinSerialization = "1.4.1"
+    object Dependency {
+        const val junit = "5.6.0"
+        const val kotlinSerialization = "1.4.1"
+    }
 }
