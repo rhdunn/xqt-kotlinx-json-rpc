@@ -1,5 +1,10 @@
 @Suppress("MemberVisibilityCanBePrivate")
 object ProjectMetadata {
+    /**
+     * A short description of the project.
+     */
+    const val Description = "Kotlin multiplatform JSON-RPC 2.0 library"
+
     object Build {
         /**
          * The semantic version of the current version.
@@ -19,14 +24,61 @@ object ProjectMetadata {
 
     object GitHub {
         /**
-         * The ID of the GitHub account to which this project belongs.
+         * The ID of the GitHub account (organization or developer) to which this project belongs.
          */
         const val AccountId = "rhdunn"
+
+        /**
+         * The name of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountName = "Reece H. Dunn"
+
+        /**
+         * The email address of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountEmail = "msclrhd@gmail.com"
+
+        /**
+         * The ID of the GitHub repository.
+         */
+        const val RepoId = "xqt-kotlinx-json-rpc"
 
         /**
          * The Maven group ID.
          */
         const val GroupId = "io.github.$AccountId"
+
+        /**
+         * The URL of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountUrl = "https://github.com/$AccountId"
+
+        /**
+         * The URL to the GitHub repository.
+         */
+        const val ProjectUrl = "https://github.com/$AccountId/$RepoId"
+
+        /**
+         * The URL to clone the repository via SSH.
+         */
+        const val CloneSshUrl = "git@github.com:$AccountId/$RepoId.git"
+
+        /**
+         * The URL to the GitHub repository issues.
+         */
+        const val IssuesUrl = "https://github.com/$AccountId/$RepoId/issues"
+    }
+
+    object License {
+        /**
+         * The name of the license, for Maven POM metadata.
+         */
+        const val Name = "The Apache Software License, Version 2.0"
+
+        /**
+         * The URL where the license text can be found.
+         */
+        const val Url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
     }
 
     object Copyright {
