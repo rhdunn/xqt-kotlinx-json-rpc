@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
 plugins {
-    kotlin("multiplatform") version Version.kotlin
-    kotlin("plugin.serialization") version Version.kotlin
+    kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
+    kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
 }
 
 // region Kotlin Multiplatform (Common)
