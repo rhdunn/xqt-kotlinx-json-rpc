@@ -111,12 +111,20 @@ kotlin.sourceSets {
 }
 
 // endregion
-// region Dokka
+// region Documentation
 
 tasks.withType<DokkaTask>().configureEach {
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         footerMessage = "Copyright © ${ProjectMetadata.copyrightYear} ${ProjectMetadata.copyrightOwner}"
     }
+}
+
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
+publishing.publications.withType<MavenPublication> {
+    artifact(javadocJar)
 }
 
 // endregion
