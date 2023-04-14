@@ -1,14 +1,26 @@
 @Suppress("MemberVisibilityCanBePrivate")
 object ProjectMetadata {
+    object Build {
+        /**
+         * The semantic version of the current version.
+         */
+        const val VersionTag = "0.1"
+
+        /**
+         * The build type of this project.
+         */
+        val Type = BuildType.Snapshot
+
+        /**
+         * The artifact version ID.
+         */
+        val Version = "$VersionTag${Type.suffix}"
+    }
+
     /**
      * The ID of the GitHub account to which this project belongs.
      */
     const val githubId = "rhdunn"
-
-    /**
-     * The semantic version of the current version.
-     */
-    const val versionTag = "0.1"
 
     /**
      * The copyright year range for the project.
@@ -21,17 +33,7 @@ object ProjectMetadata {
     const val copyrightOwner = "Reece H. Dunn"
 
     /**
-     * The build type of this project.
-     */
-    val buildType = BuildType.Snapshot
-
-    /**
      * The Maven group ID.
      */
     const val groupId = "io.github.$githubId"
-
-    /**
-     * The artifact version ID.
-     */
-    val version = "$versionTag${buildType.suffix}"
 }

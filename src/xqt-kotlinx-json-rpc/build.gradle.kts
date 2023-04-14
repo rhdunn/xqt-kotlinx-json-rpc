@@ -19,7 +19,7 @@ plugins {
 }
 
 group = ProjectMetadata.groupId
-version = ProjectMetadata.version
+version = ProjectMetadata.Build.Version
 
 // region Kotlin Multiplatform (Common)
 
