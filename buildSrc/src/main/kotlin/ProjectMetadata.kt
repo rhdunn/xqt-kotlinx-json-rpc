@@ -9,12 +9,12 @@ object ProjectMetadata {
         /**
          * The semantic version of the current version.
          */
-        const val VersionTag = "0.1"
+        const val VersionTag = "1.0.0"
 
         /**
          * The build type of this project.
          */
-        val Type = BuildType.Snapshot
+        val Type = BuildType.Release
 
         /**
          * The artifact version ID.

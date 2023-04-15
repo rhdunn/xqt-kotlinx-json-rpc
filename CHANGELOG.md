@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.0.0 - (In Development)
+## 1.0.0 - 2023-04-15
 
 ### JSON-RPC
 1. `RequestObject`, `Notification`, and `ResponseObject` messages.
