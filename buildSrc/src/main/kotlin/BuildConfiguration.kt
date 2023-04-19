@@ -1,31 +1,53 @@
+import org.gradle.api.Project
+
+@Suppress("MemberVisibilityCanBePrivate")
 object BuildConfiguration {
     /**
      * The version of the JVM to target by the Kotlin compiler.
      */
-    val jvmTarget = System.getProperty("jvm.target") ?: "11"
+    fun jvmTarget(project: Project): String {
+        return getProperty(project, "jvm.target") ?: "11"
+    }
 
     /**
      * Should the build process download node-js if it is not present? (default: true)
      */
-    val downloadNodeJs = System.getProperty("nodejs.download") != "false"
+    fun downloadNodeJs(project: Project): Boolean {
+        return getProperty(project, "nodejs.download") != "false"
+    }
 
     /**
      * The Operating System the build is running on.
      */
-    val hostOs = HostOs(System.getProperty("os.name") ?: "Unknown")
+    fun hostOs(project: Project): HostOs {
+        return HostOs(getProperty(project, "os.name") ?: "Unknown")
+    }
 
     /**
      * The headless web browser to run the JS tests on.
      */
-    val jsBrowser = JsBrowser(System.getProperty("js.browser"), hostOs)
+    fun jsBrowser(project: Project): JsBrowser {
+        return JsBrowser(getProperty(project, "js.browser"), hostOs(project))
+    }
 
     /**
      * The Open Source Software Repository Hosting (OSSRH) username.
      */
-    val ossrhUsername = System.getProperty("ossrh.username") ?: System.getenv("OSSRH_USERNAME")
+    fun ossrhUsername(project: Project): String? {
+        return getProperty(project, "ossrh.username", "OSSRH_USERNAME")
+    }
 
     /**
      * The Open Source Software Repository Hosting (OSSRH) password.
      */
-    val ossrhPassword = System.getProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
+    fun ossrhPassword(project: Project): String? {
+        return getProperty(project, "ossrh.password", "OSSRH_PASSWORD")
+    }
+
+    private fun getProperty(project: Project, name: String, envName: String? = null): String? {
+        val projectValue = project.findProperty(name)?.toString()
+        val systemValue = System.getProperty(name)
+        val envValue = envName?.let { System.getenv(it) }
+        return projectValue ?: systemValue ?: envValue
+    }
 }

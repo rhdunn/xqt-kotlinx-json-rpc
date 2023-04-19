@@ -43,7 +43,7 @@ kotlin.sourceSets {
 
 kotlin.jvm {
     compilations.all {
-        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
+        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget(project)
     }
 
     withJava()
@@ -62,13 +62,13 @@ kotlin.sourceSets {
 // region Kotlin JS
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
-    rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs
+    rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs(project)
 }
 
 kotlin.js(KotlinJsCompilerType.BOTH).browser {
     testTask {
         useKarma {
-            when (BuildConfiguration.jsBrowser) {
+            when (BuildConfiguration.jsBrowser(project)) {
                 JsBrowser.Chrome -> useChromeHeadless()
                 JsBrowser.ChromeCanary -> useChromeCanaryHeadless()
                 JsBrowser.Chromium -> useChromiumHeadless()
@@ -94,7 +94,7 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin Native
 
-when(BuildConfiguration.hostOs) {
+when(BuildConfiguration.hostOs(project)) {
     HostOs.Windows -> kotlin.mingwX64("native")
     HostOs.Linux -> kotlin.linuxX64("native")
     HostOs.MacOsX -> kotlin.macosX64("native")
@@ -105,7 +105,7 @@ kotlin.sourceSets {
     nativeMain.kotlin.srcDir("nativeMain")
     nativeTest.kotlin.srcDir("nativeTest")
 
-    when (BuildConfiguration.hostOs) {
+    when (BuildConfiguration.hostOs(project)) {
         HostOs.Windows -> nativeMain.kotlin.srcDir("windowsMain")
         else -> nativeMain.kotlin.srcDir("posixMain")
     }
@@ -184,8 +184,8 @@ publishing.repositories {
         }
 
         credentials {
-            username = BuildConfiguration.ossrhUsername
-            password = BuildConfiguration.ossrhPassword
+            username = BuildConfiguration.ossrhUsername(project)
+            password = BuildConfiguration.ossrhPassword(project)
         }
     }
 }
