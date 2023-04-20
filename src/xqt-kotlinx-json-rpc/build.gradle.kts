@@ -17,6 +17,7 @@ plugins {
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
     id("org.jetbrains.dokka") version Version.Plugin.dokka
     id("maven-publish")
+    id("signing")
 }
 
 group = ProjectMetadata.GitHub.GroupId
@@ -188,6 +189,28 @@ publishing.repositories {
             password = BuildConfiguration.ossrhPassword(project)
         }
     }
+}
+
+// endregion
+// region Signing Artifacts
+
+signing {
+    isRequired = BuildConfiguration.signMavenArtifacts(project)
+
+    useGpgCmd()
+}
+
+publishing.publications.configureEach {
+    if (signing.isRequired) {
+        signing.sign(this)
+    }
+}
+
+// See https://youtrack.jetbrains.com/issue/KT-46466
+// ... Note: This is due to the javadocJar task being shared across all the publications.
+val signingTasks = tasks.withType<Sign>()
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    dependsOn(signingTasks)
 }
 
 // endregion
