@@ -23,7 +23,10 @@ object Version {
          */
         const val KotlinMultiplatform = Kotlin
 
-        const val kotlinSerialization = Kotlin
+        /**
+         * The version of the `kotlin("plugin.serialization")` plugin.
+         */
+        const val KotlinSerialization = Kotlin
     }
 
     /**
