@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.io
 
 import kotlinx.cinterop.CPointer
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.refTo
 import platform.posix.*
 
@@ -11,7 +12,7 @@ private class FileOutputChannel(val output: CPointer<FILE>) : BinaryOutputChanne
     }
 
     override fun writeBytes(bytes: ByteArray) {
-        fwrite(bytes.refTo(0), bytes.size.toULong(), 1, output)
+        fwrite(bytes.refTo(0), bytes.size.convert<size_t>(), 1, output)
     }
 
     override fun flush() {

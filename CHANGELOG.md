@@ -1,6 +1,7 @@
 # Change Log
 
 ## 1.0.1 - (In Development)
+1. Support 32-bit native targets.
 
 ## 1.0.0 - 2023-04-15
 
