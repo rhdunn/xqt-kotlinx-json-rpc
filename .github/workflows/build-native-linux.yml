@@ -12,6 +12,13 @@ jobs:
           linux_arm64, # Tier 2
           linux_x64, # Tier 1 ; native host
         ]
+        include:
+          - konan-target: linux_arm32_hfp
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: linux_arm64
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: linux_x64
+            run-tests: true
 
     runs-on: ubuntu-latest
     steps:
@@ -27,4 +34,5 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
+        if: ${{ matrix.run-tests }}
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
