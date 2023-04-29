@@ -37,6 +37,10 @@ object Version {
 
         /**
          * The version of the `kotlin("plugin.serialization")` plugin.
+         *
+         * `SPDX-License-Identifier: Apache-2.0`
+         *
+         * @see <a href="https://github.com/JetBrains/kotlin/tree/master/plugins/kotlinx-serialization">https://github.com/JetBrains/kotlin/tree/master/plugins/kotlinx-serialization</a>
          */
         const val KotlinSerialization = Kotlin
     }
@@ -65,6 +69,10 @@ object Version {
 
         /**
          * The version of the `kotlinx-serialization-json` library.
+         *
+         * `SPDX-License-Identifier: Apache-2.0`
+         *
+         * @see <a href="https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json">https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json</a>
          */
         const val KotlinxSerializationJson = "1.4.1"
     }

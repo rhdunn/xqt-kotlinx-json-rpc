@@ -24,6 +24,10 @@ object Dependency {
 
     /**
      * The `kotlinx-serialization-json` library.
+     *
+     * `SPDX-License-Identifier: Apache-2.0`
+     *
+     * @see <a href="https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json">https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json</a>
      */
     val KotlinxSerializationJson =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.KotlinxSerializationJson}"
