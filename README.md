@@ -5,6 +5,8 @@ The `xqt-kotlinx-json-rpc` library is an open-source implementation of the
 JSON-RPC protocol. It supports:
 1. [JSON-RPC 2.0](https://www.jsonrpc.org/specification)
 
+The documentation is available at https://rhdunn.github.io/xqt-kotlinx-json-rpc/.
+
 ## Maven Central
 The `xqt-kotlinx-json-rpc` binaries are available on Maven Central:
 
