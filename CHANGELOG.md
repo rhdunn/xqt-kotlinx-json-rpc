@@ -1,7 +1,12 @@
 # Change Log
 
-## 1.0.1 - (In Development)
-1. Support 32-bit native targets.
+## 1.0.1 - 2023-05-09
+1. Improve the build infrastructure to support automated deployment.
+2. Support 32-bit native targets.
+3. Change the names of the native artifacts to support multiple native target
+   maven artifacts.
+4. Change the names of the JVM artifacts to support multiple JVM target maven
+   artifacts.
 
 ## 1.0.0 - 2023-04-15
 

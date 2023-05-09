@@ -12,12 +12,12 @@ The `xqt-kotlinx-json-rpc` binaries are available on Maven Central:
 
 1. Gradle (Groovy DSL)
    ```
-   implementation 'io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.0'
+   implementation 'io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.1'
    ```
 
 2. Gradle (Kotlin DSL)
    ```
-   implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.0")
+   implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.1")
    ```
 
 ## Supported Kotlin/Native Targets

@@ -22,7 +22,7 @@ object ProjectMetadata {
         /**
          * The build type of this project.
          */
-        val Type = BuildType.Snapshot
+        val Type = BuildType.Release
 
         /**
          * The artifact version ID.
