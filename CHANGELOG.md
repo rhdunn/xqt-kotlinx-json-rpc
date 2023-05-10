@@ -1,28 +1,46 @@
 # Change Log
+> Release notes for `xqt-kotlinx-json-rpc`.
 
-## 1.0.2 - (In Development)
+This format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.0.1 - 2023-05-09
+## [Unreleased]
 
-1. Improve the build infrastructure to support automated deployment.
-2. Support 32-bit native targets.
-3. Change the names of the native artifacts to support multiple native target
-   maven artifacts.
-4. Change the names of the JVM artifacts to support multiple JVM target maven
-   artifacts.
+### Changed
 
-## 1.0.0 - 2023-04-15
+- Switched to the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format
+  for changelogs.
+
+## [1.0.1] - 2023-05-09
+
+### Fixed
+
+- Improve the build infrastructure to support automated deployment.
+- Support 32-bit native targets.
+
+### Changed
+
+- The names of the native artifacts now use the target name to support multiple
+  native target maven artifact releases.
+- The names of the JVM artifacts now use the JVM target version to support
+  multiple target JVM maven artifact releases.
+
+## [1.0.0] - 2023-04-15
 
 ### JSON-RPC
-1. `RequestObject`, `Notification`, and `ResponseObject` messages.
-2. Message processing DSL.
-3. Message sending APIs.
+- `RequestObject`, `Notification`, and `ResponseObject` messages.
+- Message processing DSL.
+- Message sending APIs.
 
 ### I/O
-1. `stdin` and `stdout` binary I/O channels.
+- `stdin` and `stdout` binary I/O channels.
 
 ### Serialization
-1. `JsonSerialization` support for (de)serializing JSON types.
-2. `StringSerialization` support for (de)serializing JSON object key names.
-3. `JsonObjectType` support for object type checking/verification.
-4. JSON serialization helpers.
+- `JsonSerialization` support for (de)serializing JSON types.
+- `StringSerialization` support for (de)serializing JSON object key names.
+- `JsonObjectType` support for object type checking/verification.
+- JSON serialization helpers.
+
+[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/releases/tag/1.0.0
