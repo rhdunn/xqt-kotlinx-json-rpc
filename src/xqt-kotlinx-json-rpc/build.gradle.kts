@@ -50,9 +50,9 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
-kotlin.jvm {
-    val javaVersion = BuildConfiguration.javaVersion(project)
+val javaVersion = BuildConfiguration.javaVersion(project)
 
+kotlin.jvm(jvmName(javaVersion)) {
     compilations.all {
         kotlinOptions.jvmTarget = javaVersion.toString()
     }
@@ -69,12 +69,8 @@ kotlin.jvm {
 }
 
 kotlin.sourceSets {
-    jvmMain.kotlin.srcDir("jvmMain")
-    jvmTest.kotlin.srcDir("jvmTest")
-}
-
-publishing.publications.getByName("jvm", MavenPublication::class) {
-    artifactId = project.jvmArtifactId
+    jvmMain(javaVersion).kotlin.srcDir("jvmMain")
+    jvmTest(javaVersion).kotlin.srcDir("jvmTest")
 }
 
 // endregion

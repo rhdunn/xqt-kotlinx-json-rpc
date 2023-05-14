@@ -29,9 +29,9 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
-kotlin.jvm {
-    val javaVersion = BuildConfiguration.javaVersion(project)
+val javaVersion = BuildConfiguration.javaVersion(project)
 
+kotlin.jvm(jvmName(javaVersion)) {
     compilations.all {
         kotlinOptions.jvmTarget = javaVersion.toString()
     }
@@ -40,9 +40,9 @@ kotlin.jvm {
 }
 
 kotlin.sourceSets {
-    jvmMain.kotlin.srcDir("jvmMain")
+    jvmMain(javaVersion).kotlin.srcDir("jvmMain")
 
-    jvmMain.dependencies {
+    jvmMain(javaVersion).dependencies {
         implementation(Dependency.JUnitJupiterApi)
     }
 }
