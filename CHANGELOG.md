@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Include all the supported JVM target variants in the `kotlinMultiplatform` module metadata.
+- Include all the supported native target variants in the `kotlinMultiplatform` module metadata.
 
 ### Changed
 
