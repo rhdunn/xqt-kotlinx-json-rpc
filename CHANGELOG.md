@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2023-05-16
+
 ### Fixed
 
 - Include all the supported JVM target variants in the `kotlinMultiplatform` module metadata.
@@ -47,5 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON serialization helpers.
 
 [Unreleased]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.1...HEAD
+[1.0.2]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/releases/tag/1.0.0
