@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Bump deps:
+  - Kotlin 1.8.21
+  - Kotlinx Serialization 1.5.1
+  - JUnit 5.9.3
+- Switch to Kotlin JS/IR compiler.
+- Remove deprecated Kotlin/Native targets.
+
 ## [1.0.2] - 2023-05-16
 
 ### Fixed
