@@ -16,6 +16,13 @@ value class UriScheme(val name: String) {
 
     companion object {
         /**
+         * The "file" URI scheme.
+         *
+         * @see <a href="https://www.rfc-editor.org/rfc/rfc8089">RFC 8089 The "file" URI Scheme</a>
+         */
+        val File: UriScheme = UriScheme("file")
+
+        /**
          * The Universal Resource Name (URN) URI scheme.
          *
          * @see <a href="https://www.rfc-editor.org/rfc/rfc2141">RFC 2141 URN Syntax</a>
@@ -26,6 +33,7 @@ value class UriScheme(val name: String) {
          * Lookup the URI scheme.
          */
         fun valueOf(name: String): UriScheme = when (name) {
+            File.name -> File
             URN.name -> URN
             else -> UriScheme(name)
         }

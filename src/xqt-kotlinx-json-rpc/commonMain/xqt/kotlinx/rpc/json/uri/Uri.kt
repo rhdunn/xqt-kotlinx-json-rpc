@@ -44,7 +44,10 @@ data class Uri(
      */
     val fragment: String? = null
 ) {
-    override fun toString(): String = "$scheme:$path"
+    override fun toString(): String = when {
+        authority != null -> "$scheme://$authority$path"
+        else -> "$scheme:$path"
+    }
 
     companion object : StringSerialization<Uri> {
         /**
@@ -53,14 +56,22 @@ data class Uri(
          * @see <a href="https://www.rfc-editor.org/rfc/rfc3986">RFC 3986 Uniform Resource Identifier (URI): Generic Syntax</a>
          */
         override fun deserialize(value: String): Uri {
-            val (scheme, path) = parseScheme(value)
-            return Uri(
-                scheme = scheme,
-                authority = null,
-                path = path,
-                query = null,
-                fragment = null
-            )
+            val (scheme, authorityAndPath) = parseScheme(value)
+            return when {
+                authorityAndPath.startsWith("//") -> {
+                    val (authority, pathAndQuery) = parseAuthority(authorityAndPath)
+                    Uri(
+                        scheme = scheme,
+                        authority = authority,
+                        path = pathAndQuery
+                    )
+                }
+
+                else -> Uri(
+                    scheme = scheme,
+                    path = authorityAndPath,
+                )
+            }
         }
 
         override fun serializeToString(value: Uri): String = value.toString()
@@ -71,6 +82,15 @@ data class Uri(
                 val scheme = uri.substring(0, index)
                 val path = uri.substring(index + 1)
                 UriScheme.valueOf(scheme) to path
+            }
+        }
+
+        private fun parseAuthority(uri: String): Pair<Authority, String> = when (val index = uri.indexOf('/', 2)) {
+            -1 -> Authority.parse(uri.substring(2)) to ""
+            else -> {
+                val authority = uri.substring(2, index)
+                val path = uri.substring(index)
+                Authority.parse(authority) to path
             }
         }
     }
