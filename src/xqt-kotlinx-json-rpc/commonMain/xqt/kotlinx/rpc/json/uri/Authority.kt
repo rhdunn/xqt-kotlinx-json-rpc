@@ -78,7 +78,8 @@ data class Authority(
         private fun parseHostAndPort(userinfo: String?, authority: String): Authority = when {
             // IPv6 or IPvFuture host
             authority.startsWith('[') -> when (val portIndex = authority.indexOf(']')) {
-                -1, authority.length - 1 -> Authority(userinfo = userinfo, host = authority)
+                -1 -> invalidHost(authority)
+                authority.length - 1 -> Authority(userinfo = userinfo, host = authority)
                 else -> {
                     val host = authority.substring(0, portIndex + 1)
                     val port = authority.substring(portIndex + 2)

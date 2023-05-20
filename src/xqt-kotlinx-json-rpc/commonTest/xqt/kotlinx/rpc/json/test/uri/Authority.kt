@@ -2,6 +2,7 @@
 package xqt.kotlinx.rpc.json.test.uri
 
 import xqt.kotlinx.rpc.json.uri.Authority
+import xqt.kotlinx.rpc.json.uri.InvalidHost
 import xqt.kotlinx.rpc.json.uri.InvalidPortNumber
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
@@ -140,6 +141,15 @@ class TheUriAuthority {
         assertEquals(8022, authority.port)
 
         assertEquals("lorem@[2001:db8:3333:4444:5555:6666:7777:8888]:8022", authority.toString())
+    }
+
+    @Test
+    @DisplayName("throws an error if the IPv6 host does not end with a square bracket")
+    fun throws_an_error_if_the_ipv6_host_does_not_end_with_a_square_bracket() {
+        val e1 = assertFails { Authority.parse("[2001:db8:3333:4444:5555:6666:7777:8888") }
+        assertEquals(InvalidHost::class, e1::class)
+        assertEquals("Invalid host: [2001:db8:3333:4444:5555:6666:7777:8888", e1.message)
+        assertEquals("[2001:db8:3333:4444:5555:6666:7777:8888", (e1 as InvalidHost).host)
     }
 
     @Test
