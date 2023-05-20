@@ -11,7 +11,7 @@ interface StringSerialization<T> : JsonSerialization<T> {
     /**
      * Serialize the data type or object `value` to a string.
      */
-    fun serializeToString(value: T): String
+    fun serializeToString(value: T): String = value.toString()
 
     /**
      * Deserialize the data type or object from a string representation.

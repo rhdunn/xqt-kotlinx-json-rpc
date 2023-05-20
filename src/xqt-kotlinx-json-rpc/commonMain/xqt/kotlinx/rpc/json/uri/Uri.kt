@@ -99,8 +99,6 @@ data class Uri(
             }
         }
 
-        override fun serializeToString(value: Uri): String = value.toString()
-
         private fun parseScheme(uri: String): Pair<UriScheme, String> = when (val index = uri.indexOf(':')) {
             -1 -> UriScheme.valueOf(uri) to ""
             else -> {

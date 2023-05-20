@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parse `file` scheme URIs.
 - Parse `http` scheme URIs.
 - Parse `https` scheme URIs.
+- Provide a default `StringSerialization.serializeToString` implementation.
 
 ## [1.0.3] - 2023-05-22
 

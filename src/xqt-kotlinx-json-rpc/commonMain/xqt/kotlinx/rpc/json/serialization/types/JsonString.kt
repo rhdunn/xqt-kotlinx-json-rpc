@@ -7,7 +7,5 @@ import xqt.kotlinx.rpc.json.serialization.StringSerialization
  * Defines a string.
  */
 object JsonString : StringSerialization<String> {
-    override fun serializeToString(value: String): String = value
-
     override fun deserialize(value: String): String = value
 }
