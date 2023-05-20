@@ -23,6 +23,13 @@ value class UriScheme(val name: String) {
         val File: UriScheme = UriScheme("file")
 
         /**
+         * The "http" URL scheme.
+         *
+         * @see <a href="https://www.rfc-editor.org/rfc/rfc1945#section-3.2.2">RFC 1945 (HTTP/1.0) http URL</a>
+         */
+        val HTTP: UriScheme = UriScheme("http")
+
+        /**
          * The Universal Resource Name (URN) URI scheme.
          *
          * @see <a href="https://www.rfc-editor.org/rfc/rfc2141">RFC 2141 URN Syntax</a>
@@ -34,6 +41,7 @@ value class UriScheme(val name: String) {
          */
         fun valueOf(name: String): UriScheme = when (name) {
             File.name -> File
+            HTTP.name -> HTTP
             URN.name -> URN
             else -> UriScheme(name)
         }

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `InvalidHost` and `InvalidPortNumber` URI exceptions.
 - Parse `urn` scheme URIs.
 - Parse `file` scheme URIs.
+- Parse `http` scheme URIs.
 
 ## [1.0.3] - 2023-05-22
 

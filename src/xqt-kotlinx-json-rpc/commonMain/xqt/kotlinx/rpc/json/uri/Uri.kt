@@ -44,9 +44,14 @@ data class Uri(
      */
     val fragment: String? = null
 ) {
-    override fun toString(): String = when {
-        authority != null -> "$scheme://$authority$path"
-        else -> "$scheme:$path"
+    override fun toString(): String = when (authority) {
+        null -> "$scheme:$path"
+        else -> when {
+            query != null && fragment != null -> "$scheme://$authority$path?$query#$fragment"
+            query != null -> "$scheme://$authority$path?$query"
+            fragment != null -> "$scheme://$authority$path#$fragment"
+            else -> "$scheme://$authority$path"
+        }
     }
 
     companion object : StringSerialization<Uri> {
@@ -58,15 +63,35 @@ data class Uri(
         override fun deserialize(value: String): Uri {
             val (scheme, authorityAndPath) = parseScheme(value)
             return when {
+                // Hierarchical URI
                 authorityAndPath.startsWith("//") -> {
                     val (authority, pathAndQuery) = parseAuthority(authorityAndPath)
-                    Uri(
-                        scheme = scheme,
-                        authority = authority,
-                        path = pathAndQuery
-                    )
+                    val (pathAndFragment, queryAndFragment) = parseQuery(pathAndQuery)
+                    when (queryAndFragment) {
+                        // Without a query, so the fragment may be on the path part.
+                        null -> parseFragment(pathAndFragment).let { (path, fragment) ->
+                            Uri(
+                                scheme = scheme,
+                                authority = authority,
+                                path = path,
+                                fragment = fragment.takeIf { it.isNotEmpty() }
+                            )
+                        }
+
+                        // With a query, so the fragment may be on the query part.
+                        else -> parseFragment(queryAndFragment).let { (query, fragment) ->
+                            Uri(
+                                scheme = scheme,
+                                authority = authority,
+                                path = pathAndFragment,
+                                query = query.takeIf { it.isNotEmpty() },
+                                fragment = fragment.takeIf { it.isNotEmpty() }
+                            )
+                        }
+                    }
                 }
 
+                // Non-hierarchical URI
                 else -> Uri(
                     scheme = scheme,
                     path = authorityAndPath,
@@ -85,7 +110,9 @@ data class Uri(
             }
         }
 
-        private fun parseAuthority(uri: String): Pair<Authority, String> = when (val index = uri.indexOf('/', 2)) {
+        private fun parseAuthority(
+            uri: String
+        ): Pair<Authority, String> = when (val index = uri.indexOfAny(AUTHORITY_SEPARATORS, 2)) {
             -1 -> Authority.parse(uri.substring(2)) to ""
             else -> {
                 val authority = uri.substring(2, index)
@@ -93,5 +120,25 @@ data class Uri(
                 Authority.parse(authority) to path
             }
         }
+
+        private fun parseQuery(uri: String): Pair<String, String?> = when (val index = uri.indexOf('?')) {
+            -1 -> uri to null
+            else -> {
+                val path = uri.substring(0, index)
+                val query = uri.substring(index + 1)
+                path to query
+            }
+        }
+
+        private fun parseFragment(uri: String): Pair<String, String> = when (val index = uri.indexOf('#')) {
+            -1 -> uri to ""
+            else -> {
+                val path = uri.substring(0, index)
+                val fragment = uri.substring(index + 1)
+                path to fragment
+            }
+        }
+
+        private val AUTHORITY_SEPARATORS = charArrayOf('/', '?', '#')
     }
 }
