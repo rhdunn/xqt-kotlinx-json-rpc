@@ -140,3 +140,10 @@ data class Uri(
         private val AUTHORITY_SEPARATORS = charArrayOf('/', '?', '#')
     }
 }
+
+/**
+ * A Universal Resource Identifier (URI).
+ *
+ * @see <a href="https://www.rfc-editor.org/rfc/rfc3986">RFC 3986 Uniform Resource Identifier (URI): Generic Syntax</a>
+ */
+fun Uri(value: String): Uri = Uri.deserialize(value)
