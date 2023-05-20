@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- A URI `Authority` model class.
+- URI `Authority` and `Uri` model classes.
+- `InvalidHost` and `InvalidPortNumber` URI exceptions.
 
 ## [1.0.3] - 2023-05-22
 
