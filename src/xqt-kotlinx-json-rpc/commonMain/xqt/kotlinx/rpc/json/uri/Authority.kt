@@ -82,7 +82,11 @@ data class Authority(
                 else -> {
                     val host = authority.substring(0, portIndex + 1)
                     val port = authority.substring(portIndex + 2)
-                    Authority(userinfo = userinfo, host = host, port = port.toIntOrNull())
+                    Authority(
+                        userinfo = userinfo,
+                        host = host,
+                        port = port.toIntOrNull() ?: invalidPortNumber(port)
+                    )
                 }
             }
 
@@ -92,7 +96,11 @@ data class Authority(
                 else -> {
                     val host = authority.substring(0, portIndex)
                     val port = authority.substring(portIndex + 1)
-                    Authority(userinfo = userinfo, host = host, port = port.toIntOrNull())
+                    Authority(
+                        userinfo = userinfo,
+                        host = host,
+                        port = port.toIntOrNull() ?: invalidPortNumber(port)
+                    )
                 }
             }
         }

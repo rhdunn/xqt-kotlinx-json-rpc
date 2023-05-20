@@ -2,9 +2,11 @@
 package xqt.kotlinx.rpc.json.test.uri
 
 import xqt.kotlinx.rpc.json.uri.Authority
+import xqt.kotlinx.rpc.json.uri.InvalidPortNumber
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 @DisplayName("The URI authority")
 class TheUriAuthority {
@@ -138,5 +140,43 @@ class TheUriAuthority {
         assertEquals(8022, authority.port)
 
         assertEquals("lorem@[2001:db8:3333:4444:5555:6666:7777:8888]:8022", authority.toString())
+    }
+
+    @Test
+    @DisplayName("throws an error if the port contains multiple colons")
+    fun throws_an_error_if_the_port_contains_multiple_colons() {
+        val e1 = assertFails { Authority.parse("localhost:123:456") }
+        assertEquals(InvalidPortNumber::class, e1::class)
+        assertEquals("Invalid port number: 123:456", e1.message)
+        assertEquals("123:456", (e1 as InvalidPortNumber).port)
+
+        val e2 = assertFails { Authority.parse("192.168.0.1:123:456") }
+        assertEquals(InvalidPortNumber::class, e2::class)
+        assertEquals("Invalid port number: 123:456", e2.message)
+        assertEquals("123:456", (e2 as InvalidPortNumber).port)
+
+        val e3 = assertFails { Authority.parse("[2001:db8:3333:4444:5555:6666:7777:8888]:123:456") }
+        assertEquals(InvalidPortNumber::class, e3::class)
+        assertEquals("Invalid port number: 123:456", e3.message)
+        assertEquals("123:456", (e3 as InvalidPortNumber).port)
+    }
+
+    @Test
+    @DisplayName("throws an error if the port contains non-numeric characters")
+    fun throws_an_error_if_the_port_contains_non_numeric_characters() {
+        val e1 = assertFails { Authority.parse("localhost:12ab") }
+        assertEquals(InvalidPortNumber::class, e1::class)
+        assertEquals("Invalid port number: 12ab", e1.message)
+        assertEquals("12ab", (e1 as InvalidPortNumber).port)
+
+        val e2 = assertFails { Authority.parse("192.168.0.1:12ab") }
+        assertEquals(InvalidPortNumber::class, e2::class)
+        assertEquals("Invalid port number: 12ab", e2.message)
+        assertEquals("12ab", (e2 as InvalidPortNumber).port)
+
+        val e3 = assertFails { Authority.parse("[2001:db8:3333:4444:5555:6666:7777:8888]:12ab") }
+        assertEquals(InvalidPortNumber::class, e3::class)
+        assertEquals("Invalid port number: 12ab", e3.message)
+        assertEquals("12ab", (e3 as InvalidPortNumber).port)
     }
 }
