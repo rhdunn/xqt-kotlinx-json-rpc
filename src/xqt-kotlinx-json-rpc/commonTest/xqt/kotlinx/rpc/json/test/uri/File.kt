@@ -17,7 +17,7 @@ class TheFileUriScheme {
         assertEquals(UriScheme.File, uri.scheme)
         assertEquals(Authority(host = ""), uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("file:///lorem/ipsum/dolor", Uri.serializeToString(uri))
@@ -31,7 +31,7 @@ class TheFileUriScheme {
         assertEquals(UriScheme.File, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("file://localhost/lorem/ipsum/dolor", Uri.serializeToString(uri))
@@ -45,7 +45,7 @@ class TheFileUriScheme {
         assertEquals(UriScheme.File, uri.scheme)
         assertEquals(null, uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("file:/lorem/ipsum/dolor", Uri.serializeToString(uri))
@@ -59,7 +59,7 @@ class TheFileUriScheme {
         assertEquals(UriScheme.File, uri.scheme)
         assertEquals(Authority(host = ""), uri.authority)
         assertEquals("/c:/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("file:///c:/lorem/ipsum/dolor", Uri.serializeToString(uri))
@@ -73,7 +73,7 @@ class TheFileUriScheme {
         assertEquals(UriScheme.File, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("/c:/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("file://localhost/c:/lorem/ipsum/dolor", Uri.serializeToString(uri))

@@ -35,7 +35,7 @@ data class Uri(
      *
      * @see <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">RFC 3986 (3.4) Query</a>
      */
-    val query: String? = null,
+    val queryString: String? = null,
 
     /**
      * The URI fragment.
@@ -47,8 +47,8 @@ data class Uri(
     override fun toString(): String = when (authority) {
         null -> "$scheme:$path"
         else -> when {
-            query != null && fragment != null -> "$scheme://$authority$path?$query#$fragment"
-            query != null -> "$scheme://$authority$path?$query"
+            queryString != null && fragment != null -> "$scheme://$authority$path?$queryString#$fragment"
+            queryString != null -> "$scheme://$authority$path?$queryString"
             fragment != null -> "$scheme://$authority$path#$fragment"
             else -> "$scheme://$authority$path"
         }
@@ -84,7 +84,7 @@ data class Uri(
                                 scheme = scheme,
                                 authority = authority,
                                 path = pathAndFragment,
-                                query = query.takeIf { it.isNotEmpty() },
+                                queryString = query.takeIf { it.isNotEmpty() },
                                 fragment = fragment.takeIf { it.isNotEmpty() }
                             )
                         }

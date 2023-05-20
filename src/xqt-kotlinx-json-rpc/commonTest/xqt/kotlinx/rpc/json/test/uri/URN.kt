@@ -16,7 +16,7 @@ class TheUrnUriScheme {
         assertEquals(UriScheme.URN, uri.scheme)
         assertEquals(null, uri.authority)
         assertEquals("lorem:ipsum:dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("urn:lorem:ipsum:dolor", Uri.serializeToString(uri))

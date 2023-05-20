@@ -17,7 +17,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("http://localhost", Uri.serializeToString(uri))
@@ -31,7 +31,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost", port = 8020), uri.authority)
         assertEquals("", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("http://localhost:8020", Uri.serializeToString(uri))
@@ -45,7 +45,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("http://localhost/lorem/ipsum/dolor", Uri.serializeToString(uri))
@@ -59,7 +59,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("", uri.path)
-        assertEquals("key1=alpha&key2=beta", uri.query)
+        assertEquals("key1=alpha&key2=beta", uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("http://localhost?key1=alpha&key2=beta", Uri.serializeToString(uri))
@@ -73,7 +73,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals("key1=alpha&key2=beta", uri.query)
+        assertEquals("key1=alpha&key2=beta", uri.queryString)
         assertEquals(null, uri.fragment)
 
         assertEquals("http://localhost/lorem/ipsum/dolor?key1=alpha&key2=beta", Uri.serializeToString(uri))
@@ -87,7 +87,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals("lorem-ipsum", uri.fragment)
 
         assertEquals("http://localhost#lorem-ipsum", Uri.serializeToString(uri))
@@ -101,7 +101,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals(null, uri.query)
+        assertEquals(null, uri.queryString)
         assertEquals("lorem-ipsum", uri.fragment)
 
         assertEquals("http://localhost/lorem/ipsum/dolor#lorem-ipsum", Uri.serializeToString(uri))
@@ -115,7 +115,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("", uri.path)
-        assertEquals("key1=alpha&key2=beta", uri.query)
+        assertEquals("key1=alpha&key2=beta", uri.queryString)
         assertEquals("lorem-ipsum", uri.fragment)
 
         assertEquals("http://localhost?key1=alpha&key2=beta#lorem-ipsum", Uri.serializeToString(uri))
@@ -129,7 +129,7 @@ class TheHttpUriScheme {
         assertEquals(UriScheme.HTTP, uri.scheme)
         assertEquals(Authority(host = "localhost"), uri.authority)
         assertEquals("/lorem/ipsum/dolor", uri.path)
-        assertEquals("key1=alpha&key2=beta", uri.query)
+        assertEquals("key1=alpha&key2=beta", uri.queryString)
         assertEquals("lorem-ipsum", uri.fragment)
 
         assertEquals(
