@@ -8,6 +8,20 @@ package xqt.kotlinx.rpc.json.uri
  */
 data class Authority(
     /**
+     * The user information subcomponent.
+     *
+     * The userinfo subcomponent may consist of a username and, optionally,
+     * scheme-specific information about how to gain authorization to access
+     * the resource.
+     *
+     * Use of the format "user:password" in the userinfo field is
+     * deprecated.
+     *
+     * @see <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1">RFC 3986 (3.2.1) User Information</a>
+     */
+    val userinfo: String? = null,
+
+    /**
      * The host subcomponent.
      *
      * The host subcomponent of authority is identified by an IP literal
@@ -34,33 +48,51 @@ data class Authority(
      */
     val port: Int? = null
 ) {
-    override fun toString(): String = when (port) {
-        null -> host
-        else -> "$host:$port"
+    override fun toString(): String = when {
+        userinfo == null && port == null -> host
+        userinfo == null -> "$host:$port"
+        port == null -> "$userinfo@$host"
+        else -> "$userinfo@$host:$port"
     }
 
     companion object {
         /**
          * Parse the authority part of a URI.
          */
-        fun parse(authority: String): Authority = when {
+        fun parse(authority: String): Authority {
+            val (userinfo, hostAndPort) = parseUserInfo(authority)
+            return parseHostAndPort(userinfo, hostAndPort)
+        }
+
+        private fun parseUserInfo(
+            authority: String
+        ): Pair<String?, String> = when (val index = authority.indexOf('@')) {
+            -1 -> null to authority
+            else -> {
+                val userinfo = authority.substring(0, index)
+                val host = authority.substring(index + 1)
+                userinfo to host
+            }
+        }
+
+        private fun parseHostAndPort(userinfo: String?, authority: String): Authority = when {
             // IPv6 or IPvFuture host
             authority.startsWith('[') -> when (val portIndex = authority.indexOf(']')) {
-                -1, authority.length - 1 -> Authority(host = authority, port = null)
+                -1, authority.length - 1 -> Authority(userinfo = userinfo, host = authority)
                 else -> {
                     val host = authority.substring(0, portIndex + 1)
                     val port = authority.substring(portIndex + 2)
-                    Authority(host = host, port = port.toIntOrNull())
+                    Authority(userinfo = userinfo, host = host, port = port.toIntOrNull())
                 }
             }
 
             // IPv4 or named host
             else -> when (val portIndex = authority.indexOf(':')) {
-                -1 -> Authority(host = authority, port = null)
+                -1 -> Authority(userinfo = userinfo, host = authority)
                 else -> {
                     val host = authority.substring(0, portIndex)
                     val port = authority.substring(portIndex + 1)
-                    Authority(host = host, port = port.toIntOrNull())
+                    Authority(userinfo = userinfo, host = host, port = port.toIntOrNull())
                 }
             }
         }
