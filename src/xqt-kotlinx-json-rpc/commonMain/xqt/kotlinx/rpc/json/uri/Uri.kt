@@ -12,7 +12,7 @@ data class Uri(
      *
      * @see <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.1">RFC 3986 (3.1) Scheme</a>
      */
-    val scheme: String,
+    val scheme: UriScheme,
 
     /**
      * The URI authority.
