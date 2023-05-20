@@ -13,6 +13,7 @@ class TheUriAuthority {
     fun supports_hostname_only_authorities() {
         val authority = Authority.parse("www.example.com")
         assertEquals("www.example.com", authority.host)
+        assertEquals(null, authority.port)
 
         assertEquals("www.example.com", authority.toString())
     }
@@ -22,6 +23,7 @@ class TheUriAuthority {
     fun supports_ipv4_only_authorities() {
         val authority = Authority.parse("192.168.0.1")
         assertEquals("192.168.0.1", authority.host)
+        assertEquals(null, authority.port)
 
         assertEquals("192.168.0.1", authority.toString())
     }
@@ -31,7 +33,38 @@ class TheUriAuthority {
     fun supports_ipv6_only_authorities() {
         val authority = Authority.parse("[2001:db8:3333:4444:5555:6666:7777:8888]")
         assertEquals("[2001:db8:3333:4444:5555:6666:7777:8888]", authority.host)
+        assertEquals(null, authority.port)
 
         assertEquals("[2001:db8:3333:4444:5555:6666:7777:8888]", authority.toString())
+    }
+
+    @Test
+    @DisplayName("supports hostname and port authorities")
+    fun supports_hostname_and_port_authorities() {
+        val authority = Authority.parse("www.example.com:8022")
+        assertEquals("www.example.com", authority.host)
+        assertEquals(8022, authority.port)
+
+        assertEquals("www.example.com:8022", authority.toString())
+    }
+
+    @Test
+    @DisplayName("supports IPv4 and port authorities")
+    fun supports_ipv4_and_port_authorities() {
+        val authority = Authority.parse("192.168.0.1:8022")
+        assertEquals("192.168.0.1", authority.host)
+        assertEquals(8022, authority.port)
+
+        assertEquals("192.168.0.1:8022", authority.toString())
+    }
+
+    @Test
+    @DisplayName("supports IPv6 and port authorities")
+    fun supports_ipv6_and_port_authorities() {
+        val authority = Authority.parse("[2001:db8:3333:4444:5555:6666:7777:8888]:8022")
+        assertEquals("[2001:db8:3333:4444:5555:6666:7777:8888]", authority.host)
+        assertEquals(8022, authority.port)
+
+        assertEquals("[2001:db8:3333:4444:5555:6666:7777:8888]:8022", authority.toString())
     }
 }
