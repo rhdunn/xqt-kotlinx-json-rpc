@@ -79,6 +79,7 @@ object ProjectMetadata {
             KonanTarget.TVOS_X64, // Tier 2
             KonanTarget.WATCHOS_ARM32, // Tier 2
             KonanTarget.WATCHOS_ARM64, // Tier 2
+            KonanTarget.WATCHOS_DEVICE_ARM64, // Tier 3
             KonanTarget.WATCHOS_SIMULATOR_ARM64, // Tier 2
             KonanTarget.WATCHOS_X64, // Tier 2
         )

@@ -31,16 +31,13 @@ jobs:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
-      - name: Build for Kotlin/JS IR
-        run: gradle -D nodejs.download=false jsIrJar
-
-      - name: Build for Kotlin/JS Legacy
-        run: gradle -D nodejs.download=false jsLegacyJar
+      - name: Build for Kotlin/JS
+        run: gradle -D nodejs.download=false jsJar
 
       - name: Tar Build Artifacts
         run: tar -cvf build-js-artifacts.tar .
@@ -58,10 +55,10 @@ jobs:
       matrix:
         node: [ 16, 18 ]
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -76,48 +73,23 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Test for Kotlin/JS IR on Node
-        run: gradle -D nodejs.download=false jsIrNodeTest
+      - name: Test for Kotlin/JS on Node
+        run: gradle -D nodejs.download=false jsNodeTest
 
-      - name: Test for Kotlin/JS Legacy on Node
-        run: gradle -D nodejs.download=false jsLegacyNodeTest
-
-  test-firefox:
+  test-browser:
     needs: build
+    strategy:
+      matrix:
+        karma-browser: [
+          chrome,
+          firefox,
+        ]
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
-
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-js
-
-      - name: Extract Build Artifacts
-        run: tar -xf build-js-artifacts.tar
-
-      - name: Setup Firefox Latest
-        uses: browser-actions/setup-firefox@latest
-        with:
-          firefox-version: 'latest'
-
-      - name: Test for Kotlin/JS IR on Firefox
-        run: gradle -D nodejs.download=false -D karma.browser=firefox jsIrBrowserTest
-
-      - name: Test for Kotlin/JS Legacy on Firefox
-        run: gradle -D nodejs.download=false -D karma.browser=firefox jsLegacyBrowserTest
-
-  test-chrome:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Gradle 7.5
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -128,24 +100,33 @@ jobs:
         run: tar -xf build-js-artifacts.tar
 
       - name: Setup Chrome Latest
+        if: matrix['karma-browser'] == 'chrome'
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: 'latest'
 
-      - name: Test for Kotlin/JS IR on Chrome
-        run: gradle -D nodejs.download=false -D karma.browser=chrome jsIrBrowserTest
+      - name: Setup Firefox Latest
+        if: matrix['karma-browser'] == 'firefox'
+        uses: browser-actions/setup-firefox@latest
+        with:
+          firefox-version: 'latest'
 
-      - name: Test for Kotlin/JS Legacy on Chrome
-        run: gradle -D nodejs.download=false -D karma.browser=chrome jsLegacyBrowserTest
+      # The yarn.lock file may change depending on the configured Karma browser,
+      # so update it here to prevent build failures.
+      - name: Update the Yarn Lock File
+        run: gradle -D nodejs.download=false -D karma.browser=${{ matrix.karma-browser }} kotlinUpgradeYarnLock
+
+      - name: Test for Kotlin/JS
+        run: gradle -D nodejs.download=false -D karma.browser=${{ matrix.karma-browser }} jsBrowserTest
 
   publish:
-    needs: [ test-node, test-chrome, test-firefox ]
+    needs: [ test-node, test-browser ]
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
