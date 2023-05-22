@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2023-05-22
+
 ### Added
 
 - Add support for the Android Kotlin/Native targets.
@@ -70,7 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `JsonObjectType` support for object type checking/verification.
 - JSON serialization helpers.
 
-[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.2...HEAD
+[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.3...HEAD
+[1.0.3]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/rhdunn/xqt-kotlinx-json-rpc/releases/tag/1.0.0

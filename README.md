@@ -24,16 +24,16 @@ Maven:
     <dependency>
         <groupId>io.github.rhdunn</groupId>
         <artifactId>xqt-kotlinx-json-rpc</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </dependency>
 
 Gradle (Groovy DSL):
 
-    implementation 'io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.2'
+    implementation 'io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.3'
 
 Gradle (Kotlin DSL):
 
-    implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.2")
+    implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:1.0.3")
 
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status          |
