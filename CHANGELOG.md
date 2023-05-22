@@ -6,15 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add support for the Android Kotlin/Native targets.
+- Add support for the `watchos_device_arm64` Kotlin/Native target.
+
+### Removed
+
+- Remove support for the deprecated Kotlin/JS legacy target.
+- Remove support for the deprecated Kotlin/Native targets.
+
 ### Changed
 
-- Default to building with gradle 8.1.1, requires gradle 8.0 or later.
+- Default to building with gradle 8.1.1.
+
+### Dependency Upgrades
+
+- Upgrade to Gradle 8.0 and later.
 - Upgrade to Kotlin 1.8.21.
 - Upgrade to Dokka 1.8.10.
 - Upgrade to JUnit 5.9.3.
 - Upgrade to Kotlinx Serialization 1.5.1.
-- Remove support for the deprecated Kotlin/JS legacy target.
-- Remove support for the deprecated Kotlin/Native targets.
 
 ## [1.0.2] - 2023-05-16
 
