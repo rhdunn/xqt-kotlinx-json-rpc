@@ -13,9 +13,10 @@ Universal Resource Identifiers:
 - Add `InvalidHost` and `InvalidPortNumber` URI exceptions.
 - Parse `urn`, `file`, `http`, and `https` scheme URIs.
 
-Types:
+Enumeration Types:
 - Add a `JsonEnumeration` interface.
 - Add a `JsonEnumerationType` serialization interface.
+- Add a `JsonStringEnumerationType` implementation.
 
 ### Changed
 
