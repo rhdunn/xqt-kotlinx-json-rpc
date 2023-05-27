@@ -15,6 +15,7 @@ Universal Resource Identifiers:
 
 Types:
 - Add a `JsonEnumeration` interface.
+- Add a `JsonEnumerationType` serialization interface.
 
 ### Changed
 
