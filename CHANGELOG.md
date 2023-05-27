@@ -8,12 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- URI `Authority`, `UriScheme`, and `Uri` model classes.
-- `InvalidHost` and `InvalidPortNumber` URI exceptions.
-- Parse `urn` scheme URIs.
-- Parse `file` scheme URIs.
-- Parse `http` scheme URIs.
-- Parse `https` scheme URIs.
+Universal Resource Identifiers:
+- Add URI `Authority`, `UriScheme`, and `Uri` model classes.
+- Add `InvalidHost` and `InvalidPortNumber` URI exceptions.
+- Parse `urn`, `file`, `http`, and `https` scheme URIs.
+
+Types:
+- Add a `JsonEnumeration` interface.
+
+### Changed
+
 - Provide a default `StringSerialization.serializeToString` implementation.
 
 ## [1.0.3] - 2023-05-22

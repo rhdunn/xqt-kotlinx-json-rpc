@@ -1,6 +1,9 @@
 # Module xqt-kotlinx-json-rpc
 JSON-RPC implementation, as per [JSON-RPC 2.0](https://www.jsonrpc.org/specification).
 
+# Package xqt.kotlinx.rpc.json.enumeration
+Support for defining JSON-RPC enumeration and namespaced constant types.
+
 # Package xqt.kotlinx.rpc.json.io
 I/O helpers for supporting different communication channels.
 
