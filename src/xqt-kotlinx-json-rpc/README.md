@@ -14,4 +14,4 @@ Serialization helpers for implementing JSON-RPC-based specifications.
 Serialization of standard Kotlin and JSON types.
 
 # Package xqt.kotlinx.rpc.json.uri
-URI types and JSON serialization.
+URI types and JSON serialization, as per [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986).
