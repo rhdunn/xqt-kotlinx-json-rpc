@@ -18,6 +18,7 @@ Enumeration Types:
 - Add a `JsonEnumerationType` serialization interface.
 - Add a `JsonStringEnumerationType` implementation.
 - Add a `JsonIntEnumerationType` implementation.
+- Add a `JsonUIntEnumerationType` implementation.
 
 ### Changed
 
