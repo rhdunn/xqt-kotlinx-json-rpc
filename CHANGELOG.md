@@ -19,6 +19,7 @@ Enumeration Types:
 - Add a `JsonStringEnumerationType` implementation.
 - Add a `JsonIntEnumerationType` implementation.
 - Add a `JsonUIntEnumerationType` implementation.
+- Add a `JsonDoubleEnumerationType` implementation.
 
 ### Changed
 
