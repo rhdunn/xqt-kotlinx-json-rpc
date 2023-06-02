@@ -23,6 +23,7 @@ Enumeration Types:
 
 Properties:
 - Add a `JsonPropertyState` enumeration type.
+- Add a `JsonProperty` type.
 
 ### Changed
 

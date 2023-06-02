@@ -19,3 +19,32 @@ enum class JsonPropertyState {
      */
     Missing,
 }
+
+/**
+ * A JSON property that can be null or missing from a JSON object.
+ *
+ * @since 1.1.0
+ */
+data class JsonProperty<T> internal constructor(
+    /**
+     * The state of the property in the JSON object.
+     */
+    val state: JsonPropertyState,
+
+    /**
+     * The value of the property in the JSON object.
+     *
+     * A null value will be stored in a JSON object as a `JsonNull` if the state
+     * is `Present`, or won't be added to the object if the state is `Missing`.
+     */
+    val value: T?
+) {
+    constructor(value: T?) : this(JsonPropertyState.Present, value)
+
+    companion object {
+        /**
+         * Returns a JsonProperty representing a missing value from a JSON object.
+         */
+        fun <T> missing(): JsonProperty<T> = JsonProperty(JsonPropertyState.Missing, null)
+    }
+}
