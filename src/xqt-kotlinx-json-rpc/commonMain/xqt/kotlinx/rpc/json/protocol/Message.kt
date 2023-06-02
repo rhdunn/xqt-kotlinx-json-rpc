@@ -10,6 +10,8 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * A general message as defined by JSON-RPC.
  *
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#abstractMessage">LSP 3.17 Abstract Message</a>
+ *
+ * @since 1.0.0
  */
 sealed interface Message {
     /**

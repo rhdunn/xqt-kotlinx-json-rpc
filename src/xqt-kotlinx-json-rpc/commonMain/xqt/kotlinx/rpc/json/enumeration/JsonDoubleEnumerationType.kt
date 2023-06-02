@@ -20,6 +20,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonDouble
  *     }
  * }
  * ```
+ *
+ * @since 1.1.0
  */
 abstract class JsonDoubleEnumerationType<T : JsonEnumeration<Double>> :
     JsonEnumerationType<T, Double>,

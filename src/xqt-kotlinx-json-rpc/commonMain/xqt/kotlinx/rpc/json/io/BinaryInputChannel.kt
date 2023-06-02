@@ -3,6 +3,8 @@ package xqt.kotlinx.rpc.json.io
 
 /**
  * A binary data channel to read data from.
+ *
+ * @since 1.0.0
  */
 interface BinaryInputChannel : Closeable {
     /**

@@ -7,6 +7,8 @@ import xqt.kotlinx.rpc.json.serialization.StringSerialization
  * A Universal Resource Identifier (URI).
  *
  * @see <a href="https://www.rfc-editor.org/rfc/rfc3986">RFC 3986 Uniform Resource Identifier (URI): Generic Syntax</a>
+ *
+ * @since 1.1.0
  */
 data class Uri(
     /**

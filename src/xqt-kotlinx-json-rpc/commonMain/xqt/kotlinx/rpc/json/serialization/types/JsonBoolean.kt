@@ -10,6 +10,8 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Defines a boolean.
+ *
+ * @since 1.0.0
  */
 object JsonBoolean : JsonSerialization<Boolean> {
     override fun serializeToJson(value: Boolean): JsonPrimitive = JsonPrimitive(value)

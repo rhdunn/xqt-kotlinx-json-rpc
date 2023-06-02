@@ -11,6 +11,8 @@ import kotlin.jvm.JvmInline
  * @param kind the name of the URI scheme
  *
  * @see <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.1">RFC 3986 (3.1) Scheme</a>
+ *
+ * @since 1.1.0
  */
 @JvmInline
 value class UriScheme(override val kind: String) : JsonEnumeration<String> {

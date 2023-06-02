@@ -3,6 +3,8 @@ package xqt.kotlinx.rpc.json.io
 
 /**
  * A resource that can be closed.
+ *
+ * @since 1.0.0
  */
 actual interface Closeable {
     /**

@@ -5,5 +5,7 @@ import java.io.Closeable
 
 /**
  * A resource that can be closed.
+ *
+ * @since 1.0.0
  */
 actual typealias Closeable = Closeable

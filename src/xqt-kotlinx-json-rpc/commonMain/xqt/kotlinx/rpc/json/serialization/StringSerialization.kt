@@ -6,6 +6,8 @@ import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * Defines serialization for a data type or object to/from string values.
+ *
+ * @since 1.0.0
  */
 interface StringSerialization<T> : JsonSerialization<T> {
     /**

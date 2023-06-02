@@ -20,6 +20,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonInt
  *     }
  * }
  * ```
+ *
+ * @since 1.1.0
  */
 abstract class JsonIntEnumerationType<T : JsonEnumeration<Int>> :
     JsonEnumerationType<T, Int>,

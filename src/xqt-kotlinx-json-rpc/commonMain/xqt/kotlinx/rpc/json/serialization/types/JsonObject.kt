@@ -10,6 +10,8 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Defines a JSON object.
+ *
+ * @since 1.0.0
  */
 object JsonObject : JsonSerialization<JsonObject> {
     override fun serializeToJson(value: JsonObject): JsonObject = value
@@ -25,6 +27,8 @@ object JsonObject : JsonSerialization<JsonObject> {
  *
  * @param keySerialization how to serialize the keys in the object map
  * @param valueSerialization how to serialize the values in the object map
+ *
+ * @since 1.0.0
  */
 data class JsonTypedObject<K, V>(
     private val keySerialization: StringSerialization<K>,

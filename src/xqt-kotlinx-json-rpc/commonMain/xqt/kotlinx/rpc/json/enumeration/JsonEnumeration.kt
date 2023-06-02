@@ -3,6 +3,8 @@ package xqt.kotlinx.rpc.json.enumeration
 
 /**
  * Defines a JSON enumeration or namespaced constant type.
+ *
+ * @since 1.1.0
  */
 interface JsonEnumeration<T> {
     /**

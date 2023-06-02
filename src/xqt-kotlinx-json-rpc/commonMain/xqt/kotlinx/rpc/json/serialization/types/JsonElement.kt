@@ -6,6 +6,8 @@ import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 
 /**
  * Defines a JSON element.
+ *
+ * @since 1.0.0
  */
 object JsonElement : JsonSerialization<JsonElement> {
     override fun serializeToJson(value: JsonElement): JsonElement = value

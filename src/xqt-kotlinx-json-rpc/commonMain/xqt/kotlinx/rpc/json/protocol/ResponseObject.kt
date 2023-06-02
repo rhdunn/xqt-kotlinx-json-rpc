@@ -20,6 +20,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
  *
  * @see <a href="https://www.jsonrpc.org/specification#response_object">JSON-RPC 2.0 Response object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseMessage">LSP 3.17 ResponseMessage</a>
+ *
+ * @since 1.0.0
  */
 interface TypedResponseObject<ResultT, ErrorDataT> {
     /**
@@ -60,6 +62,8 @@ interface TypedResponseObject<ResultT, ErrorDataT> {
 
 /**
  * Convert from an untyped to a typed response object.
+ *
+ * @since 1.0.0
  */
 interface TypedResponseObjectConverter<ResultT, ErrorDataT> {
     /**
@@ -78,6 +82,8 @@ interface TypedResponseObjectConverter<ResultT, ErrorDataT> {
  *
  * @see <a href="https://www.jsonrpc.org/specification#response_object">JSON-RPC 2.0 Response object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseMessage">LSP 3.17 ResponseMessage</a>
+ *
+ * @since 1.0.0
  */
 data class ResponseObject(
     override val id: JsonIntOrString?,
@@ -125,6 +131,8 @@ data class ResponseObject(
 
 /**
  * Send a response to the channel the message originated from.
+ *
+ * @since 1.0.0
  */
 fun RequestObject.sendResponse(response: ResponseObject) {
     channel?.send(ResponseObject.serializeToJson(response))
@@ -132,6 +140,8 @@ fun RequestObject.sendResponse(response: ResponseObject) {
 
 /**
  * Send a result-based response to the channel the message originated from.
+ *
+ * @since 1.0.0
  */
 fun RequestObject.sendResult(result: JsonElement?) {
     val response = ResponseObject(
@@ -144,6 +154,8 @@ fun RequestObject.sendResult(result: JsonElement?) {
 
 /**
  * Send a result-based response to the channel the message originated from.
+ *
+ * @since 1.0.0
  */
 fun <T> RequestObject.sendResult(result: T, serializer: JsonSerialization<T>) {
     val response = ResponseObject(
@@ -156,6 +168,8 @@ fun <T> RequestObject.sendResult(result: T, serializer: JsonSerialization<T>) {
 
 /**
  * Processes a JSON-RPC response message.
+ *
+ * @since 1.0.0
  */
 fun Message.response(handler: ResponseObject.() -> Unit) {
     if (this is ResponseObject) {

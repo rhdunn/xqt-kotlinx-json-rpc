@@ -3,6 +3,8 @@ package xqt.kotlinx.rpc.json.io
 
 /**
  * A binary data channel to write data to.
+ *
+ * @since 1.0.0
  */
 interface BinaryOutputChannel : Closeable {
     /**

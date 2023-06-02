@@ -6,6 +6,8 @@ package xqt.kotlinx.rpc.json.io
  *
  * @param firstByte the first byte in the line ending
  * @param secondByte the optional second byte in the line ending
+ *
+ * @since 1.0.0
  */
 enum class LineEnding(val firstByte: Byte, val secondByte: Byte? = null) {
     /**

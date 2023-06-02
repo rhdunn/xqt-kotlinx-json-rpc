@@ -5,6 +5,8 @@ import kotlinx.serialization.json.JsonElement
 
 /**
  * Defines a type of JSON object.
+ *
+ * @since 1.0.0
  */
 interface JsonObjectType<T> : JsonSerialization<T> {
     /**

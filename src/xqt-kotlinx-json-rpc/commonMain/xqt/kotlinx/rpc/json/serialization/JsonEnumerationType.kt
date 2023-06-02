@@ -5,6 +5,8 @@ import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
 
 /**
  * Defines serialization for a JSON enumeration or namespaced constant type.
+ *
+ * @since 1.1.0
  */
 interface JsonEnumerationType<T : JsonEnumeration<ValueT>, ValueT> {
     /**

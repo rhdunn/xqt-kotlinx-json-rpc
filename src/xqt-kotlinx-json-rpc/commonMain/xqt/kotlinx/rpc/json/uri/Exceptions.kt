@@ -5,6 +5,8 @@ package xqt.kotlinx.rpc.json.uri
  * The host part of the URI authority is invalid.
  *
  * @param host the host name or IP address
+ *
+ * @since 1.1.0
  */
 class InvalidHost(val host: String) : RuntimeException("Invalid host: $host")
 
@@ -14,6 +16,8 @@ internal fun invalidHost(host: String): Nothing = throw InvalidHost(host)
  * The port part of the URI authority is invalid.
  *
  * @param port the port number
+ *
+ * @since 1.1.0
  */
 class InvalidPortNumber(val port: String) : RuntimeException("Invalid port number: $port")
 

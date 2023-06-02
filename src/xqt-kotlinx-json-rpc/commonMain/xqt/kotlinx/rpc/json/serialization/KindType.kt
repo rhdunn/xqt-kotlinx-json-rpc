@@ -7,6 +7,8 @@ import kotlinx.serialization.json.*
  * The type of the JSON element.
  *
  * @param kindName the display name of the kind type
+ *
+ * @since 1.0.0
  */
 enum class KindType(val kindName: kotlin.String) {
     /**
@@ -47,6 +49,8 @@ enum class KindType(val kindName: kotlin.String) {
 
 /**
  * Returns the type of the JSON primitive.
+ *
+ * @since 1.0.0
  */
 val JsonPrimitive.kindType: KindType
     get() = when {
@@ -59,6 +63,8 @@ val JsonPrimitive.kindType: KindType
 
 /**
  * Returns the type of the JSON element.
+ *
+ * @since 1.0.0
  */
 val JsonElement.kindType: KindType
     get() = when (this) {

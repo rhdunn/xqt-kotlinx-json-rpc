@@ -18,6 +18,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonElement as JsonElementType
  *
  * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#errorCodes">LSP 3.17 ErrorCodes</a>
+ *
+ * @since 1.0.0
  */
 @JvmInline
 value class ErrorCode(val code: Int) {
@@ -72,6 +74,8 @@ value class ErrorCode(val code: Int) {
  *
  * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseError">LSP 3.17 ResponseError</a>
+ *
+ * @since 1.0.0
  */
 interface TypedErrorObject<T> {
     /**
@@ -95,6 +99,8 @@ interface TypedErrorObject<T> {
 
 /**
  * Convert from an untyped to a typed error object.
+ *
+ * @since 1.0.0
  */
 interface TypedErrorObjectConverter<T> {
     /**
@@ -108,6 +114,8 @@ interface TypedErrorObjectConverter<T> {
  *
  * @see <a href="https://www.jsonrpc.org/specification#error_object">JSON-RPC 2.0 Error object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#responseError">LSP 3.17 ResponseError</a>
+ *
+ * @since 1.0.0
  */
 data class ErrorObject(
     override val code: ErrorCode,
@@ -140,6 +148,8 @@ data class ErrorObject(
  * @param message a string providing a short description of the error
  * @param data a primitive or structured value that contains additional
  *             information about the error
+ *
+ * @since 1.0.0
  */
 @Suppress("FunctionName")
 fun ParseError(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
@@ -154,6 +164,8 @@ fun ParseError(message: String? = null, data: JsonElement? = null): ErrorObject 
  * @param message a string providing a short description of the error
  * @param data a primitive or structured value that contains additional
  *             information about the error
+ *
+ * @since 1.0.0
  */
 @Suppress("FunctionName")
 fun InternalError(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
@@ -168,6 +180,8 @@ fun InternalError(message: String? = null, data: JsonElement? = null): ErrorObje
  * @param message a string providing a short description of the error
  * @param data a primitive or structured value that contains additional
  *             information about the error
+ *
+ * @since 1.0.0
  */
 @Suppress("FunctionName")
 fun InvalidParams(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
@@ -182,6 +196,8 @@ fun InvalidParams(message: String? = null, data: JsonElement? = null): ErrorObje
  * @param message a string providing a short description of the error
  * @param data a primitive or structured value that contains additional
  *             information about the error
+ *
+ * @since 1.0.0
  */
 @Suppress("FunctionName")
 fun MethodNotFound(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
@@ -196,6 +212,8 @@ fun MethodNotFound(message: String? = null, data: JsonElement? = null): ErrorObj
  * @param message a string providing a short description of the error
  * @param data a primitive or structured value that contains additional
  *             information about the error
+ *
+ * @since 1.0.0
  */
 @Suppress("FunctionName")
 fun InvalidRequest(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(

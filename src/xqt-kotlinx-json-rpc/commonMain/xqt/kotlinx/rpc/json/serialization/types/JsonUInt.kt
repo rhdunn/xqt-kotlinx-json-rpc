@@ -7,6 +7,8 @@ import xqt.kotlinx.rpc.json.serialization.*
 
 /**
  * Defines an unsigned integer number in the range of 0 to 2^32 - 1.
+ *
+ * @since 1.0.0
  */
 object JsonUInt : JsonSerialization<UInt> {
     override fun serializeToJson(value: UInt): JsonPrimitive = JsonPrimitive(value.toLong())

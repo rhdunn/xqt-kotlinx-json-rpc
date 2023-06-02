@@ -15,6 +15,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObject
  * from the last of those pairs.
  *
  * Entries of the map are iterated in the order they were specified.
+ *
+ * @since 1.0.0
  */
 fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObject(mapOf(*pairs))
 
@@ -23,6 +25,8 @@ fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObje
  *
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObject.get(key: String, serializer: JsonSerialization<T>): T {
     return serializer.deserialize(get(key) ?: missingKey(key))
@@ -46,6 +50,8 @@ fun <T> JsonObject.getProperty(key: String, serializer: JsonSerialization<T>): J
  *
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObject.getNullable(key: String, serializer: JsonSerialization<T>): T? {
     return serializer.deserializeOrNull(get(key) ?: missingKey(key))
@@ -56,6 +62,8 @@ fun <T> JsonObject.getNullable(key: String, serializer: JsonSerialization<T>): T
  *
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObject.getOptional(key: String, serializer: JsonSerialization<T>): T? {
     return get(key)?.let { serializer.deserialize(it) }
@@ -66,6 +74,8 @@ fun <T> JsonObject.getOptional(key: String, serializer: JsonSerialization<T>): T
  *
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON array value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObject.getOptional(key: String, serializer: JsonTypedArray<T>): List<T> {
     val data = get(key) ?: return listOf()
@@ -77,6 +87,8 @@ fun <T> JsonObject.getOptional(key: String, serializer: JsonTypedArray<T>): List
  *
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON object value.
+ *
+ * @since 1.0.0
  */
 fun <K, V> JsonObject.getOptional(key: String, serializer: JsonTypedObject<K, V>): Map<K, V> {
     val data = get(key) ?: return mapOf()
@@ -88,6 +100,8 @@ fun <K, V> JsonObject.getOptional(key: String, serializer: JsonTypedObject<K, V>
  *
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 @Deprecated(
     message = "Use get with a JsonProperty type.",
@@ -102,6 +116,8 @@ fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonSerializat
  *
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON array value.
+ *
+ * @since 1.0.0
  */
 @Deprecated(
     message = "Use get with a JsonProperty type.",
@@ -117,6 +133,8 @@ fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedArray
  *
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON object value.
+ *
+ * @since 1.0.0
  */
 @Deprecated(
     message = "Use get with a JsonProperty type.",
@@ -133,6 +151,8 @@ fun <K, V> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedOb
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObjectBuilder.put(key: String, value: T, serializer: JsonSerialization<T>) {
     put(key, serializer.serializeToJson(value))
@@ -161,6 +181,8 @@ fun <T> JsonObjectBuilder.putProperty(key: String, value: JsonProperty<T>, seria
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObjectBuilder.putNullable(key: String, value: T?, serializer: JsonSerialization<T>) {
     put(key, serializer.serializeToJsonOrNull(value))
@@ -174,6 +196,8 @@ fun <T> JsonObjectBuilder.putNullable(key: String, value: T?, serializer: JsonSe
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON element value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObjectBuilder.putOptional(key: String, value: T?, serializer: JsonSerialization<T>) {
     value?.let { put(key, serializer.serializeToJson(it)) }
@@ -187,6 +211,8 @@ fun <T> JsonObjectBuilder.putOptional(key: String, value: T?, serializer: JsonSe
  * @param key the name of the key to serialize to.
  * @param value the content of the array to serialize to.
  * @param serializer how to serialize the JSON array value.
+ *
+ * @since 1.0.0
  */
 fun <T> JsonObjectBuilder.putOptional(key: String, value: List<T>, serializer: JsonTypedArray<T>) {
     if (value.isNotEmpty()) {
@@ -202,6 +228,8 @@ fun <T> JsonObjectBuilder.putOptional(key: String, value: List<T>, serializer: J
  * @param key the name of the key to serialize to.
  * @param value the content of the map to serialize to.
  * @param serializer how to serialize the JSON map value.
+ *
+ * @since 1.0.0
  */
 fun <K, V> JsonObjectBuilder.putOptional(key: String, value: Map<K, V>, serializer: JsonTypedObject<K, V>) {
     if (value.isNotEmpty()) {
@@ -211,6 +239,8 @@ fun <K, V> JsonObjectBuilder.putOptional(key: String, value: Map<K, V>, serializ
 
 /**
  * Checks the value of the `kind` property of a JSON object.
+ *
+ * @since 1.0.0
  */
 fun JsonElement.hasKindKey(value: String): Boolean = when (this) {
     is JsonObject -> this.hasKindKey(value)
@@ -219,6 +249,8 @@ fun JsonElement.hasKindKey(value: String): Boolean = when (this) {
 
 /**
  * Checks the value of the `kind` property of a JSON object.
+ *
+ * @since 1.0.0
  */
 fun JsonObject.hasKindKey(value: String): Boolean {
     val kind = get("kind")
@@ -232,6 +264,8 @@ fun JsonObject.hasKindKey(value: String): Boolean {
 
 /**
  * Checks the JSON object contains all the specified keys.
+ *
+ * @since 1.0.0
  */
 fun JsonElement.containsKeys(vararg key: String): Boolean = when (this) {
     is JsonObject -> key.all { containsKey(it) }
@@ -240,5 +274,7 @@ fun JsonElement.containsKeys(vararg key: String): Boolean = when (this) {
 
 /**
  * Checks the JSON object contains all the specified keys.
+ *
+ * @since 1.0.0
  */
 fun JsonObject.containsKeys(vararg key: String): Boolean = key.all { containsKey(it) }

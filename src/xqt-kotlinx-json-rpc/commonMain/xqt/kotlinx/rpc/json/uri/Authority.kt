@@ -5,6 +5,8 @@ package xqt.kotlinx.rpc.json.uri
  * The authority part of a URI.
  *
  * @see <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.2">RFC 3986 (3.2) Authority</a>
+ *
+ * @since 1.1.0
  */
 data class Authority(
     /**

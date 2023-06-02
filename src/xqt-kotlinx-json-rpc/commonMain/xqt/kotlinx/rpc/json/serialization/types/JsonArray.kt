@@ -9,6 +9,8 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Defines a JSON array.
+ *
+ * @since 1.0.0
  */
 object JsonArray : JsonSerialization<JsonArray> {
     override fun serializeToJson(value: JsonArray): JsonArray = value
@@ -23,6 +25,8 @@ object JsonArray : JsonSerialization<JsonArray> {
  * Defines a typed JSON array.
  *
  * @param itemSerialization how to serialize the items in the array
+ *
+ * @since 1.0.0
  */
 data class JsonTypedArray<T>(private val itemSerialization: JsonSerialization<T>) : JsonSerialization<List<T>> {
     override fun serializeToJson(value: List<T>): JsonArray = buildJsonArray {

@@ -13,6 +13,8 @@ import kotlin.jvm.JvmInline
 
 /**
  * Defines an integer|string union type.
+ *
+ * @since 1.0.0
  */
 sealed interface JsonIntOrString {
     /**
@@ -68,6 +70,8 @@ sealed interface JsonIntOrString {
 
 /**
  * Defines an array|object union type.
+ *
+ * @since 1.0.0
  */
 object JsonArrayOrObject : JsonSerialization<JsonElement> {
     override fun serializeToJson(value: JsonElement): JsonElement = when (value) {
@@ -90,6 +94,8 @@ object JsonArrayOrObject : JsonSerialization<JsonElement> {
  * that type.
  *
  * @param itemSerialization how to serialize the items in the array
+ *
+ * @since 1.0.0
  */
 data class JsonTypedObjectOrArray<T>(private val itemSerialization: JsonSerialization<T>) : JsonSerialization<List<T>> {
     override fun serializeToJson(value: List<T>): JsonElement = when (value.size) {

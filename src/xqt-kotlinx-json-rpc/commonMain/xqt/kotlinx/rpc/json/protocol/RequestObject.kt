@@ -17,6 +17,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
  *
  * @see <a href="https://www.jsonrpc.org/specification#request_object">JSON-RPC 2.0 Request object</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#requestMessage">LSP 3.17 RequestMessage</a>
+ *
+ * @since 1.0.0
  */
 data class RequestObject(
     /**
@@ -90,6 +92,8 @@ data class RequestObject(
  *         the specified type
  * @param serializer how to deserialize the JSON element value
  * @return the deserialized JSON object
+ *
+ * @since 1.0.0
  */
 fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
     if (params == null) throw InvalidParams("Missing params object")
@@ -107,6 +111,8 @@ fun <T> RequestObject.params(serializer: JsonSerialization<T>): T {
  * @param handler the callback used to handle the method
  * @param paramsSerializer how to deserialize the method parameters
  * @param resultSerializer how to deserialize the request result
+ *
+ * @since 1.0.0
  */
 fun <ParamsT, ResultT> RequestObject.method(
     method: String,
@@ -127,6 +133,8 @@ fun <ParamsT, ResultT> RequestObject.method(
  * @param method the request method to handle
  * @param handler the callback used to handle the method
  * @param resultSerializer how to deserialize the request result
+ *
+ * @since 1.0.0
  */
 fun <ResultT> RequestObject.method(
     method: String,
@@ -146,6 +154,8 @@ fun <ResultT> RequestObject.method(
  * @param method the request method to handle
  * @param handler the callback used to handle the method
  * @param paramsSerializer how to deserialize the method parameters
+ *
+ * @since 1.0.0
  */
 fun <ParamsT> RequestObject.method(
     method: String,
@@ -164,6 +174,8 @@ fun <ParamsT> RequestObject.method(
  *
  * @param method the request method to handle
  * @param handler the callback used to handle the method
+ *
+ * @since 1.0.0
  */
 fun RequestObject.method(
     method: String,
@@ -183,6 +195,8 @@ fun RequestObject.method(
  * @param responseHandler the callback to process the response for the request
  * @param responseObjectConverter the typed response object converter
  * @return the ID of the request
+ *
+ * @since 1.0.0
  */
 fun <ResultT, ErrorDataT> JsonRpcServer.sendRequest(
     request: RequestObject,
@@ -200,6 +214,8 @@ fun <ResultT, ErrorDataT> JsonRpcServer.sendRequest(
  * @param request the request to send
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
+ *
+ * @since 1.0.0
  */
 fun JsonRpcServer.sendRequest(
     request: RequestObject,
@@ -218,6 +234,8 @@ fun JsonRpcServer.sendRequest(
  * @param responseHandler the callback to process the response for the request
  * @param responseObjectConverter the typed response object converter
  * @return the ID of the request
+ *
+ * @since 1.0.0
  */
 fun <ResultT, ErrorDataT> JsonRpcServer.sendRequest(
     method: String,
@@ -242,6 +260,8 @@ fun <ResultT, ErrorDataT> JsonRpcServer.sendRequest(
  * @param params the method's parameters
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
+ *
+ * @since 1.0.0
  */
 fun JsonRpcServer.sendRequest(
     method: String,
@@ -256,6 +276,8 @@ fun JsonRpcServer.sendRequest(
 
 /**
  * Processes a JSON-RPC request message.
+ *
+ * @since 1.0.0
  */
 fun Message.request(handler: RequestObject.() -> Unit) {
     if (this is RequestObject) {
@@ -270,6 +292,8 @@ fun Message.request(handler: RequestObject.() -> Unit) {
  *
  * @see <a href="https://www.jsonrpc.org/specification#notification">JSON-RPC 2.0 Notification</a>
  * @see <a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#notificationMessage">LSP 3.17 NotificationMessage</a>
+ *
+ * @since 1.0.0
  */
 data class Notification(
     /**
@@ -329,6 +353,8 @@ data class Notification(
  *         the specified type
  * @param serializer how to deserialize the JSON element value
  * @return the deserialized JSON object
+ *
+ * @since 1.0.0
  */
 fun <T> Notification.params(serializer: JsonSerialization<T>): T {
     if (params == null) throw InvalidParams("Missing params object")
@@ -345,6 +371,8 @@ fun <T> Notification.params(serializer: JsonSerialization<T>): T {
  * @param method the notification method to handle
  * @param handler the callback used to handle the method
  * @param paramsSerializer how to deserialize the method parameters
+ *
+ * @since 1.0.0
  */
 fun <ParamsT> Notification.method(
     method: String,
@@ -362,6 +390,8 @@ fun <ParamsT> Notification.method(
  *
  * @param method the notification method to handle
  * @param handler the callback used to handle the method
+ *
+ * @since 1.0.0
  */
 fun Notification.method(
     method: String,
@@ -375,6 +405,8 @@ fun Notification.method(
 
 /**
  * Send a notification to the channel the message originated from.
+ *
+ * @since 1.0.0
  */
 fun JsonRpcServer.sendNotification(notification: Notification) {
     send(Notification.serializeToJson(notification))
@@ -389,6 +421,8 @@ fun JsonRpcServer.sendNotification(notification: Notification) {
  *
  * @param method the method to be invoked
  * @param params the method's parameters
+ *
+ * @since 1.0.0
  */
 fun JsonRpcServer.sendNotification(method: String, params: JsonElement? = null) {
     val notification = Notification(
@@ -400,6 +434,8 @@ fun JsonRpcServer.sendNotification(method: String, params: JsonElement? = null) 
 
 /**
  * Processes a JSON-RPC notification message.
+ *
+ * @since 1.0.0
  */
 fun Message.notification(handler: Notification.() -> Unit) {
     if (this is Notification) {

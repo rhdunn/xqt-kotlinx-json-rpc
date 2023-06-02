@@ -12,6 +12,8 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 /**
  * A JSON-RPC server to send/receive message on.
+ *
+ * @since 1.0.0
  */
 abstract class JsonRpcServer : Closeable {
     /**
@@ -116,6 +118,8 @@ private fun JsonRpcServer.processMessage(body: JsonElement, handler: Message.() 
 
 /**
  * Processes a JSON-RPC message.
+ *
+ * @since 1.0.0
  */
 fun JsonRpcServer.jsonRpc(handler: Message.() -> Unit) {
     while (true) {

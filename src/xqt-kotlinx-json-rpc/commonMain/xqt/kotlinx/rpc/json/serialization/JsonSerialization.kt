@@ -6,6 +6,8 @@ import kotlinx.serialization.json.JsonNull
 
 /**
  * Defines serialization for a data type or object to/from JSON elements.
+ *
+ * @since 1.0.0
  */
 interface JsonSerialization<T> {
     /**

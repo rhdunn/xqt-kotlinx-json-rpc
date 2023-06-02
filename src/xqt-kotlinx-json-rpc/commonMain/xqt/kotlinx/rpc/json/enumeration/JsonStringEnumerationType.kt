@@ -17,6 +17,8 @@ import xqt.kotlinx.rpc.json.serialization.StringSerialization
  *     }
  * }
  * ```
+ *
+ * @since 1.1.0
  */
 abstract class JsonStringEnumerationType<T : JsonEnumeration<String>> :
     JsonEnumerationType<T, String>,
