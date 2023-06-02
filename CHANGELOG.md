@@ -24,10 +24,12 @@ Enumeration Types:
 Properties:
 - Add a `JsonPropertyState` enumeration type.
 - Add a `JsonProperty` type.
+- Add `getProperty` and `putProperty` extension methods.
 
 ### Changed
 
 - Provide a default `StringSerialization.serializeToString` implementation.
+- Deprecated `getOptionalOrNullable` in favour of using `JsonProperty`.
 
 ## [1.0.3] - 2023-05-22
 

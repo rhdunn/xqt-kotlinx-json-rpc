@@ -2,6 +2,8 @@
 package xqt.kotlinx.rpc.json.serialization
 
 import kotlinx.serialization.json.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonProperty
+import xqt.kotlinx.rpc.json.serialization.types.JsonPropertyState
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObject
 
@@ -24,6 +26,19 @@ fun jsonObjectOf(vararg pairs: Pair<String, JsonElement>): JsonObject = JsonObje
  */
 fun <T> JsonObject.get(key: String, serializer: JsonSerialization<T>): T {
     return serializer.deserialize(get(key) ?: missingKey(key))
+}
+
+/**
+ * Deserialize the data type or object from the `json` element.
+ *
+ * @param key the name of the required key to deserialize.
+ * @param serializer how to deserialize the JSON element value.
+ *
+ * @since 1.1.0
+ */
+fun <T> JsonObject.getProperty(key: String, serializer: JsonSerialization<T>): JsonProperty<T> {
+    val value = get(key) ?: return JsonProperty.missing()
+    return JsonProperty(serializer.deserializeOrNull(value))
 }
 
 /**
@@ -74,6 +89,10 @@ fun <K, V> JsonObject.getOptional(key: String, serializer: JsonTypedObject<K, V>
  * @param key the name of the required key to deserialize.
  * @param serializer how to deserialize the JSON element value.
  */
+@Deprecated(
+    message = "Use get with a JsonProperty type.",
+    replaceWith = ReplaceWith("get", "xqt.kotlinx.rpc.json.serialization.get")
+)
 fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonSerialization<T>): T? {
     return get(key)?.let { serializer.deserializeOrNull(it) }
 }
@@ -84,6 +103,10 @@ fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonSerializat
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON array value.
  */
+@Deprecated(
+    message = "Use get with a JsonProperty type.",
+    replaceWith = ReplaceWith("get", "xqt.kotlinx.rpc.json.serialization.get")
+)
 fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedArray<T>): List<T> {
     val data = get(key) ?: return listOf()
     return serializer.deserializeOrNull(data) ?: listOf()
@@ -95,6 +118,10 @@ fun <T> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedArray
  * @param key the name of the optional key to deserialize.
  * @param serializer how to deserialize the JSON object value.
  */
+@Deprecated(
+    message = "Use get with a JsonProperty type.",
+    replaceWith = ReplaceWith("get", "xqt.kotlinx.rpc.json.serialization.get")
+)
 fun <K, V> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedObject<K, V>): Map<K, V> {
     val data = get(key) ?: return mapOf()
     return serializer.deserializeOrNull(data) ?: mapOf()
@@ -109,6 +136,21 @@ fun <K, V> JsonObject.getOptionalOrNullable(key: String, serializer: JsonTypedOb
  */
 fun <T> JsonObjectBuilder.put(key: String, value: T, serializer: JsonSerialization<T>) {
     put(key, serializer.serializeToJson(value))
+}
+
+/**
+ * Serialize the data type or object to the JSON element.
+ *
+ * @param key the name of the key to serialize to.
+ * @param value the content of the array to serialize to.
+ * @param serializer how to serialize the JSON element value.
+ *
+ * @since 1.1.0
+ */
+fun <T> JsonObjectBuilder.putProperty(key: String, value: JsonProperty<T>, serializer: JsonSerialization<T>) {
+    if (value.state == JsonPropertyState.Present) {
+        put(key, serializer.serializeToJsonOrNull(value.value))
+    }
 }
 
 /**
