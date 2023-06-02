@@ -21,6 +21,9 @@ Enumeration Types:
 - Add a `JsonUIntEnumerationType` implementation.
 - Add a `JsonDoubleEnumerationType` implementation.
 
+Properties:
+- Add a `JsonPropertyState` enumeration type.
+
 ### Changed
 
 - Provide a default `StringSerialization.serializeToString` implementation.
