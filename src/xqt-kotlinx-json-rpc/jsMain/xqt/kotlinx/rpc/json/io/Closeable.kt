@@ -6,9 +6,10 @@ package xqt.kotlinx.rpc.json.io
  *
  * @since 1.0.0
  */
-actual interface Closeable {
+@OptIn(ExperimentalStdlibApi::class)
+actual interface Closeable : AutoCloseable {
     /**
      * Close the resource.
      */
-    actual fun close()
+    actual override fun close()
 }

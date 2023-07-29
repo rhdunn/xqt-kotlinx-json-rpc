@@ -30,6 +30,7 @@ Properties:
 
 - Provide a default `StringSerialization.serializeToString` implementation.
 - Deprecated `getOptionalOrNullable` in favour of using `JsonProperty`.
+- Native and JS version of `Closeable` use `AutoCloseable`.
 
 ## [1.0.3] - 2023-05-22
 
